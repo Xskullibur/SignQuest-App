@@ -25,23 +25,8 @@ private const val GLOSS_PARAM = "gloss_param"
  * Use the [PlayerToSignFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlayerToSignFragment : Fragment() {
+class PlayerToSignFragment : CameraFragment() {
     private var gloss: Gloss? = null
-
-    private val TAG = PlayerToSignFragment::class.java.name
-
-    //Camera permission
-    val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                this.showCamera()
-            } else {
-                this.showAlert(getString(R.string.no_camera_permission_title), getString(R.string.no_camera_permission_message))
-            }
-        }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,37 +44,13 @@ class PlayerToSignFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_player_to_sign, container, false)
     }
 
-    private fun showCamera(){
-        val context = this.requireContext()
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
-
-        cameraProviderFuture.addListener(Runnable {
-            // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            // Preview
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(cameraView.createSurfaceProvider())
-                }
-
-            val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
-
-            try {
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
-
-                cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
-
-            } catch(exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
-            }
-
-        }, ContextCompat.getMainExecutor(this.requireContext()))
+    /**
+     * When permission is granted
+     */
+    override fun onCameraIsAccessible() {
+        //Show camera on preview
+        this.showCamera(cameraView.createSurfaceProvider())
     }
-
 
 
     companion object {
