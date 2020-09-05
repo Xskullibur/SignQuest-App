@@ -8,23 +8,51 @@
     android:weightSum="5"
     tools:context=".game.PlayerToSignFragment">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/cameraView"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_weight="1" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_margin="15dp"/>
-
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_marginBottom="15dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+
+            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            >
+           <LinearLayout
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Question 01/20"
+                   android:textColor="@android:color/white"
+                   android:textSize="24sp"
+                   android:layout_gravity="center" />
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Basic literacy quiz"
+                   android:textColor="@color/colorPrimaryDark"
+                   android:textSize="13sp"
+                   android:layout_gravity="center" />
+           </LinearLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginHorizontal="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
         app:cardBackgroundColor="@android:color/white"
-        app:cardElevation="2dp"
+        app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
         <LinearLayout
             android:padding="5dp"
@@ -52,5 +80,19 @@
             </TextView>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="15dp"/>
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraView"
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_weight="1" />
+
+
 
 </LinearLayout>
