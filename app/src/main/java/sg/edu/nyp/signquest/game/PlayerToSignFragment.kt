@@ -39,8 +39,8 @@ class PlayerToSignFragment : CameraFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         return inflater.inflate(R.layout.fragment_player_to_sign, container, false)
     }
 
