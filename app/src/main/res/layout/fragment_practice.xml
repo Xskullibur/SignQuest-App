@@ -19,7 +19,7 @@
         app:layout_constraintBottom_toTopOf="@id/practice_cameraView"
         app:title="Practice" />
 
-        <TextureView
+        <androidx.camera.view.PreviewView
             android:id="@+id/practice_cameraView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

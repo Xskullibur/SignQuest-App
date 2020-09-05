@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.CameraFragment
 
-class PracticeFragment : Fragment() {
+class PracticeFragment : CameraFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +26,15 @@ class PracticeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        super.onCreateView(inflater, container, savedInstanceState)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_practice, container, false)
 
+    }
+
+    override fun onCameraIsAccessible() {
+        this.showCamera(practice_cameraView.createSurfaceProvider())
     }
 
     companion object {
