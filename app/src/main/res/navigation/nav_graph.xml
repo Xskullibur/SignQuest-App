@@ -8,5 +8,22 @@
         android:id="@+id/startFragment"
         android:name="sg.edu.nyp.signquest.start.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" />
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_playerToSignFragment"
+            app:destination="@id/playerToSignFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialFragment"
+        android:name="sg.edu.nyp.signquest.start.TutorialFragment"
+        android:label="fragment_tutorial"
+        tools:layout="@layout/fragment_tutorial" />
+    <fragment
+        android:id="@+id/playerToSignFragment"
+        android:name="sg.edu.nyp.signquest.game.PlayerToSignFragment"
+        android:label="fragment_player_to_sign"
+        tools:layout="@layout/fragment_player_to_sign" />
 </navigation>

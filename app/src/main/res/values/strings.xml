@@ -2,4 +2,7 @@
     <string name="app_name">SignQuest</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_camera_permission_title">No Camera Permission</string>
+    <string name="no_camera_permission_message">In order to detect the sign you are making, the app will requires you to allow access into your camera.</string>
+
 </resources>
