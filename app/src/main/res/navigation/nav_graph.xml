@@ -18,12 +18,21 @@
     </fragment>
     <fragment
         android:id="@+id/tutorialFragment"
-        android:name="sg.edu.nyp.signquest.start.TutorialFragment"
+        android:name="sg.edu.nyp.signquest.tutorial.TutorialFragment"
         android:label="fragment_tutorial"
-        tools:layout="@layout/fragment_tutorial" />
+        tools:layout="@layout/fragment_tutorial" >
+        <action
+            android:id="@+id/action_tutorialFragment_to_practiceFragment"
+            app:destination="@id/practiceFragment" />
+    </fragment>
     <fragment
         android:id="@+id/playerToSignFragment"
         android:name="sg.edu.nyp.signquest.game.PlayerToSignFragment"
         android:label="fragment_player_to_sign"
         tools:layout="@layout/fragment_player_to_sign" />
+    <fragment
+        android:id="@+id/practiceFragment"
+        android:name="sg.edu.nyp.signquest.tutorial.PracticeFragment"
+        android:label="fragment_practice"
+        tools:layout="@layout/fragment_practice" />
 </navigation>

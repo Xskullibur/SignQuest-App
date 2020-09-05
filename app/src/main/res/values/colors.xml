@@ -8,6 +8,7 @@
     <!--  Button Colors-->
     <color name="colorLearnButton">#ff9800</color>
     <color name="colorGameButton">#f44336</color>
+    <color name="black_overlay">#66000000</color>
 
     <color name="background">#f8f8ff</color>
 
