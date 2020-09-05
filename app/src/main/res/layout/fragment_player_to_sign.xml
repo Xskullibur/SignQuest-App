@@ -21,13 +21,26 @@
             app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Question 1"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:layout_gravity="center" />
+           <LinearLayout
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Question 01/20"
+                   android:textColor="@android:color/white"
+                   android:textSize="24sp"
+                   android:layout_gravity="center" />
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Basic literacy quiz"
+                   android:textColor="@color/colorPrimaryDark"
+                   android:textSize="13sp"
+                   android:layout_gravity="center" />
+           </LinearLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
