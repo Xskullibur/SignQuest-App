@@ -43,10 +43,10 @@ class PracticeFragment : Fragment(), CameraListener {
     override fun onCameraIsAccessible() {
 
         // Build Image Analyzer
-        val imageAnalyzer = cameraManager.buildImageAnalysis()
+//        val imageAnalyzer = cameraManager.buildImageAnalysis()
 
         //Show camera on preview
-        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), imageAnalyzer)
+        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), null)
     }
 
 }

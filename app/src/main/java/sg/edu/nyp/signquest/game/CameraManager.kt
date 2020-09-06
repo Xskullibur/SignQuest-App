@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
-import java.util.concurrent.Executors
 
 interface CameraListener {
     /**
@@ -61,9 +60,10 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
      * @param surfaceProvider - surface to show the camera preview at, make sure the [View] is a
      *  instance of [androidx.camera.view.PreviewView] and call [androidx.camera.view.PreviewView.createSurfaceProvider]
      *  to get the [Preview.SurfaceProvider] used by the CameraX to display the preview.
-     *  @param imageAnalysis - Do image analysis on each image the camera captured, pass null if you are not doing any image analysis
+     *  @param imageAnalysisBuilder - function to create a [ImageAnalyzer] to do image analysis on each image the camera captured,
+     *  pass null if you are not doing any image analysis
      */
-    fun showCamera(surfaceProvider: Preview.SurfaceProvider, imageAnalysis: ImageAnalysis? = null){
+    fun showCamera(surfaceProvider: Preview.SurfaceProvider, imageAnalysisBuilder: (() -> ImageAnalysis)? = null){
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener(Runnable {
@@ -84,6 +84,8 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
 
+                val imageAnalysis = imageAnalysisBuilder?.invoke()
+
                 if(imageAnalysis != null){
                     cameraProvider.bindToLifecycle(
                         fragment, cameraSelector, preview, imageAnalysis)
@@ -97,24 +99,6 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
             }
 
         }, ContextCompat.getMainExecutor(context))
-    }
-
-
-    fun buildImageAnalysis(): ImageAnalysis {
-
-        val imageAnalysis = ImageAnalysis.Builder()
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
-            .setImageQueueDepth(10)
-            .build()
-
-        val executor = Executors.newSingleThreadExecutor()
-
-        imageAnalysis.setAnalyzer(executor, ImageAnalyzer{ pixels ->
-            Log.d(TAG, pixels.toString())
-        })
-
-        return imageAnalysis
-
     }
 
 }

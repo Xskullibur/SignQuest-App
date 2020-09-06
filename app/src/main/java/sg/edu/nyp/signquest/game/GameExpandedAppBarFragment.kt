@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.game_expanded_appbar.*
 import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import sg.edu.nyp.signquest.databinding.GameExpandedAppbarBinding
 
@@ -32,9 +31,6 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        viewModel.currentSecondsString.observe(viewLifecycleOwner){
-            println(it)
-        }
 
         return GameExpandedAppbarBinding.inflate(inflater, container, false).run {
             viewModel = this@GameExpandedAppBarFragment.viewModel
@@ -56,9 +52,7 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         if(!viewModel.timerIsStarted)viewModel.startCountDownTimer(totalMillisSeconds, countDownInterval)
     }
 
-    protected fun resetCountDownTimer(){
-        if(viewModel.timerIsStarted)viewModel.resetCountDownTimer()
+    protected fun resetCountDownTimer() {
+        if (viewModel.timerIsStarted) viewModel.resetCountDownTimer()
     }
-
-
 }

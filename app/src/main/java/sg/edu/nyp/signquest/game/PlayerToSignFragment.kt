@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.camera.core.ImageAnalysis
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.game.`object`.Gloss
+import java.util.concurrent.Executors
 
 
 /**
@@ -57,9 +60,20 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
      */
     override fun onCameraIsAccessible() {
         //Show camera on preview
-        cameraManager.showCamera(cameraView.createSurfaceProvider())
+        cameraManager.showCamera(cameraView.createSurfaceProvider()){
+            this.buildAnalyzer()
+        }
 
         //Start game timer
         startCountDownTimer(60000)
     }
+
+    private fun buildAnalyzer(): ImageAnalysis {
+        return ImageAnalysis.Builder()
+            .build()
+            .also {
+                it.setAnalyzer(Executors.newSingleThreadExecutor(), SignLanguageImageAnalyzer(this.requireContext()))
+            }
+    }
+
 }
