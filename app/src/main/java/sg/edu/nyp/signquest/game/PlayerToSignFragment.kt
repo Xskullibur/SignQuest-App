@@ -1,37 +1,36 @@
 package sg.edu.nyp.signquest.game
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.fragment_player_to_sign.*
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
+import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Gloss
-import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 
-private const val GLOSS_PARAM = "gloss_param"
 
 /**
  * Fragment represent the Screen to let Player do the sign language
- * Use the [PlayerToSignFragment.newInstance] factory method to
- * create an instance of this fragment.
  */
-class PlayerToSignFragment : CameraFragment() {
-    private var gloss: Gloss? = null
+class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
+
+    override val topContainerId: Int = R.layout.fragment_player_to_sign_top
+    override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
+
+    private val args: PlayerToSignFragmentArgs by navArgs()
+    private val viewModel: PlayerToSignViewModel by viewModels()
+
+    private lateinit var cameraManager: CameraManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            gloss = it.getParcelable(GLOSS_PARAM)
+        cameraManager = CameraManager(this, this)
+        args.let {
+            viewModel.setGloss(it.gloss)
         }
     }
 
@@ -39,9 +38,18 @@ class PlayerToSignFragment : CameraFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_to_sign, container, false)
+        cameraManager.requestPermission()
+
+        //Init observable
+        viewModel.gloss.observe(viewLifecycleOwner){
+            setGlossOnDisplay(it)
+        }
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    private fun setGlossOnDisplay(gloss: Gloss){
+        topContainerView.glossTxtView.text = gloss.value
     }
 
     /**
@@ -49,24 +57,9 @@ class PlayerToSignFragment : CameraFragment() {
      */
     override fun onCameraIsAccessible() {
         //Show camera on preview
-        this.showCamera(cameraView.createSurfaceProvider())
-    }
+        cameraManager.showCamera(cameraView.createSurfaceProvider())
 
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param gloss [Gloss].
-         * @return A new instance of fragment PlayerToSignFragment.
-         */
-        @JvmStatic
-        fun newInstance(gloss: Gloss) =
-            PlayerToSignFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(GLOSS_PARAM, gloss)
-                }
-            }
+        //Start game timer
+        startCountDownTimer(60000)
     }
 }

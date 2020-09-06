@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.fragment_start.view.*
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_start.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.PlayerToSignFragmentArgs
+import sg.edu.nyp.signquest.game.`object`.Gloss
 
 class StartFragment : Fragment() {
 
@@ -27,8 +29,9 @@ class StartFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         //Bind menu buttons
-        view.gameBtn.setOnClickListener {
-            navController.navigate(R.id.action_startFragment_to_playerToSignFragment)
+        gameBtn.setOnClickListener {
+            val action = StartFragmentDirections.actionStartFragmentToPlayerToSignFragment(Gloss("Eat"))
+            navController.navigate(action)
         }
 
         learnBtn.setOnClickListener {

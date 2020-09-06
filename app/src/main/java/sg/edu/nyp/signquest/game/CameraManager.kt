@@ -1,6 +1,7 @@
 package sg.edu.nyp.signquest.game
 
 import android.Manifest
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,44 +16,49 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.utils.AlertUtils
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 
-abstract class CameraFragment:  Fragment() {
-
-    private val TAG = CameraFragment::class.java.name
-
-    //Camera permission
-    val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                this.onCameraIsAccessible()
-            } else {
-                this.onCameraPermissionIsRejected()
-                this.showAlert(getString(R.string.no_camera_permission_title), getString(R.string.no_camera_permission_message))
-            }
-        }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
+interface CameraListener {
     /**
      * Called when the [Manifest.permission.CAMERA] permission is granted
      */
-    abstract fun onCameraIsAccessible()
+    fun onCameraIsAccessible()
 
     /**
      * Called when the [Manifest.permission.CAMERA] permission is rejected
      */
-    protected fun onCameraPermissionIsRejected(){}
+    fun onCameraPermissionIsRejected(){}
+}
+
+class CameraManager(val fragment: Fragment, private val cameraListener: CameraListener) {
+
+    private val TAG = CameraManager::class.java.name
+
+    private val context = fragment.requireContext()
+
+    //Camera permission
+    val requestPermissionLauncher =
+        fragment.registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                cameraListener.onCameraIsAccessible()
+            } else {
+                cameraListener.onCameraPermissionIsRejected()
+                showAlert(context, context.getString(R.string.no_camera_permission_title),
+                    context.getString(R.string.no_camera_permission_message))
+            }
+        }
+
+
+    /**
+     * Request for Camera Permission
+     */
+    fun requestPermission(){
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
 
     /**
      * Start camera to show in preview
@@ -61,8 +67,7 @@ abstract class CameraFragment:  Fragment() {
      *  to get the [Preview.SurfaceProvider] used by the CameraX to display the preview.
      *  @param imageAnalysis - Do image analysis on each image the camera captured, pass null if you are not doing any image analysis
      */
-    protected fun showCamera(surfaceProvider: Preview.SurfaceProvider, imageAnalysis: ImageAnalysis? = null){
-        val context = this.requireContext()
+    fun showCamera(surfaceProvider: Preview.SurfaceProvider, imageAnalysis: ImageAnalysis? = null){
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener(Runnable {
@@ -85,17 +90,17 @@ abstract class CameraFragment:  Fragment() {
 
                 if(imageAnalysis != null){
                     cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageAnalysis)
+                        fragment, cameraSelector, preview, imageAnalysis)
                 }else{
                     cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview)
+                        fragment, cameraSelector, preview)
                 }
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
-        }, ContextCompat.getMainExecutor(this.requireContext()))
+        }, ContextCompat.getMainExecutor(context))
     }
 
 }
