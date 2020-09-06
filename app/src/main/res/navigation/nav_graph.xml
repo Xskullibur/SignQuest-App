@@ -29,7 +29,7 @@
         android:id="@+id/playerToSignFragment"
         android:name="sg.edu.nyp.signquest.game.PlayerToSignFragment"
         android:label="fragment_player_to_sign"
-        tools:layout="@layout/fragment_player_to_sign" />
+        tools:layout="@layout/fragment_player_to_sign_main" />
     <fragment
         android:id="@+id/practiceFragment"
         android:name="sg.edu.nyp.signquest.tutorial.PracticeFragment"

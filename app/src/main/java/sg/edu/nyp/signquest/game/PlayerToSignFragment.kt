@@ -1,22 +1,12 @@
 package sg.edu.nyp.signquest.game
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_player_to_sign.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Gloss
-import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 
 private const val GLOSS_PARAM = "gloss_param"
 
@@ -25,11 +15,18 @@ private const val GLOSS_PARAM = "gloss_param"
  * Use the [PlayerToSignFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlayerToSignFragment : CameraFragment() {
+class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
+
+    override val topContainerId: Int = R.layout.fragment_player_to_sign_top
+    override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
+
     private var gloss: Gloss? = null
+
+    private lateinit var cameraManager: CameraManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        cameraManager = CameraManager(this, this)
         arguments?.let {
             gloss = it.getParcelable(GLOSS_PARAM)
         }
@@ -39,17 +36,20 @@ class PlayerToSignFragment : CameraFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_to_sign, container, false)
+        cameraManager.requestPermission()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+//    override fun inflateTopContainer(inflater: LayoutInflater, container: ViewGroup): View = inflater.inflate(R.layout.fragment_player_to_sign_top, container, false)
+//
+//    override fun inflateMainContainer(inflater: LayoutInflater, container: ViewGroup): View = inflater.inflate(R.layout.fragment_player_to_sign, container, false)
 
     /**
      * When permission is granted
      */
     override fun onCameraIsAccessible() {
         //Show camera on preview
-        this.showCamera(cameraView.createSurfaceProvider())
+        cameraManager.showCamera(cameraView.createSurfaceProvider())
     }
 
 
