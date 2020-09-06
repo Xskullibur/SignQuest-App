@@ -24,16 +24,8 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         view.topContainer.inflate()
         view.mainContainer.layoutResource = mainContainerId
         view.mainContainer.inflate()
-//        val topContainerView = inflateTopContainer(inflater, view.topContainer)
-//        val mainContainerView = inflateMainContainer(inflater, view.mainContainer)
-//
-//        view.topContainer.addView(topContainerView)
-//        view.mainContainer.addView(mainContainerView)
 
         return view
     }
-
-//    abstract fun inflateTopContainer(inflater: LayoutInflater, container: ViewGroup): View
-//    abstract fun inflateMainContainer(inflater: LayoutInflater, container: ViewGroup): View
 
 }

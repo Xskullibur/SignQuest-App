@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_player_to_sign.*
+import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Gloss
 
@@ -39,10 +39,6 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
         cameraManager.requestPermission()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
-
-//    override fun inflateTopContainer(inflater: LayoutInflater, container: ViewGroup): View = inflater.inflate(R.layout.fragment_player_to_sign_top, container, false)
-//
-//    override fun inflateMainContainer(inflater: LayoutInflater, container: ViewGroup): View = inflater.inflate(R.layout.fragment_player_to_sign, container, false)
 
     /**
      * When permission is granted
