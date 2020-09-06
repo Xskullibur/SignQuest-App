@@ -1,13 +1,9 @@
 package sg.edu.nyp.signquest.game
 
 import android.Manifest
-import android.content.Context
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.Surface
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -16,8 +12,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.utils.AlertUtils
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
+import java.util.concurrent.Executors
 
 interface CameraListener {
     /**
@@ -101,6 +97,24 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
             }
 
         }, ContextCompat.getMainExecutor(context))
+    }
+
+
+    fun buildImageAnalysis(): ImageAnalysis {
+
+        val imageAnalysis = ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
+            .setImageQueueDepth(10)
+            .build()
+
+        val executor = Executors.newSingleThreadExecutor()
+
+        imageAnalysis.setAnalyzer(executor, ImageAnalyzer{ pixels ->
+            Log.d(TAG, pixels.toString())
+        })
+
+        return imageAnalysis
+
     }
 
 }
