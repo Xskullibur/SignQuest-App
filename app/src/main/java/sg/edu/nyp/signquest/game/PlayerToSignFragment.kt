@@ -46,6 +46,9 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
     override fun onCameraIsAccessible() {
         //Show camera on preview
         cameraManager.showCamera(cameraView.createSurfaceProvider())
+
+        //Start game timer
+        startCountDownTimer(60000)
     }
 
 
