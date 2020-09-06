@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.view.CustomDialogFragment
 
 private const val PERMISSIONS_REQUEST_CODE = 10
 private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
@@ -31,6 +32,9 @@ class TutorialFragment : Fragment() {
             // Check permissions and navigate
             it.findNavController().navigate(R.id.action_tutorialFragment_to_practiceFragment)
         }
+
+        CustomDialogFragment.newInstance("Test").show(childFragmentManager, CustomDialogFragment.TAG)
+
     }
 
     override fun onCreateView(
@@ -41,9 +45,4 @@ class TutorialFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_tutorial, container, false)
     }
 
-    companion object {
-        fun hasPermissions(context: Context) = PERMISSIONS_REQUIRED.all {
-            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-    }
 }

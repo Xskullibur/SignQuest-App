@@ -21,4 +21,26 @@
         <item name="background">@android:color/white</item>
     </style>
 
+    <!-- Material Theme Cards -->
+    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Card" parent="">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSurface">@color/colorPrimaryLight</item>
+        <item name="colorOnSurface">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <!-- Material Button Circle -->
+    <style name="ShapeAppearance.MaterialComponents.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>
