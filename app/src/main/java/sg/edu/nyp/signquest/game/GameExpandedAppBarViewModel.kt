@@ -16,8 +16,10 @@ class GameExpandedAppBarViewModel: ViewModel()  {
     private var timer: CountDownTimer? = null
     private var gameCountDownTimer: GameCountDownTimer? = null
 
+    val timerIsStarted get() = timer != null
+
     fun startCountDownTimer(totalMillisSeconds: Long, countDownInterval: Long){
-        if(timer != null) throw IllegalStateException("Timer has already been started")
+        if(timerIsStarted) throw IllegalStateException("Timer has already been started")
         timer = object: CountDownTimer(totalMillisSeconds, countDownInterval){
             override fun onTick(millisUntilFinished: Long) {
 
@@ -33,7 +35,7 @@ class GameExpandedAppBarViewModel: ViewModel()  {
     }
 
      fun resetCountDownTimer(){
-        if(timer == null) throw IllegalStateException("Timer has not been started")
+        if(!timerIsStarted) throw IllegalStateException("Timer has not been started")
         timer!!.cancel()
 
         timer = null

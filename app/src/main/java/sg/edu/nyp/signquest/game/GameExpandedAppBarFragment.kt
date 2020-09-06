@@ -22,6 +22,9 @@ abstract class GameExpandedAppBarFragment : Fragment() {
     abstract val topContainerId: Int
     abstract val mainContainerId: Int
 
+    protected lateinit var topContainerView: View
+    protected lateinit var mainContainerView: View
+
     private val viewModel: GameExpandedAppBarViewModel by viewModels()
 
     override fun onCreateView(
@@ -42,19 +45,19 @@ abstract class GameExpandedAppBarFragment : Fragment() {
                 this@GameExpandedAppBarFragment.findNavController().popBackStack()
             }
             root.topContainer.layoutResource = topContainerId
-            root.topContainer.inflate()
+            topContainerView = root.topContainer.inflate()
             root.mainContainer.layoutResource = mainContainerId
-            root.mainContainer.inflate()
+            mainContainerView = root.mainContainer.inflate()
             root
         }
     }
 
     protected fun startCountDownTimer(totalMillisSeconds: Long, countDownInterval: Long = 1000){
-        viewModel.startCountDownTimer(totalMillisSeconds, countDownInterval)
+        if(!viewModel.timerIsStarted)viewModel.startCountDownTimer(totalMillisSeconds, countDownInterval)
     }
 
     protected fun resetCountDownTimer(){
-        viewModel.resetCountDownTimer()
+        if(viewModel.timerIsStarted)viewModel.resetCountDownTimer()
     }
 
 

@@ -32,7 +32,11 @@
         android:id="@+id/playerToSignFragment"
         android:name="sg.edu.nyp.signquest.game.PlayerToSignFragment"
         android:label="fragment_player_to_sign"
-        tools:layout="@layout/game_expanded_appbar" />
+        tools:layout="@layout/game_expanded_appbar">
+        <argument
+            android:name="gloss"
+            app:argType="sg.edu.nyp.signquest.game.object.Gloss" />
+    </fragment>
     <!--        tools:layout="@layout/fragment_player_to_sign_main"-->
 
     <fragment
