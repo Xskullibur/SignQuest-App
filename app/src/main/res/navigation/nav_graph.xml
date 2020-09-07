@@ -18,6 +18,9 @@
             app:enterAnim="@anim/fragment_open_enter"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_startFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
     </fragment>
     <fragment
         android:id="@+id/tutorialFragment"
@@ -44,4 +47,8 @@
         android:name="sg.edu.nyp.signquest.tutorial.PracticeFragment"
         android:label="fragment_practice"
         tools:layout="@layout/fragment_practice" />
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="sg.edu.nyp.signquest.game.QuestionFragment"
+        android:label="QuestionFragment" />
 </navigation>
