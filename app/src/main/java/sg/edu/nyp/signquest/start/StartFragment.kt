@@ -30,10 +30,8 @@ class StartFragment : Fragment() {
 
         //Bind menu buttons
         gameBtn.setOnClickListener {
-//            val action = StartFragmentDirections.actionStartFragmentToPlayerToSignFragment(Gloss("Eat"))
-//            navController.navigate(action)
-
-            navController.navigate(R.id.action_startFragment_to_questionFragment)
+            val action = StartFragmentDirections.actionStartFragmentToPlayerToSignFragment(Gloss("Eat"))
+            navController.navigate(action)
 
         }
 
