@@ -39,8 +39,12 @@ class GameExpandedAppBarViewModel: ViewModel()  {
         timer!!.cancel()
 
         timer = null
-
     }
+
+    fun setGameCountDownTimer(gameCountDownTimer: GameCountDownTimer){
+        this.gameCountDownTimer = gameCountDownTimer
+    }
+
 
 
 }

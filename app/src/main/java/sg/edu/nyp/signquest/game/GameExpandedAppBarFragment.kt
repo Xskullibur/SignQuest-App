@@ -55,4 +55,9 @@ abstract class GameExpandedAppBarFragment : Fragment() {
     protected fun resetCountDownTimer() {
         if (viewModel.timerIsStarted) viewModel.resetCountDownTimer()
     }
+
+    protected fun setGameCountDownTimer(gameCountDownTimer: GameCountDownTimer){
+        viewModel.setGameCountDownTimer(gameCountDownTimer)
+    }
+
 }
