@@ -32,7 +32,7 @@ class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
 //        val data = buffer.toByteArray()
 
         //val bitmap = imageProxy.toBitmap()
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_baseline_access_time_24)
+        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.dumb5)
 
         //Resize image to 28x28
         val resizeBitmap = toGrayscale(Bitmap.createScaledBitmap(bitmap!!, 28, 28, false))!!

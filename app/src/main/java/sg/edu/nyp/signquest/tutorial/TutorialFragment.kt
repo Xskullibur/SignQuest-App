@@ -32,6 +32,7 @@ class TutorialFragment : Fragment() {
         val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
         val fragment = CustomDialogFragment.newInstance(
             title = "Congratulation",
+            subtitle = "Stage 0-0",
             onBackBtnClick = {
                 it.dismiss()
             },

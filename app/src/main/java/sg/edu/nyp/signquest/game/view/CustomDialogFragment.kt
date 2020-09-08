@@ -12,6 +12,7 @@ import sg.edu.nyp.signquest.R
 class CustomDialogFragment() : DialogFragment() {
 
     private var title: String? = null
+    private var subtitle: String? = null
 
     companion object {
 
@@ -21,17 +22,21 @@ class CustomDialogFragment() : DialogFragment() {
 
         const val TAG = "CUSTOM_Dialog.Fragment"
         private const val KEY_TITLE = "title"
-        private const val KEY_BACK_BUTTON_FUN = "backBtn_function"
+        private const val KEY_SUBTITLE = "subtitle"
 
         fun newInstance(
             title: String,
+            subtitle: String,
             onBackBtnClick: (DialogFragment) -> Unit,
             onRestartBtnClick: (DialogFragment) -> Unit,
             onNextBtnClick: (DialogFragment) -> Unit
         ): CustomDialogFragment {
             val args = Bundle()
             args.putString(KEY_TITLE, title)
+            args.putString(KEY_SUBTITLE, subtitle)
             backBtnCallback = onBackBtnClick
+            restartBtnCallback = onRestartBtnClick
+            nextBtnCallback = onNextBtnClick
             
             val fragment = CustomDialogFragment()
             fragment.arguments = args
@@ -44,6 +49,7 @@ class CustomDialogFragment() : DialogFragment() {
         super.onCreate(savedInstanceState)
 
         title = arguments?.getString(KEY_TITLE)
+        subtitle = arguments?.getString(KEY_SUBTITLE)
         val style = DialogFragment.STYLE_NORMAL
         val theme = R.style.DialogTheme
         setStyle(style, theme)
@@ -80,6 +86,7 @@ class CustomDialogFragment() : DialogFragment() {
 
         // Title
         view.title.text = title
+        view.subtitle.setText(subtitle)
 
         return view
     }
