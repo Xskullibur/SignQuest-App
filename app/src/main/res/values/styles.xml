@@ -32,6 +32,17 @@
         <item name="colorOnSurface">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="Widget.App.SecondaryCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.SecondaryCard</item>
+    </style>
+
+    <style name="ThemeOverlay.App.SecondaryCard" parent="">
+        <item name="colorPrimary">#E4CD05</item>
+        <item name="colorSurface">#E4CD05</item>
+        <item name="colorOnSurface">#E4CD05</item>
+        <item name="shapeAppearanceSmallComponent"/>
+    </style>
+
     <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">8dp</item>
@@ -41,6 +52,17 @@
     <style name="ShapeAppearance.MaterialComponents.Button.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Custom Dialog Fragment -->
+    <style name="DialogTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
 
 </resources>
