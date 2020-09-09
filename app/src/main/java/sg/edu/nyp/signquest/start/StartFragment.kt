@@ -38,6 +38,10 @@ class StartFragment : Fragment() {
         learnBtn.setOnClickListener {
             navController.navigate(R.id.action_startFragment_to_tutorialFragment)
         }
+
+        quizBtn.setOnClickListener {
+            navController.navigate(R.id.action_startFragment_to_questionFragment)
+        }
     }
 
     override fun onCreateView(
