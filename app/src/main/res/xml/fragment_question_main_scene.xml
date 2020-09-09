@@ -24,5 +24,6 @@
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@+id/start"
         app:motionInterpolator="easeIn"
-        app:duration="500" />
+        app:duration="300"
+        app:autoTransition="animateToEnd" />
 </MotionScene>

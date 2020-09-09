@@ -48,6 +48,14 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        //Unregister game timer when the fragment is not visible anymore
+        this.resetCountDownTimer()
+
+    }
+
     protected fun startCountDownTimer(totalMillisSeconds: Long, countDownInterval: Long = 1000){
         if(!viewModel.timerIsStarted)viewModel.startCountDownTimer(totalMillisSeconds, countDownInterval)
     }
