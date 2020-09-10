@@ -1,21 +1,19 @@
-package sg.edu.nyp.signquest
+package sg.edu.nyp.signquest.imageanalyzer.backend
 
 import android.content.Context
 import android.graphics.*
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.imageanalyzer.ImageAnalyzerBackend
 import sg.edu.nyp.signquest.ml.Christina
 import java.nio.ByteBuffer
 
-
-class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
-
-    private val TAG = SignLanguageImageAnalyzer::class.java.name
-
+class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
     private val charAlphabetRange = 'A'..'Z'
-    val model = Christina.newInstance(context)
+
+    private val model = Christina.newInstance(context)
 
     private fun ByteBuffer.toByteArray(): ByteArray {
         rewind()    // Rewind the buffer to zero
@@ -25,8 +23,7 @@ class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
     }
 
 
-
-    override fun analyze(imageProxy: ImageProxy) {
+    override fun translate(imageProxy: ImageProxy): Char {
 
 //        val buffer = imageProxy.planes[0].buffer
 //        val data = buffer.toByteArray()
@@ -55,8 +52,6 @@ class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
         val charIndex = results.indexOf(results.max()!!)
         val predictedChar = charAlphabetRange.elementAt(charIndex)
 
-        println("Predicted Alphabet: $predictedChar")
-
 
 //        // Releases model resources if no longer used.
 //        model.close()
@@ -71,6 +66,8 @@ class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
 //        val pixels = data.map { it.toInt() and 0xFF }
 
         imageProxy.close()
+
+        return predictedChar
     }
 
     fun toGrayscale(bmpOriginal: Bitmap): Bitmap? {
