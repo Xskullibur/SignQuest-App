@@ -11,7 +11,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
     override val topContainerId: Int
         get() = R.layout.fragment_question_top
     override val mainContainerId: Int
-        get() = R.layout.fragment_question_top
+        get() = R.layout.fragment_question_main
 
     override fun onCreateView(
         inflater: LayoutInflater,
