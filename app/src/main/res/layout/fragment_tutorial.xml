@@ -6,18 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".tutorial.TutorialFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/tutorial_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tutorial_video"
-        app:title="Tutorial" />
+        app:layout_constraintBottom_toTopOf="@id/tutorial_video">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tutorial_topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:background="@color/colorPrimary"
+            app:title="Tutorial"
+            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24"
+            app:titleTextColor="#FFF"
+            app:subtitle="Gloss"
+            app:subtitleTextColor="#FFF"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <VideoView
         android:id="@+id/tutorial_video"

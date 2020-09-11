@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
-
-private const val PERMISSIONS_REQUEST_CODE = 10
-private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
 
 class TutorialFragment : Fragment() {
 
@@ -29,22 +27,9 @@ class TutorialFragment : Fragment() {
             it.findNavController().navigate(R.id.action_tutorialFragment_to_practiceFragment)
         }
 
-        val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
-        val fragment = CustomDialogFragment.newInstance(
-            title = "Congratulation",
-            subtitle = "Stage 0-0",
-            onBackBtnClick = {
-                it.dismiss()
-            },
-            onRestartBtnClick = {
-                it.dismiss()
-            },
-            onNextBtnClick = {
-                it.dismiss()
-            }
-        )
-
-        fragment.show(fragmentManager, CustomDialogFragment.TAG)
+        tutorial_topAppBar.setNavigationOnClickListener {
+            it.findNavController().popBackStack()
+        }
 
     }
 

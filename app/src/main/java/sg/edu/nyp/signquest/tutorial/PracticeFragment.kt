@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
+import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 
 class PracticeFragment : Fragment(), CameraListener {
 
@@ -25,6 +28,28 @@ class PracticeFragment : Fragment(), CameraListener {
         super.onViewCreated(view, savedInstanceState)
 
         cameraManager.requestPermission()
+
+        practice_topAppBar.setNavigationOnClickListener {
+            it.findNavController().popBackStack()
+        }
+
+        val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
+        val fragment = CustomDialogFragment.newInstance(
+            title = "Good Job!",
+            subtitle = "Stage 0-0 (Gloss)",
+            onBackBtnClick = {
+                view.findNavController().popBackStack(R.id.startFragment, false)
+                it.dismiss()
+            },
+            onRestartBtnClick = {
+                it.dismiss()
+            },
+            onNextBtnClick = {
+                it.dismiss()
+            }
+        )
+
+        fragment.show(fragmentManager, CustomDialogFragment.TAG)
 
     }
 

@@ -6,23 +6,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".tutorial.PracticeFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/practice_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/practice_cameraView"
-        app:title="Practice" />
+        app:layout_constraintBottom_toTopOf="@id/practice_cameraView">
 
-        <androidx.camera.view.PreviewView
-            android:id="@+id/practice_cameraView"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/practice_topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/practice_toolbar"/>
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24"
+            app:title="Practice"
+            app:titleTextColor="#FFF"
+            app:subtitle="Gloss"
+            app:subtitleTextColor="#FFF">
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/practice_cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/practice_toolbar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
