@@ -21,7 +21,7 @@
             android:layout_height="?attr/actionBarSize"
             android:elevation="4dp"
             android:background="@color/colorPrimary"
-            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24"
+            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24_white"
             app:title="Practice"
             app:titleTextColor="#FFF"
             app:subtitle="Gloss"

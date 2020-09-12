@@ -22,7 +22,7 @@
             android:elevation="4dp"
             android:background="@color/colorPrimary"
             app:title="Tutorial"
-            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24"
+            app:navigationIcon="@drawable/ic_baseline_keyboard_backspace_24_white"
             app:titleTextColor="#FFF"
             app:subtitle="Gloss"
             app:subtitleTextColor="#FFF"/>

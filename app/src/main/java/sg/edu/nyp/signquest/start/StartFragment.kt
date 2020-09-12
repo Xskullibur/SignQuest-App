@@ -36,7 +36,7 @@ class StartFragment : Fragment() {
         }
 
         learnBtn.setOnClickListener {
-            navController.navigate(R.id.action_startFragment_to_tutorialFragment)
+            navController.navigate(R.id.action_startFragment_to_mainModuleFragment)
         }
 
         quizBtn.setOnClickListener {
