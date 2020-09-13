@@ -23,14 +23,16 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
     private val stub = TranslationServiceGrpc.newBlockingStub(mChannel)
 
     override fun translate(imageProxy: ImageProxy): Char {
-        val bitmap = imageProxy.toBitmap()
+        val bitmap = imageProxy.toBitmap()!!
         //Resize image to 28x28
-        val resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, 28, 28, false)
+        val resizeBitmap = Bitmap.createScaledBitmap(bitmap, 848, 640, false)
 
         //Get resize buffer
         val resizeBuffer = ByteBuffer.allocate(resizeBitmap.byteCount)
 
         resizeBitmap.copyPixelsToBuffer(resizeBuffer)
+
+        resizeBuffer.flip()
 
         val imageRequest = ImageRequest.newBuilder()
             .setPixels(ByteString.copyFrom(resizeBuffer)).build()
