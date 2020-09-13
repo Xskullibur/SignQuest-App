@@ -117,11 +117,16 @@ dependencies {
     // CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha15"
 
+    // Segmented ProgressBar
+    implementation 'com.github.carlosmuvi:SegmentedProgressBar:0.8.1'
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     // GRPC
     implementation 'io.grpc:grpc-okhttp:1.31.1'
     implementation 'io.grpc:grpc-protobuf-lite:1.31.1'
     implementation 'io.grpc:grpc-stub:1.31.1'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
-
 
 }

@@ -5,6 +5,8 @@ import android.os.Parcelable
 
 class Gloss(var value: String) : Parcelable {
 
+    var completed: Boolean = false
+
     constructor(parcel: Parcel): this(parcel.readString().toString()) {
     }
 

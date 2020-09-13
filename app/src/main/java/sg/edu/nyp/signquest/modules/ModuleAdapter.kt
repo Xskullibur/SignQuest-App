@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
-import kotlinx.android.synthetic.main.fragment_custom_dialog.view.*
 import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Module
@@ -36,6 +34,13 @@ class ModuleAdapter(private val context: Context, private val datasource: ArrayL
         view.moduleId.text = module.id
         view.moduleTitle.text = module.title
         view.moduleDesc.text = module.description
+
+        view.progressBar.setSegmentCount(module.steps.count())
+        view.progressBar.setCompletedSegments(
+            module.steps.filter {
+                it.completed
+            }.count()
+        )
 
         return view
     }

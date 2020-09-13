@@ -5,11 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_main_module.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Module
-import kotlin.math.log
+import sg.edu.nyp.signquest.utils.JsonUtils
+import java.io.FileReader
 
 
 /**
@@ -19,16 +20,6 @@ import kotlin.math.log
  */
 class MainModuleFragment : Fragment() {
 
-    private val MODULE_LIST = arrayListOf(
-        Module("01", "Alphabets", "Learn the basics starting with signing alphabets!"),
-        Module("02", "Finger Spelling", "Make use of what you have learnt in the previous module to spell words."),
-        Module("03", "Greetings", "Learn how to greet people with the power of sign language"),
-        Module("04", "Basic", "Learn how to greet people with the power of sign language"),
-        Module("05", "Propositions", "Learn how to greet people with the power of sign language"),
-        Module("06", "Food", "Learn how to greet people with the power of sign language"),
-        Module("07", "Advanced", "Learn how to greet people with the power of sign language")
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,8 +28,11 @@ class MainModuleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val moduleAdapter = ModuleAdapter(this.requireContext(), MODULE_LIST)
-        moduleList.adapter = moduleAdapter
+        JsonUtils(requireContext()).getModules()?.let {
+            val moduleAdapter = ModuleAdapter(this.requireContext(), it)
+            moduleList.adapter = moduleAdapter
+        }
+
 
     }
 

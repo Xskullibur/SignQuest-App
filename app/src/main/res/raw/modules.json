@@ -1,0 +1,251 @@
+[
+	{
+		"id": "01",
+		"title": "Alphabets",
+		"description": "Learn the basics starting with signing alphabets!",
+		"steps": [
+			{
+				"completed": true,
+				"glossary": [
+					{"value": "A"},
+					{"value": "B"},
+					{"value": "C"},
+					{"value": "D"}
+				]
+			},
+			{
+				"completed": true,
+				"glossary": [
+					{"value": "E"},
+					{"value": "F"},
+					{"value": "G"},
+					{"value": "H"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "I"},
+					{"value": "J"},
+					{"value": "K"},
+					{"value": "L"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "M"},
+					{"value": "N"},
+					{"value": "O"},
+					{"value": "P"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Q"},
+					{"value": "R"},
+					{"value": "S"},
+					{"value": "T"},
+					{"value": "U"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "V"},
+					{"value": "W"},
+					{"value": "X"},
+					{"value": "Y"},
+					{"value": "Z"}
+				]
+			}
+		]
+	},
+	{
+		"id": "02",
+		"title": "Finger Spelling",
+		"description": "Make use of what you have learnt in the previous module to spell words.",
+		"steps":[
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Tom"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Tim"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "John"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Ben"}
+				]
+			}
+		]
+	},
+	{
+		"id": "03",
+		"title": "Greetings",
+		"description": "Learn to greet people with your newly found power of Sign Language",
+		"steps":[
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Hello"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Goodbye"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "See you later"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Nice to meet you"}
+				]
+			}
+		]
+	},
+	{
+		"id": "04",
+		"title": "Basic Words",
+		"description": "Learn to greet people with your newly found power of Sign Language",
+		"steps":[
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Hello"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Goodbye"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "See you later"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Nice to meet you"}
+				]
+			}
+		]
+	},
+	{
+		"id": "05",
+		"title": "Propositions",
+		"description": "Learn to greet people with your newly found power of Sign Language",
+		"steps":[
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Hello"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Goodbye"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "See you later"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Nice to meet you"}
+				]
+			}
+		]
+	},
+	{
+		"id": "06",
+		"title": "Descriptive Words",
+		"description": "Learn to greet people with your newly found power of Sign Language",
+		"steps":[
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Hello"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Goodbye"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "See you later"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Nice to meet you"}
+				]
+			}
+		]
+	},
+	{
+		"id": "07",
+		"title": "Advanced",
+		"description": "Learn to greet people with your newly found power of Sign Language",
+		"steps":[
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Hello"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Goodbye"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "See you later"}
+				]
+			},
+			{
+				"completed": false,
+				"glossary": [
+					{"value": "Nice to meet you"}
+				]
+			}
+		]
+	}
+]

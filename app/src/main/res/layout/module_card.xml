@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -35,6 +38,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp">
 
+                <!-- Module Title   -->
                 <TextView
                     android:id="@+id/moduleTitle"
                     android:layout_width="match_parent"
@@ -44,13 +48,25 @@
                     android:textColor="#FFF"
                     android:layout_marginBottom="5dp"/>
 
+                <!--    Progress Bar    -->
+                <com.carlosmuvi.segmentedprogressbar.SegmentedProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    app:container_color="#FFF"
+                    app:fill_color="#00FF00"
+                    app:gap_size="1dp"
+                    app:segment_count="6"/>
+
+                <!--    Module Description     -->
                 <TextView
                     android:id="@+id/moduleDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Basic Detail on the module"
                     android:textSize="13.5sp"
-                    android:textColor="#FFF"/>
+                    android:textColor="#FFF"
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
 
@@ -58,4 +74,4 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-</layout>
+</LinearLayout>
