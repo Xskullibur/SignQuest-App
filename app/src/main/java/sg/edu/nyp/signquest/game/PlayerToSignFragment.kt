@@ -11,8 +11,9 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.game.`object`.Gloss
+import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
+import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
 import java.util.concurrent.Executors
 
 
@@ -72,7 +73,9 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
         return ImageAnalysis.Builder()
             .build()
             .also {
-                //it.setAnalyzer(Executors.newSingleThreadExecutor(), SignLanguageImageAnalyzer(this.requireContext()))
+                val context = this.requireContext()
+                it.setAnalyzer(Executors.newSingleThreadExecutor(),
+                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)))
             }
     }
 
