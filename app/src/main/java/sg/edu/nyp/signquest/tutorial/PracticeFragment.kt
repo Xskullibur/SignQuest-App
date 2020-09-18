@@ -20,6 +20,7 @@ import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
+import sg.edu.nyp.signquest.utils.MainUtils
 import java.util.concurrent.Executors
 
 class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
@@ -82,6 +83,10 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     override fun signDetected(predictedValue: Char) {
         if (predictedValue.toString() == glossary.value) {
+
+            // TODO: Update MainUtils
+//            glossary.completed = true
+
             val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
             val fragment = CustomDialogFragment.newInstance(
                 title = "Good Job!",
@@ -94,6 +99,9 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
+
+                    // TODO: Check Status
+                    val (module, step, gloss) = MainUtils.findNext(moduleId)
                     requireView().findNavController().popBackStack()
                     it.dismiss()
                 }
