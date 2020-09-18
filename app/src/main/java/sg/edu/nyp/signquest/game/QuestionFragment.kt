@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_question_main.*
 import kotlinx.android.synthetic.main.fragment_question_main.view.*
-import kotlinx.android.synthetic.main.fragment_question_top.*
+import kotlinx.android.synthetic.main.fragment_question_top.view.*
 import kotlinx.android.synthetic.main.game_expanded_appbar.*
 import sg.edu.nyp.signquest.R
 
@@ -40,7 +39,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
         var randomChoice = (1..4).random()
         awsner = questionPoolArray[(0..count).random()].toString()
-        signQuestionImageView.setImageResource(R.drawable.y)
+        topContainerView.signQuestionImageView.setImageResource(R.drawable.y)
 
         while(questionTemArray.count() < 4){
             var letter = questionArray[(0..25).random()]
