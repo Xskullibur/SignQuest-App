@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.camera.core.ImageAnalysis
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -15,8 +16,13 @@ import sg.edu.nyp.signquest.game.CameraManager
 import sg.edu.nyp.signquest.game.`object`.Glossary
 import sg.edu.nyp.signquest.game.`object`.Step
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
+import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
+import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
+import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
+import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
+import java.util.concurrent.Executors
 
-class PracticeFragment : Fragment(), CameraListener {
+class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     private val args: PracticeFragmentArgs by navArgs()
     private lateinit var glossary: Glossary
@@ -50,28 +56,10 @@ class PracticeFragment : Fragment(), CameraListener {
         }
 
         // Subtitle
-        practice_topAppBar.subtitle = "Practice ' ${glossary.value} '"
+        practice_topAppBar.subtitle = "' ${glossary.value} '"
 
         // Gloss
         practice_gloss.text = "Practice Signing ' ${glossary.value} '"
-
-        val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
-        val fragment = CustomDialogFragment.newInstance(
-            title = "Good Job!",
-            subtitle = "Stage ${step.id}-${moduleId}",
-            onBackBtnClick = {
-                view.findNavController().popBackStack(R.id.startFragment, false)
-                it.dismiss()
-            },
-            onRestartBtnClick = {
-                it.dismiss()
-            },
-            onNextBtnClick = {
-                it.dismiss()
-            }
-        )
-
-        fragment.show(fragmentManager, CustomDialogFragment.TAG)
 
     }
 
@@ -88,12 +76,49 @@ class PracticeFragment : Fragment(), CameraListener {
     }
 
     override fun onCameraIsAccessible() {
-
-        // Build Image Analyzer
-//        val imageAnalyzer = cameraManager.buildImageAnalysis()
-
         //Show camera on preview
-        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), null)
+        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), { buildAnalyzer() })
     }
+
+    override fun signDetected(predictedValue: Char) {
+        if (predictedValue.toString() == glossary.value) {
+            val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
+            val fragment = CustomDialogFragment.newInstance(
+                title = "Good Job!",
+                subtitle = "Stage ${step.id}-${moduleId}",
+                onBackBtnClick = {
+                    requireView().findNavController().popBackStack(R.id.startFragment, false)
+                    it.dismiss()
+                },
+                onRestartBtnClick = {
+                    it.dismiss()
+                },
+                onNextBtnClick = {
+                    requireView().findNavController().popBackStack()
+                    it.dismiss()
+                }
+            )
+
+            fragment.show(fragmentManager, CustomDialogFragment.TAG)
+        }
+        else {
+            showAlert("Wrong Sign", "Please Try Again...")
+        }
+    }
+
+    private fun buildAnalyzer(): ImageAnalysis {
+        return ImageAnalysis.Builder()
+            .build()
+            .also {
+                val context = this.requireContext()
+                it.setAnalyzer(
+                    Executors.newSingleThreadExecutor(),
+                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)).apply {
+                        onSignDetected = this@PracticeFragment
+                    }
+                )
+            }
+    }
+
 
 }
