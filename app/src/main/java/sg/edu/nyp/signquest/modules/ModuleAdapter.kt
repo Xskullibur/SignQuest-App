@@ -53,7 +53,7 @@ class ModuleAdapter(private val context: Context, private val datasource: ArrayL
             val glossary = step.glossary.find { !it.completed }
 
             if (glossary != null) {
-                val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment((glossary))
+                val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(glossary, step, module.id)
                 Navigation.findNavController(it).navigate(action)
             }
             else {

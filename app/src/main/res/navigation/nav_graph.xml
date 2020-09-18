@@ -33,6 +33,12 @@
         <argument
             android:name="glossary"
             app:argType="sg.edu.nyp.signquest.game.object.Glossary" />
+        <argument
+            android:name="step"
+            app:argType="sg.edu.nyp.signquest.game.object.Step" />
+        <argument
+            android:name="module"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/playerToSignFragment"
@@ -49,7 +55,17 @@
         android:id="@+id/practiceFragment"
         android:name="sg.edu.nyp.signquest.tutorial.PracticeFragment"
         android:label="fragment_practice"
-        tools:layout="@layout/fragment_practice" />
+        tools:layout="@layout/fragment_practice" >
+        <argument
+            android:name="glossary"
+            app:argType="sg.edu.nyp.signquest.game.object.Glossary" />
+        <argument
+            android:name="step"
+            app:argType="sg.edu.nyp.signquest.game.object.Step" />
+        <argument
+            android:name="module"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/questionFragment"
         android:name="sg.edu.nyp.signquest.game.QuestionFragment"
