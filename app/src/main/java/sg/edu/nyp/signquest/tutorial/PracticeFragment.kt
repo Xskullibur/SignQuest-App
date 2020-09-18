@@ -33,23 +33,23 @@ class PracticeFragment : Fragment(), CameraListener {
             it.findNavController().popBackStack()
         }
 
-        val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
-        val fragment = CustomDialogFragment.newInstance(
-            title = "Good Job!",
-            subtitle = "Stage 0-0 (Gloss)",
-            onBackBtnClick = {
-                view.findNavController().popBackStack(R.id.startFragment, false)
-                it.dismiss()
-            },
-            onRestartBtnClick = {
-                it.dismiss()
-            },
-            onNextBtnClick = {
-                it.dismiss()
-            }
-        )
-
-        fragment.show(fragmentManager, CustomDialogFragment.TAG)
+//        val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
+//        val fragment = CustomDialogFragment.newInstance(
+//            title = "Good Job!",
+//            subtitle = "Stage 0-0 (Gloss)",
+//            onBackBtnClick = {
+//                view.findNavController().popBackStack(R.id.startFragment, false)
+//                it.dismiss()
+//            },
+//            onRestartBtnClick = {
+//                it.dismiss()
+//            },
+//            onNextBtnClick = {
+//                it.dismiss()
+//            }
+//        )
+//
+//        fragment.show(fragmentManager, CustomDialogFragment.TAG)
 
     }
 

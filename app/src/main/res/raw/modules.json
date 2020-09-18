@@ -10,22 +10,22 @@
 				"glossary": [
 					{
 						"value": "A",
-						"src":  "a.jpg",
+						"src":  "a",
 						"completed": false
 					},
 					{
 						"value": "B",
-						"src": "b.jpg",
+						"src": "b",
 						"completed": false
 					},
 					{
 						"value": "C",
-						"src": "c.jpg",
+						"src": "c",
 						"completed": false
 					},
 					{
 						"value": "D",
-						"src": "d.jpg",
+						"src": "d",
 						"completed": false
 					}
 				]
@@ -36,22 +36,22 @@
 				"glossary": [
 					{
 						"value": "E",
-						"src":  "e.jpg",
+						"src":  "e",
 						"completed": false
 					},
 					{
 						"value": "F",
-						"src":  "f.jpg",
+						"src":  "f",
 						"completed": false
 					},
 					{
 						"value": "G",
-						"src":  "g.jpg",
+						"src":  "g",
 						"completed": false
 					},
 					{
 						"value": "H",
-						"src":  "h.jpg",
+						"src":  "h",
 						"completed": false
 					}
 				]
@@ -62,22 +62,22 @@
 				"glossary": [
 					{
 						"value": "I",
-						"src":  "i.jpg",
+						"src":  "i",
 						"completed": false
 					},
 					{
 						"value": "J",
-						"src":  "j.jpg",
+						"src":  "j",
 						"completed": false
 					},
 					{
 						"value": "K",
-						"src":  "k.jpg",
+						"src":  "k",
 						"completed": false
 					},
 					{
 						"value": "L",
-						"src":  "l.jpg",
+						"src":  "l",
 						"completed": false
 					}
 				]
@@ -88,22 +88,22 @@
 				"glossary": [
 					{
 						"value": "M",
-						"src":  "m.jpg",
+						"src":  "m",
 						"completed": false
 					},
 					{
 						"value": "N",
-						"src":  "n.jpg",
+						"src":  "n",
 						"completed": false
 					},
 					{
 						"value": "O",
-						"src":  "o.jpg",
+						"src":  "o",
 						"completed": false
 					},
 					{
 						"value": "P",
-						"src":  "p.jpg",
+						"src":  "p",
 						"completed": false
 					}
 				]
@@ -114,27 +114,27 @@
 				"glossary": [
 					{
 						"value": "Q",
-						"src":  "q.jpg",
+						"src":  "q",
 						"completed": false
 					},
 					{
 						"value": "R",
-						"src":  "r.jpg",
+						"src":  "r",
 						"completed": false
 					},
 					{
 						"value": "S",
-						"src":  "s.jpg",
+						"src":  "s",
 						"completed": false
 					},
 					{
 						"value": "T",
-						"src":  "t.jpg",
+						"src":  "t",
 						"completed": false
 					},
 					{
 						"value": "U",
-						"src":  "u.jpg",
+						"src":  "u",
 						"completed": false
 					}
 				]
@@ -145,27 +145,27 @@
 				"glossary": [
 					{
 						"value": "V",
-						"src":  "v.jpg",
+						"src":  "v",
 						"completed": false
 					},
 					{
 						"value": "W",
-						"src":  "w.jpg",
+						"src":  "w",
 						"completed": false
 					},
 					{
 						"value": "X",
-						"src":  "x.jpg",
+						"src":  "x",
 						"completed": false
 					},
 					{
 						"value": "Y",
-						"src":  "y.jpg",
+						"src":  "y",
 						"completed": false
 					},
 					{
 						"value": "Z",
-						"src":  "z.jpg",
+						"src":  "z",
 						"completed": false
 					}
 				]
