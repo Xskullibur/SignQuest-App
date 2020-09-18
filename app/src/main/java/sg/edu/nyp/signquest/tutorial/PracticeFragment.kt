@@ -85,7 +85,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
             val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
             val fragment = CustomDialogFragment.newInstance(
                 title = "Good Job!",
-                subtitle = "Stage ${step.id}-${moduleId}",
+                subtitle = "Stage ${moduleId}-${step.id}",
                 onBackBtnClick = {
                     requireView().findNavController().popBackStack(R.id.startFragment, false)
                     it.dismiss()
@@ -100,9 +100,6 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
             )
 
             fragment.show(fragmentManager, CustomDialogFragment.TAG)
-        }
-        else {
-            showAlert("Wrong Sign", "Please Try Again...")
         }
     }
 
