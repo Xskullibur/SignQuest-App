@@ -10,9 +10,6 @@
         android:label="fragment_start"
         tools:layout="@layout/fragment_start">
         <action
-            android:id="@+id/action_startFragment_to_tutorialFragment"
-            app:destination="@id/tutorialFragment" />
-        <action
             android:id="@+id/action_startFragment_to_playerToSignFragment"
             app:destination="@id/playerToSignFragment"
             app:enterAnim="@anim/fragment_open_enter"
@@ -33,6 +30,9 @@
         <action
             android:id="@+id/action_tutorialFragment_to_practiceFragment"
             app:destination="@id/practiceFragment" />
+        <argument
+            android:name="glossary"
+            app:argType="sg.edu.nyp.signquest.game.object.Glossary" />
     </fragment>
     <fragment
         android:id="@+id/playerToSignFragment"
@@ -58,5 +58,15 @@
         android:id="@+id/mainModuleFragment"
         android:name="sg.edu.nyp.signquest.modules.MainModuleFragment"
         android:label="fragment_main_module"
-        tools:layout="@layout/fragment_main_module" />
+        tools:layout="@layout/fragment_main_module">
+        <action
+            android:id="@+id/action_mainModuleFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
+        <action
+            android:id="@+id/action_mainModuleFragment_to_playerToSignFragment"
+            app:destination="@id/playerToSignFragment" />
+        <action
+            android:id="@+id/action_mainModuleFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+    </fragment>
 </navigation>

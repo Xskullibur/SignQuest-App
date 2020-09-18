@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.fragment_custom_dialog.view.*
 import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Module
+import sg.edu.nyp.signquest.tutorial.TutorialFragmentDirections
+import sg.edu.nyp.signquest.utils.MainUtils
 
 class ModuleAdapter(private val context: Context, private val datasource: ArrayList<Module>):
     BaseAdapter() {
@@ -27,6 +31,7 @@ class ModuleAdapter(private val context: Context, private val datasource: ArrayL
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+
         val view = inflater.inflate(R.layout.module_card, parent, false)
 
         val module = getItem(position)
@@ -41,6 +46,21 @@ class ModuleAdapter(private val context: Context, private val datasource: ArrayL
                 it.completed
             }.count()
         )
+
+        view.moduleCard.setOnClickListener{
+
+            val step = module.steps.find { !it.completed }!!
+            val glossary = step.glossary.find { !it.completed }
+
+            if (glossary != null) {
+                val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment((glossary))
+                Navigation.findNavController(it).navigate(action)
+            }
+            else {
+                Navigation.findNavController(it).navigate(R.id.action_mainModuleFragment_to_playerToSignFragment)
+            }
+
+        }
 
         return view
     }

@@ -5,12 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_main_module.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.`object`.Module
-import sg.edu.nyp.signquest.utils.JsonUtils
-import java.io.FileReader
+import sg.edu.nyp.signquest.utils.MainUtils
 
 
 /**
@@ -28,12 +25,8 @@ class MainModuleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        JsonUtils(requireContext()).getModules()?.let {
-            val moduleAdapter = ModuleAdapter(this.requireContext(), it)
-            moduleList.adapter = moduleAdapter
-        }
-
-
+        val moduleAdapter = ModuleAdapter(this.requireContext(), MainUtils.data)
+        moduleList.adapter = moduleAdapter
     }
 
     override fun onCreateView(

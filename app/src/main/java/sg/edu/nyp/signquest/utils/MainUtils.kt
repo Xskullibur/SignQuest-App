@@ -11,16 +11,18 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class JsonUtils(val context: Context) {
+class MainUtils(val context: Context) {
 
-    fun getModules(): ArrayList<Module> {
+    companion object {
+        lateinit var data: ArrayList<Module>
+    }
 
+    init {
         // read your json file into an array
         val reader = InputStreamReader(context.resources.openRawResource(R.raw.modules))
 
         val moduleListType = object : TypeToken<ArrayList<Module>>() {}.type
-        return Gson().fromJson<ArrayList<Module>>(reader, moduleListType)
-
+        data = Gson().fromJson(reader, moduleListType)
     }
 
 }
