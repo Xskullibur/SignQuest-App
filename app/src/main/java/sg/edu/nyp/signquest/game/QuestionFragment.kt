@@ -39,7 +39,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
         var randomChoice = (1..4).random()
         awsner = questionPoolArray[(0..count).random()].toString()
-        topContainerView.signQuestionImageView.setImageResource(R.drawable.y)
+        setImage(awsner.toLowerCase()[0])
 
         while(questionTemArray.count() < 4){
             var letter = questionArray[(0..25).random()]
@@ -118,6 +118,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             var randomChoice = (1..4).random()
 
             awsner = questionPoolArray[(0..count).random()].toString()
+            setImage(awsner.toLowerCase()[0])
 
             while(questionTemArray.count() < 4){
                 var randomAnswer = (0..25).random()
@@ -153,59 +154,59 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
         }
     }
 
-//    fun setImage(letter: Char){
-//        if(letter == 'a'){
-//            signQuestionImageView.setImageResource(R.drawable.a)
-//        }else if(letter == 'b'){
-//            signQuestionImageView.setImageResource(R.drawable.b)
-//        }else if(letter == 'c'){
-//            signQuestionImageView.setImageResource(R.drawable.c)
-//        }else if(letter == 'd'){
-//            signQuestionImageView.setImageResource(R.drawable.d)
-//        }else if(letter == 'e'){
-//            signQuestionImageView.setImageResource(R.drawable.e)
-//        }else if(letter == 'f'){
-//            signQuestionImageView.setImageResource(R.drawable.f)
-//        }else if(letter == 'g'){
-//            signQuestionImageView.setImageResource(R.drawable.g)
-//        }else if(letter == 'h'){
-//            signQuestionImageView.setImageResource(R.drawable.h)
-//        }else if(letter == 'i'){
-//            signQuestionImageView.setImageResource(R.drawable.i)
-//        }else if(letter == 'j'){
-//            signQuestionImageView.setImageResource(R.drawable.j)
-//        }else if(letter == 'k'){
-//            signQuestionImageView.setImageResource(R.drawable.k)
-//        }else if(letter == 'i'){
-//            signQuestionImageView.setImageResource(R.drawable.i)
-//        }else if(letter == 'm'){
-//            signQuestionImageView.setImageResource(R.drawable.m)
-//        }else if(letter == 'n'){
-//            signQuestionImageView.setImageResource(R.drawable.n)
-//        }else if(letter == 'o'){
-//            signQuestionImageView.setImageResource(R.drawable.o)
-//        }else if(letter == 'p'){
-//            signQuestionImageView.setImageResource(R.drawable.p)
-//        }else if(letter == 'q'){
-//            signQuestionImageView.setImageResource(R.drawable.q)
-//        }else if(letter == 'r'){
-//            signQuestionImageView.setImageResource(R.drawable.r)
-//        }else if(letter == 's'){
-//            signQuestionImageView.setImageResource(R.drawable.s)
-//        }else if(letter == 'u'){
-//            signQuestionImageView.setImageResource(R.drawable.u)
-//        }else if(letter == 'v'){
-//            signQuestionImageView.setImageResource(R.drawable.v)
-//        }else if(letter == 'w'){
-//            signQuestionImageView.setImageResource(R.drawable.w)
-//        }else if(letter == 'x'){
-//            signQuestionImageView.setImageResource(R.drawable.x)
-//        }else if(letter == 'y'){
-//            signQuestionImageView.setImageResource(R.drawable.y)
-//        }else{
-//            signQuestionImageView.setImageResource(R.drawable.z)
-//        }
-//    }
+    fun setImage(letter: Char){
+        if(letter == 'a'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.a)
+        }else if(letter == 'b'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.b)
+        }else if(letter == 'c'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.c)
+        }else if(letter == 'd'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.d)
+        }else if(letter == 'e'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.e)
+        }else if(letter == 'f'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.f)
+        }else if(letter == 'g'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.g)
+        }else if(letter == 'h'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.h)
+        }else if(letter == 'i'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.i)
+        }else if(letter == 'j'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.j)
+        }else if(letter == 'k'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.k)
+        }else if(letter == 'i'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.i)
+        }else if(letter == 'm'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.m)
+        }else if(letter == 'n'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.n)
+        }else if(letter == 'o'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.o)
+        }else if(letter == 'p'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.p)
+        }else if(letter == 'q'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.q)
+        }else if(letter == 'r'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.r)
+        }else if(letter == 's'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.s)
+        }else if(letter == 'u'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.u)
+        }else if(letter == 'v'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.v)
+        }else if(letter == 'w'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.w)
+        }else if(letter == 'x'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.x)
+        }else if(letter == 'y'){
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.y)
+        }else{
+            topContainerView.signQuestionImageView.setImageResource(R.drawable.z)
+        }
+    }
 
     fun resetTimer(){
         //questionCountText.text = "Question 01/20"
