@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.fragment_question_main.view.*
 import kotlinx.android.synthetic.main.fragment_question_top.view.*
 import kotlinx.android.synthetic.main.game_expanded_appbar.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 
 
 class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
@@ -39,7 +40,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
         var randomChoice = (1..4).random()
         awsner = questionPoolArray[(0..count).random()].toString()
-        setImage(awsner.toLowerCase()[0])
+        setImage(awsner[0])
 
         while(questionTemArray.count() < 4){
             var letter = questionArray[(0..25).random()]
@@ -118,7 +119,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             var randomChoice = (1..4).random()
 
             awsner = questionPoolArray[(0..count).random()].toString()
-            setImage(awsner.toLowerCase()[0])
+            setImage(awsner[0])
 
             while(questionTemArray.count() < 4){
                 var randomAnswer = (0..25).random()
@@ -150,7 +151,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             count--
             questionCount++
         }else{
-            questionCountText.text = "Score $score/10"
+            showAlert("Score", "$score/10")
         }
     }
 
