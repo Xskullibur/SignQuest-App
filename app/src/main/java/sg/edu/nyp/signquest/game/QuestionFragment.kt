@@ -150,7 +150,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             count--
             questionCount++
         }else{
-            print(score)
+            questionCountText.text = "Score $score/10"
         }
     }
 
