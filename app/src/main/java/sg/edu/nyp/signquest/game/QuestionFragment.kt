@@ -44,7 +44,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
         while(questionTemArray.count() < 4){
             var letter = questionArray[(0..25).random()]
-            if(!questionTemArray.contains(letter) && !questionTemArray.contains(awsner[0])){
+            if(!questionTemArray.contains(letter) && letter != awsner[0]){
                 questionTemArray.add(letter)
             }
         }
@@ -124,7 +124,7 @@ class QuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             while(questionTemArray.count() < 4){
                 var randomAnswer = (0..25).random()
                 var letter = questionArray[randomAnswer]
-                if(!questionTemArray.contains(letter) && !questionTemArray.contains(awsner[0])){
+                if(!questionTemArray.contains(letter) && letter != awsner[0]){
                     questionTemArray.add(letter)
                 }
             }
