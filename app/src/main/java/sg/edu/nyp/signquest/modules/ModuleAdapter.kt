@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_custom_dialog.view.*
 import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.`object`.Module
-import sg.edu.nyp.signquest.tutorial.TutorialFragmentDirections
-import sg.edu.nyp.signquest.utils.MainUtils
 
-class ModuleAdapter(private val context: Context, private val datasource: ArrayList<Module>):
+class ModuleAdapter(private val context: Context, private val datasource: List<Module>):
     BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

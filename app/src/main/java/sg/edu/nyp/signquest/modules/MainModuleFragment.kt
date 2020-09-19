@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_module.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.utils.MainUtils
+import sg.edu.nyp.signquest.utils.ResourceManager
 
 
 /**
@@ -25,7 +25,7 @@ class MainModuleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val moduleAdapter = ModuleAdapter(this.requireContext(), MainUtils.data)
+        val moduleAdapter = ModuleAdapter(this.requireContext(), ResourceManager.data)
         moduleList.adapter = moduleAdapter
     }
 
