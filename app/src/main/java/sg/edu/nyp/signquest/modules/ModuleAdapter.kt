@@ -1,13 +1,16 @@
 package sg.edu.nyp.signquest.modules
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Module
 
 class ModuleAdapter(private val context: Context, private val datasource: List<Module>):
@@ -54,7 +57,8 @@ class ModuleAdapter(private val context: Context, private val datasource: List<M
                 Navigation.findNavController(it).navigate(action)
             }
             else {
-//                Navigation.findNavController(it).navigate(R.id.action_mainModuleFragment_to_playerToSignFragment)
+                val intent = Intent(context, GameActivity::class.java)
+                startActivity(context, intent, null)
             }
 
         }

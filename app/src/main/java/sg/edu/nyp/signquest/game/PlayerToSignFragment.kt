@@ -13,6 +13,7 @@ import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
 import sg.edu.nyp.signquest.game.gameobject.Gloss
 import sg.edu.nyp.signquest.game.gameobject.PlayerToSignQuestion
+import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
 import java.util.concurrent.Executors
@@ -22,7 +23,7 @@ const val ARGS_PLAYER_TO_SIGN_QUESTION = "args_player_to_sign_fragment_question"
 /**
  * Fragment represent the Screen to let Player do the sign language
  */
-class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameCountDownTimer {
+class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameCountDownTimer, OnSignDetected {
 
     override val topContainerId: Int = R.layout.fragment_player_to_sign_top
     override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
@@ -72,6 +73,7 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
         }
 
         //Start game timer
+        setGameCountDownTimer(this)
         startCountDownTimer(10000)
     }
 
@@ -81,7 +83,9 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
             .also {
                 val context = this.requireContext()
                 it.setAnalyzer(Executors.newSingleThreadExecutor(),
-                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)))
+                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)).apply {
+                        onSignDetected = this@PlayerToSignFragment
+                    })
             }
     }
 
@@ -102,6 +106,16 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
 
     override fun onFinish() {
         wrong()
+    }
+
+    override fun signDetected(predictedValue: Char) {
+        viewModel.gloss.observe(viewLifecycleOwner){
+            if (predictedValue.toString() == it.value) {
+                correct()
+            }else{
+                wrong()
+            }
+        }
     }
 
 }

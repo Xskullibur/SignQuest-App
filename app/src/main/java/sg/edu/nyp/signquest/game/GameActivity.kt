@@ -42,7 +42,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             }
         }
 
-        showQuestion(random20Questions[0] as MCQQuestion)
+        showQuestion(random20Questions[0])
     }
 
     fun showQuestion(question: Question){

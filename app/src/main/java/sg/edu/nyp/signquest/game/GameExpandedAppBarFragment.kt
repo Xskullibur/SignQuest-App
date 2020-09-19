@@ -11,6 +11,7 @@ import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import sg.edu.nyp.signquest.databinding.GameExpandedAppbarBinding
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 
 interface GameCountDownTimer {
     fun onTick(millisUntilFinished: Long)
@@ -75,10 +76,12 @@ abstract class GameExpandedAppBarFragment : Fragment() {
 
     fun correct(){
         questionListener.onComplete(true)
+        this.showAlert("Correct Answer", "You are correct!")
     }
 
     fun wrong(){
         questionListener.onComplete(false)
+        this.showAlert("Wrong Answer", "Oops! you picked the wrong answer!")
     }
 
     override fun onDestroyView() {

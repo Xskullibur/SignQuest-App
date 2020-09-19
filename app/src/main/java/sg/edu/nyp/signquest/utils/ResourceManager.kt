@@ -4,7 +4,9 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Module
+import sg.edu.nyp.signquest.game.gameobject.Step
 import java.io.InputStreamReader
 
 /**
@@ -20,6 +22,14 @@ object ResourceManager {
             val moduleListType = object : TypeToken<ArrayList<Module>>() {}.type
             data = Gson().fromJson(it, moduleListType)
         }
+    }
+
+    fun findNext(moduleId: String): Triple<Module?, Step?, Glossary?> {
+        val module = data.find { it.id == moduleId }
+        val step = module?.steps?.find { !it.completed }
+        val glossary = step?.glossary?.find { !it.completed }
+
+        return Triple(module, step, glossary)
     }
 
 }

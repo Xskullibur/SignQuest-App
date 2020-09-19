@@ -28,8 +28,6 @@ class StartFragment : Fragment() {
 
         //Bind menu buttons
         gameBtn.setOnClickListener {
-//            val action = StartFragmentDirections.actionStartFragmentToPlayerToSignFragment(Gloss("Eat"))
-//            navController.navigate(action)
             val intent = Intent(activity, GameActivity::class.java)
             startActivity(intent)
         }
@@ -38,9 +36,6 @@ class StartFragment : Fragment() {
             navController.navigate(R.id.action_startFragment_to_mainModuleFragment)
         }
 
-        quizBtn.setOnClickListener {
-            navController.navigate(R.id.action_startFragment_to_questionFragment)
-        }
     }
 
     override fun onCreateView(
