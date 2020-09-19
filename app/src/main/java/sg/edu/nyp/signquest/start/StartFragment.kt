@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_start.*
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.ARGS_GAME_AVAILABLE_GLOSSARY
 import sg.edu.nyp.signquest.game.GameActivity
 
 class StartFragment : Fragment() {
@@ -28,7 +29,11 @@ class StartFragment : Fragment() {
 
         //Bind menu buttons
         gameBtn.setOnClickListener {
-            val intent = Intent(activity, GameActivity::class.java)
+            val intent = Intent(activity, GameActivity::class.java).apply {
+                extras?.apply {
+                    putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, ('A'..'Z').toString().toCharArray())
+                }
+            }
             startActivity(intent)
         }
 
