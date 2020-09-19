@@ -1,19 +1,15 @@
-package sg.edu.nyp.signquest.imageanalyzer.backend
+package sg.edu.nyp.signquest
 
 import android.content.Context
 import android.graphics.*
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.imageanalyzer.ImageAnalyzerBackend
-import sg.edu.nyp.signquest.ml.Christina
 import java.nio.ByteBuffer
 
 class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
     private val charAlphabetRange = 'A'..'Z'
-
-    private val model = Christina.newInstance(context)
 
     private fun ByteBuffer.toByteArray(): ByteArray {
         rewind()    // Rewind the buffer to zero

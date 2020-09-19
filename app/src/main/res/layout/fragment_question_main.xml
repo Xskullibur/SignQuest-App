@@ -17,28 +17,28 @@
 
         <Button
             android:id="@+id/button1"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="260dp"
             android:layout_height="65dp"
             android:text="Button 1" />
 
         <Button
             android:id="@+id/button2"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="260dp"
             android:layout_height="65dp"
             android:text="Button 2" />
 
         <Button
             android:id="@+id/button3"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="260dp"
             android:layout_height="65dp"
             android:text="Button 3" />
 
         <Button
             android:id="@+id/button4"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="260dp"
             android:layout_height="65dp"
             android:text="Button 3" />

@@ -59,10 +59,11 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
+                            android:id="@+id/questionCountText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Question 01/20"
+                            android:text="Question 01/10"
                             android:textColor="@android:color/white"
                             android:textSize="24sp" />
 
