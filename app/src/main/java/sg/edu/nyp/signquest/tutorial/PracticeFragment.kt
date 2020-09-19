@@ -15,6 +15,7 @@ import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
 import sg.edu.nyp.signquest.game.`object`.Glossary
 import sg.edu.nyp.signquest.game.`object`.Step
+import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
@@ -78,7 +79,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     override fun onCameraIsAccessible() {
         //Show camera on preview
-        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), { buildAnalyzer() })
+//        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), { buildAnalyzer() })
     }
 
     override fun signDetected(predictedValue: Char) {
@@ -91,6 +92,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
             val fragment = CustomDialogFragment.newInstance(
                 title = "Good Job!",
                 subtitle = "Stage ${moduleId}-${step.id}",
+                confettiType = ConfettiType.StreamFromTop,
                 onBackBtnClick = {
                     requireView().findNavController().popBackStack(R.id.startFragment, false)
                     it.dismiss()

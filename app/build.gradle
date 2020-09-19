@@ -128,4 +128,7 @@ dependencies {
     implementation 'io.grpc:grpc-stub:1.31.1'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
 
+    // Konfettti
+    implementation 'nl.dionsegijn:konfetti:1.2.4'
+
 }
