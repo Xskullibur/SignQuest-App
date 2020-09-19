@@ -75,13 +75,15 @@ abstract class GameExpandedAppBarFragment : Fragment() {
     }
 
     fun correct(){
-        questionListener.onComplete(true)
-        this.showAlert("Correct Answer", "You are correct!")
+        this.showAlert("Correct Answer", "You are correct!"){
+            questionListener.onComplete(true)
+        }
     }
 
     fun wrong(){
-        questionListener.onComplete(false)
-        this.showAlert("Wrong Answer", "Oops! you picked the wrong answer!")
+        this.showAlert("Wrong Answer", "Oops! you picked the wrong answer!"){
+            questionListener.onComplete(false)
+        }
     }
 
     override fun onDestroyView() {
