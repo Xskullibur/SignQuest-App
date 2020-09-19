@@ -1,26 +1,43 @@
 package sg.edu.nyp.signquest.tutorial
 
-import android.Manifest
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.fragment_player_to_sign_top.*
+import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
 import kotlinx.android.synthetic.main.fragment_tutorial.*
+import kotlinx.android.synthetic.main.fragment_tutorial.view.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.view.CustomDialogFragment
+import sg.edu.nyp.signquest.game.`object`.Glossary
+
 
 class TutorialFragment : Fragment() {
 
+    private val args: TutorialFragmentArgs by navArgs()
+    private lateinit var glossary: Glossary
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        args.let {
+            glossary = it.glossary
+        }
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tutorial_sign_txt.text = "' ${glossary.value} '"
+        tutorial_image.setImageResource(resources.getIdentifier(
+            glossary.src,
+            "drawable",
+            requireContext().packageName
+        ))
 
         tryBtn.setOnClickListener {
             // Check permissions and navigate

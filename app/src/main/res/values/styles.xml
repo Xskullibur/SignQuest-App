@@ -40,7 +40,7 @@
         <item name="colorPrimary">#E4CD05</item>
         <item name="colorSurface">#E4CD05</item>
         <item name="colorOnSurface">#E4CD05</item>
-        <item name="shapeAppearanceSmallComponent"/>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MaterialComponents.SmallComponent</item>
     </style>
 
     <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">

@@ -1,12 +1,16 @@
 
 package sg.edu.nyp.signquest.game.object;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Step {
+public class Step implements Serializable {
 
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("completed")
     @Expose
     private Boolean completed;
@@ -14,22 +18,12 @@ public class Step {
     @Expose
     private List<Glossary> glossary = null;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Step() {
+    public String getId() {
+        return id;
     }
 
-    /**
-     * 
-     * @param glossary
-     * @param completed
-     */
-    public Step(Boolean completed, List<Glossary> glossary) {
-        super();
-        this.completed = completed;
-        this.glossary = glossary;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Boolean getCompleted() {
