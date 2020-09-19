@@ -2,13 +2,13 @@ package sg.edu.nyp.signquest
 
 import android.content.Context
 import android.graphics.*
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import sg.edu.nyp.signquest.imageanalyzer.ImageAnalyzerBackend
 import java.nio.ByteBuffer
 
-class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
+class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend {
     private val charAlphabetRange = 'A'..'Z'
 
     private fun ByteBuffer.toByteArray(): ByteArray {
@@ -20,50 +20,7 @@ class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
 
     override fun translate(imageProxy: ImageProxy): Char {
-
-//        val buffer = imageProxy.planes[0].buffer
-//        val data = buffer.toByteArray()
-
-        //val bitmap = imageProxy.toBitmap()
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.dumb5)
-
-        //Resize image to 28x28
-        val resizeBitmap = toGrayscale(Bitmap.createScaledBitmap(bitmap!!, 28, 28, false))!!
-
-        // Creates inputs for reference.
-        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 28, 28, 1), DataType.FLOAT32)
-        val resizeBuffer = ByteBuffer.allocate(resizeBitmap.byteCount)
-
-        resizeBitmap.copyPixelsToBuffer(resizeBuffer)
-
-        val pixels = resizeBuffer.toByteArray().take(784).map { (it.toInt() and 0xFF) / 255 }.toIntArray()
-
-        inputFeature0.loadArray(pixels)
-
-        // Runs model inference and gets result.
-        val outputs = model.process(inputFeature0)
-        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
-
-        val results = outputFeature0.floatArray
-        val charIndex = results.indexOf(results.max()!!)
-        val predictedChar = charAlphabetRange.elementAt(charIndex)
-
-
-//        // Releases model resources if no longer used.
-//        model.close()
-
-
-//        FileOutputStream(File(context.getFilesDir(), "test.png")).use{
-//            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, it)
-//            Log.d(TAG, "Write image to file")
-//        }
-
-
-//        val pixels = data.map { it.toInt() and 0xFF }
-
-        imageProxy.close()
-
-        return predictedChar
+        TODO("Not Implemented")
     }
 
     fun toGrayscale(bmpOriginal: Bitmap): Bitmap? {
