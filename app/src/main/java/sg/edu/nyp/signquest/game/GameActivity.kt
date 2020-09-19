@@ -23,26 +23,33 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        //Randomly generate 20 questions
-        val random20Questions = List(20){ randomQuestion() }
+        val _gameProgress = viewModel.gameProgress.value
+        if(_gameProgress == null){
+            //Randomly generate 20 questions
+            val random20Questions = List(20){ randomQuestion() }
 
-        //Create Game Progress for storing game state
-        val gameProgress = GameProgress(random20Questions)
-        viewModel.createGameProgress(gameProgress)
+            //Create Game Progress for storing game state
+            val gameProgress = GameProgress(random20Questions)
+            viewModel.createGameProgress(gameProgress)
 
-        viewModel.gameProgress.observe(this){
+            viewModel.gameProgress.observe(this){
 
-            showQuestion(it.currentQuestion)
-        }
-        viewModel.isGameCompleted.observe(this){isGameCompleted ->
-            if(isGameCompleted){
-                viewModel.gameProgress.value?.let {gameProgress
-                    showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}")
+                showQuestion(it.currentQuestion)
+            }
+            viewModel.isGameCompleted.observe(this){isGameCompleted ->
+                if(isGameCompleted){
+                    viewModel.gameProgress.value?.let {gameProgress
+                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}")
+                    }
                 }
             }
+
+            showQuestion(random20Questions[0])
+        }else{
+            showQuestion(_gameProgress.currentQuestion)
         }
 
-        showQuestion(random20Questions[0])
+
     }
 
     fun showQuestion(question: Question){
