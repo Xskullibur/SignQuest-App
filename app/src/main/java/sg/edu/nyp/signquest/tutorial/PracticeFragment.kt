@@ -12,8 +12,6 @@ import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
-import sg.edu.nyp.signquest.game.`object`.Glossary
-import sg.edu.nyp.signquest.game.`object`.Step
 import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Step
@@ -92,6 +90,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
             val fragment = CustomDialogFragment.newInstance(
                 title = "Good Job!",
                 subtitle = "Stage ${moduleId}-${step.id}",
+                confettiType = ConfettiType.StreamFromTop,
                 onBackBtnClick = {
                     requireView().findNavController().popBackStack(R.id.startFragment, false)
                     it.dismiss()
