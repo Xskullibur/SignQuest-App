@@ -30,9 +30,9 @@ class StartFragment : Fragment() {
         //Bind menu buttons
         gameBtn.setOnClickListener {
             val intent = Intent(activity, GameActivity::class.java).apply {
-                extras?.apply {
-                    putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, ('A'..'Z').toString().toCharArray())
-                }
+                putExtras(Bundle().apply {
+                    putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, ('A'..'Z').toList().joinToString("").toCharArray())
+                })
             }
             startActivity(intent)
         }
