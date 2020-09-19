@@ -1,5 +1,5 @@
 
-package sg.edu.nyp.signquest.game.object;
+package sg.edu.nyp.signquest.game.gameobject;
 
 import java.io.Serializable;
 import java.util.List;

@@ -10,12 +10,6 @@
         android:label="fragment_start"
         tools:layout="@layout/fragment_start">
         <action
-            android:id="@+id/action_startFragment_to_playerToSignFragment"
-            app:destination="@id/playerToSignFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
-        <action
             android:id="@+id/action_startFragment_to_questionFragment"
             app:destination="@id/questionFragment" />
         <action
@@ -32,16 +26,7 @@
             app:destination="@id/practiceFragment" />
         <argument
             android:name="glossary"
-            app:argType="sg.edu.nyp.signquest.game.object.Glossary" />
-    </fragment>
-    <fragment
-        android:id="@+id/playerToSignFragment"
-        android:name="sg.edu.nyp.signquest.game.PlayerToSignFragment"
-        android:label="fragment_player_to_sign"
-        tools:layout="@layout/game_expanded_appbar">
-        <argument
-            android:name="gloss"
-            app:argType="sg.edu.nyp.signquest.game.object.Gloss" />
+            app:argType="sg.edu.nyp.signquest.game.gameobject.Glossary" />
     </fragment>
     <!--        tools:layout="@layout/fragment_player_to_sign_main"-->
 
@@ -52,7 +37,7 @@
         tools:layout="@layout/fragment_practice" />
     <fragment
         android:id="@+id/questionFragment"
-        android:name="sg.edu.nyp.signquest.game.QuestionFragment"
+        android:name="sg.edu.nyp.signquest.game.MCQQuestionFragment"
         android:label="QuestionFragment" />
     <fragment
         android:id="@+id/mainModuleFragment"
@@ -62,9 +47,6 @@
         <action
             android:id="@+id/action_mainModuleFragment_to_tutorialFragment"
             app:destination="@id/tutorialFragment" />
-        <action
-            android:id="@+id/action_mainModuleFragment_to_playerToSignFragment"
-            app:destination="@id/playerToSignFragment" />
         <action
             android:id="@+id/action_mainModuleFragment_to_questionFragment"
             app:destination="@id/questionFragment" />

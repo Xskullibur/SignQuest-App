@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.`object`.Module
+import sg.edu.nyp.signquest.game.gameobject.Module
 
 class ModuleAdapter(private val context: Context, private val datasource: List<Module>):
     BaseAdapter() {
@@ -54,7 +54,7 @@ class ModuleAdapter(private val context: Context, private val datasource: List<M
                 Navigation.findNavController(it).navigate(action)
             }
             else {
-                Navigation.findNavController(it).navigate(R.id.action_mainModuleFragment_to_playerToSignFragment)
+//                Navigation.findNavController(it).navigate(R.id.action_mainModuleFragment_to_playerToSignFragment)
             }
 
         }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.`object`.Module
+import sg.edu.nyp.signquest.game.gameobject.Module
 import java.io.InputStreamReader
 
 /**
