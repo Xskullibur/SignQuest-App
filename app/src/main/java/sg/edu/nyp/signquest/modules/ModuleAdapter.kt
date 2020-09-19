@@ -1,19 +1,19 @@
 package sg.edu.nyp.signquest.modules
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_custom_dialog.view.*
 import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.`object`.Module
-import sg.edu.nyp.signquest.tutorial.TutorialFragmentDirections
-import sg.edu.nyp.signquest.utils.MainUtils
+import sg.edu.nyp.signquest.game.GameActivity
+import sg.edu.nyp.signquest.game.gameobject.Module
 
-class ModuleAdapter(private val context: Context, private val datasource: ArrayList<Module>):
+class ModuleAdapter(private val context: Context, private val datasource: List<Module>):
     BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -57,7 +57,8 @@ class ModuleAdapter(private val context: Context, private val datasource: ArrayL
                 Navigation.findNavController(it).navigate(action)
             }
             else {
-                Navigation.findNavController(it).navigate(R.id.action_mainModuleFragment_to_playerToSignFragment)
+                val intent = Intent(context, GameActivity::class.java)
+                startActivity(context, intent, null)
             }
 
         }

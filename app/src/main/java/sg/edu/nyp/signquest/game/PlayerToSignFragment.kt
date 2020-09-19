@@ -1,4 +1,4 @@
-package sg.edu.nyp.signquest.game
+ package sg.edu.nyp.signquest.game
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,25 +7,27 @@ import android.view.ViewGroup
 import androidx.camera.core.ImageAnalysis
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.`object`.Gloss
+import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.game.gameobject.Gloss
+import sg.edu.nyp.signquest.game.gameobject.PlayerToSignQuestion
+import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
 import java.util.concurrent.Executors
 
-
+const val ARGS_PLAYER_TO_SIGN_GAME_PROGRESS = "args_player_to_sign_fragment_game_progress"
+const val ARGS_PLAYER_TO_SIGN_QUESTION = "args_player_to_sign_fragment_question"
 /**
  * Fragment represent the Screen to let Player do the sign language
  */
-class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
+class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameCountDownTimer, OnSignDetected {
 
     override val topContainerId: Int = R.layout.fragment_player_to_sign_top
     override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
 
-    private val args: PlayerToSignFragmentArgs by navArgs()
     private val viewModel: PlayerToSignViewModel by viewModels()
 
     private lateinit var cameraManager: CameraManager
@@ -33,8 +35,13 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cameraManager = CameraManager(this, this)
-        args.let {
-            viewModel.setGloss(it.gloss)
+        arguments?.let {
+            val gameProgress = it.get(ARGS_PLAYER_TO_SIGN_GAME_PROGRESS) as GameProgress
+            val question = it.get(ARGS_PLAYER_TO_SIGN_QUESTION) as PlayerToSignQuestion
+
+            viewModel.setGameProgress(gameProgress)
+            this.setGameProgress(gameProgress)
+            viewModel.setPlayerToSignQuestion(question)
         }
     }
 
@@ -66,7 +73,8 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
         }
 
         //Start game timer
-        startCountDownTimer(60000)
+        setGameCountDownTimer(this)
+        startCountDownTimer(10000)
     }
 
     private fun buildAnalyzer(): ImageAnalysis {
@@ -75,8 +83,39 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener {
             .also {
                 val context = this.requireContext()
                 it.setAnalyzer(Executors.newSingleThreadExecutor(),
-                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)))
+                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)).apply {
+                        onSignDetected = this@PlayerToSignFragment
+                    })
             }
+    }
+
+    companion object {
+        fun newInstance(gameProgress: GameProgress, question: PlayerToSignQuestion): PlayerToSignFragment{
+            return PlayerToSignFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(ARGS_PLAYER_TO_SIGN_GAME_PROGRESS, gameProgress)
+                    putSerializable(ARGS_PLAYER_TO_SIGN_QUESTION, question)
+                }
+            }
+        }
+    }
+
+    override fun onTick(millisUntilFinished: Long) {
+
+    }
+
+    override fun onFinish() {
+        wrong()
+    }
+
+    override fun signDetected(predictedValue: Char) {
+        viewModel.gloss.observe(viewLifecycleOwner){
+            if (predictedValue.toString() == it.value) {
+                correct()
+            }else{
+                wrong()
+            }
+        }
     }
 
 }

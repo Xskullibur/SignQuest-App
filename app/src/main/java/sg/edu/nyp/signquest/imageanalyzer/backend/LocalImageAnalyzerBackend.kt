@@ -2,17 +2,13 @@ package sg.edu.nyp.signquest
 
 import android.content.Context
 import android.graphics.*
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import sg.edu.nyp.signquest.imageanalyzer.ImageAnalyzerBackend
 import java.nio.ByteBuffer
 
-
-class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
-
-    private val TAG = SignLanguageImageAnalyzer::class.java.name
-
+class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend {
     private val charAlphabetRange = 'A'..'Z'
 
     private fun ByteBuffer.toByteArray(): ByteArray {
@@ -23,27 +19,8 @@ class SignLanguageImageAnalyzer(val context: Context) : ImageAnalysis.Analyzer {
     }
 
 
-
-    override fun analyze(imageProxy: ImageProxy) {
-
-//        val buffer = imageProxy.planes[0].buffer
-//        val data = buffer.toByteArray()
-
-        //val bitmap = imageProxy.toBitmap()
-
-//        // Releases model resources if no longer used.
-//        model.close()
-
-
-//        FileOutputStream(File(context.getFilesDir(), "test.png")).use{
-//            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, it)
-//            Log.d(TAG, "Write image to file")
-//        }
-
-
-//        val pixels = data.map { it.toInt() and 0xFF }
-
-        imageProxy.close()
+    override fun translate(imageProxy: ImageProxy): Char {
+        TODO("Not Implemented")
     }
 
     fun toGrayscale(bmpOriginal: Bitmap): Bitmap? {

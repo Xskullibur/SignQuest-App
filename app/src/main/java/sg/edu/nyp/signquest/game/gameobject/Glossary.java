@@ -1,5 +1,5 @@
 
-package sg.edu.nyp.signquest.game.object;
+package sg.edu.nyp.signquest.game.gameobject;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

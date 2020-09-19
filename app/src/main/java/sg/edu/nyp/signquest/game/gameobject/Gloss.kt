@@ -1,9 +1,9 @@
-package sg.edu.nyp.signquest.game.`object`
+package sg.edu.nyp.signquest.game.gameobject
 
 import android.os.Parcel
 import android.os.Parcelable
 
-class Gloss(var value: String) : Parcelable {
+data class Gloss(var value: String) : Parcelable {
 
     var completed: Boolean = false
 

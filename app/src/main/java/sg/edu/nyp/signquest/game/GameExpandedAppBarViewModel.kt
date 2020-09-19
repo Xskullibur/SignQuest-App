@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import sg.edu.nyp.signquest.game.gameobject.GameProgress
 import java.lang.IllegalStateException
 
 class GameExpandedAppBarViewModel: ViewModel()  {
@@ -17,6 +18,15 @@ class GameExpandedAppBarViewModel: ViewModel()  {
     private var gameCountDownTimer: GameCountDownTimer? = null
 
     val timerIsStarted get() = timer != null
+
+    //Store game progress
+    private val _gameProgress: MutableLiveData<GameProgress> = MutableLiveData()
+    val gameProgress: LiveData<GameProgress>  get() = _gameProgress
+
+    fun createGameProgress(gameProgress: GameProgress){
+        _gameProgress.value = gameProgress
+    }
+
 
     fun startCountDownTimer(totalMillisSeconds: Long, countDownInterval: Long){
         if(timerIsStarted) throw IllegalStateException("Timer has already been started")

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.ImageAnalysis
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
@@ -16,12 +15,13 @@ import sg.edu.nyp.signquest.game.CameraManager
 import sg.edu.nyp.signquest.game.`object`.Glossary
 import sg.edu.nyp.signquest.game.`object`.Step
 import sg.edu.nyp.signquest.game.view.ConfettiType
+import sg.edu.nyp.signquest.game.gameobject.Glossary
+import sg.edu.nyp.signquest.game.gameobject.Step
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
-import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
-import sg.edu.nyp.signquest.utils.MainUtils
+import sg.edu.nyp.signquest.utils.ResourceManager
 import java.util.concurrent.Executors
 
 class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
@@ -79,7 +79,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     override fun onCameraIsAccessible() {
         //Show camera on preview
-//        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), { buildAnalyzer() })
+        cameraManager.showCamera(practice_cameraView.createSurfaceProvider()) { buildAnalyzer() }
     }
 
     override fun signDetected(predictedValue: Char) {
@@ -92,7 +92,6 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
             val fragment = CustomDialogFragment.newInstance(
                 title = "Good Job!",
                 subtitle = "Stage ${moduleId}-${step.id}",
-                confettiType = ConfettiType.StreamFromTop,
                 onBackBtnClick = {
                     requireView().findNavController().popBackStack(R.id.startFragment, false)
                     it.dismiss()
@@ -103,7 +102,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                 onNextBtnClick = {
 
                     // TODO: Check Status
-                    val (module, step, gloss) = MainUtils.findNext(moduleId)
+                    val (module, step, gloss) = ResourceManager.findNext(moduleId)
                     requireView().findNavController().popBackStack()
                     it.dismiss()
                 }
