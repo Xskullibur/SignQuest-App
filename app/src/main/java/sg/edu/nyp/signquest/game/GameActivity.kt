@@ -10,14 +10,16 @@ import sg.edu.nyp.signquest.game.gameobject.*
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 import kotlin.random.Random
 
+const val ARGS_GAME_AVAILABLE_GLOSSARY = "args_game_available_glossary"
+
 class GameActivity : AppCompatActivity(), QuestionListener {
 
     private val viewModel: GameViewModel by viewModels()
 
-    private val availableChar = ('A'..'Z').filter {
-        //The letter 'J' and 'Z' is not included
-        it != 'J' || it != 'Z'
-    }
+//    private val availableChar = ('A'..'Z').filter {
+//        //The letter 'J' and 'Z' is not included
+//        it != 'J' || it != 'Z'
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +27,12 @@ class GameActivity : AppCompatActivity(), QuestionListener {
 
         val _gameProgress = viewModel.gameProgress.value
         if(_gameProgress == null){
+
+            //Get chars from bundle
+            val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
+
             //Randomly generate 20 questions
-            val random20Questions = List(20){ randomQuestion() }
+            val random20Questions = List(20){ randomQuestion(availableChar) }
 
             //Create Game Progress for storing game state
             val gameProgress = GameProgress(random20Questions)
@@ -82,20 +88,20 @@ class GameActivity : AppCompatActivity(), QuestionListener {
     /**
      * Return a random question, either a MCQ question or Player to Sign Question
      */
-    fun randomQuestion(): Question{
+    fun randomQuestion(availableChar: List<Char>): Question{
         return if(Random.nextBoolean()){
             //Player to Sign Question
-            randomPlayerToSignQuestion()
+            randomPlayerToSignQuestion(availableChar)
         }else{
             //MCQ Question
-            randomMCQQuestion()
+            randomMCQQuestion(availableChar)
         }
     }
 
     /**
      * Returns a random Player to Sign Question
      */
-    fun randomPlayerToSignQuestion(): PlayerToSignQuestion {
+    fun randomPlayerToSignQuestion(availableChar: List<Char>): PlayerToSignQuestion {
         val charToPredict = availableChar.random()
         return PlayerToSignQuestion(Gloss(charToPredict.toString()))
     }
@@ -103,7 +109,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
     /**
      * Returns a random MCQ Question
      */
-    fun randomMCQQuestion(): MCQQuestion {
+    fun randomMCQQuestion(availableChar: List<Char>): MCQQuestion {
         val selectedGlossary = availableChar.shuffled().take(4).map { Gloss(it.toString()) }
 
         val glossToPredict = selectedGlossary[0]

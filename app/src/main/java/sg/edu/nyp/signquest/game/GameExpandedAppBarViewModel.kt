@@ -10,7 +10,7 @@ import java.lang.IllegalStateException
 
 class GameExpandedAppBarViewModel: ViewModel()  {
 
-    private val _currentMilliseconds: MutableLiveData<Long> = MutableLiveData(60)
+    private val _currentMilliseconds: MutableLiveData<Long> = MutableLiveData(6000)
     private val currentMilliseconds: LiveData<Long> get() = _currentMilliseconds
     val currentSecondsString = Transformations.map(currentMilliseconds){(it/1000).toString()}
 

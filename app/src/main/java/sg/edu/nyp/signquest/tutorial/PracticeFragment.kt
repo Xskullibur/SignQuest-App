@@ -1,20 +1,20 @@
 package sg.edu.nyp.signquest.tutorial
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.ImageAnalysis
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
-import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Step
+import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
@@ -77,7 +77,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     override fun onCameraIsAccessible() {
         //Show camera on preview
-        cameraManager.showCamera(practice_cameraView.createSurfaceProvider()) { buildAnalyzer() }
+        cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), { buildAnalyzer() })
     }
 
     override fun signDetected(predictedValue: Char) {
