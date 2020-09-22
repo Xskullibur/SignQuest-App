@@ -1,6 +1,7 @@
 package sg.edu.nyp.signquest.tutorial
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,6 +88,10 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     override fun signDetected(predictedValue: Char) {
         if (predictedValue.toString() == glossary.value) {
+
+            Handler(context?.mainLooper!!).post {
+                cameraManager.stopCamera()
+            }
 
             // TODO: Update MainUtils
             glossary.completed = true
