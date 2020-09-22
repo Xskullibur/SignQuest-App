@@ -1,5 +1,7 @@
 package sg.edu.nyp.signquest.game
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,24 @@ import kotlin.random.Random
 const val ARGS_GAME_AVAILABLE_GLOSSARY = "args_game_available_glossary"
 
 class GameActivity : AppCompatActivity(), QuestionListener {
+
+    companion object {
+        /**
+         * Create an activity intent to start GameActivity
+         * Usage:
+         *      val intent = GameActivity.createActivityIntent(context. glossary)
+         *      startActivity(intent)
+         * @param context
+         * @param glossary - the glossary available to test the user
+         */
+        fun createActivityIntent(context: Context, glossary: CharArray): Intent {
+            return Intent(context, GameActivity::class.java).apply {
+                putExtras(Bundle().apply {
+                    putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, glossary)
+                })
+            }
+        }
+    }
 
     private val viewModel: GameViewModel by viewModels()
 
