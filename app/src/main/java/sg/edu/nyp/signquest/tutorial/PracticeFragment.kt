@@ -122,6 +122,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                         if (glossary != null) {
                             val intent = GameActivity.createActivityIntent(requireContext(), glossary)
                             it.findNavController().popBackStack()
+                            it.findNavController().popBackStack()
                             it.startActivity(intent)
                         }
                     }
