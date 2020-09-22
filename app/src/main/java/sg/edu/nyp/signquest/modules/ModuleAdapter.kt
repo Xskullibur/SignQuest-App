@@ -1,7 +1,6 @@
 package sg.edu.nyp.signquest.modules
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Module
+import sg.edu.nyp.signquest.utils.ResourceManager
 
 class ModuleAdapter(private val context: Context, private val datasource: List<Module>):
     BaseAdapter() {
@@ -47,18 +47,25 @@ class ModuleAdapter(private val context: Context, private val datasource: List<M
             }.count()
         )
 
-        view.moduleCard.setOnClickListener{
+        view.moduleCard.setOnClickListener{ view ->
 
-            val step = module.steps.find { !it.completed }!!
-            val glossary = step.glossary.find { !it.completed }
+            val (_, step, glossary) = ResourceManager.findNext(module.id)
 
             if (glossary != null) {
-                val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(glossary, step, module.id)
-                Navigation.findNavController(it).navigate(action)
+                if (step != null) {
+                    val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(glossary, step, module.id)
+                    Navigation.findNavController(view).navigate(action)
+                }
             }
             else {
-                val intent = Intent(context, GameActivity::class.java)
-                startActivity(context, intent, null)
+
+                // Get glossary for game
+                val glossList = ResourceManager.getCompletedGlossary(module.id)
+                if (glossList != null) {
+                    val intent = GameActivity.createActivityIntent(context, glossList)
+                    context.startActivity(intent)
+                }
+
             }
 
         }

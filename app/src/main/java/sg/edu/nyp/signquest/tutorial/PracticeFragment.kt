@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
+import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Step
 import sg.edu.nyp.signquest.game.view.ConfettiType
@@ -84,7 +85,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
         if (predictedValue.toString() == glossary.value) {
 
             // TODO: Update MainUtils
-//            glossary.completed = true
+            glossary.completed = true
 
             val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
             val fragment = CustomDialogFragment.newInstance(
@@ -99,10 +100,20 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
-
                     // TODO: Check Status
-                    val (module, step, gloss) = ResourceManager.findNext(moduleId)
-                    requireView().findNavController().popBackStack()
+                    val (_, step, gloss) = ResourceManager.findNext(moduleId)
+
+                    if (gloss != null) {
+                        requireView().findNavController().popBackStack()
+                    }
+                    else {
+                        val glossary = ResourceManager.getCompletedGlossary(moduleId)
+                        if (glossary != null) {
+                            val intent = GameActivity.createActivityIntent(requireContext(), glossary)
+                            requireContext().startActivity(intent)
+                        }
+                    }
+
                     it.dismiss()
                 }
             )

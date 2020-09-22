@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.gameobject.Gloss
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Module
 import sg.edu.nyp.signquest.game.gameobject.Step
@@ -30,6 +31,33 @@ object ResourceManager {
         val glossary = step?.glossary?.find { !it.completed }
 
         return Triple(module, step, glossary)
+    }
+
+    fun getCompletedGlossary(moduleId: String): CharArray? {
+        val module = data.find { it.id == moduleId }
+        if (module != null) {
+
+            val glossList: ArrayList<Glossary> = ArrayList()
+
+            val notCompletedSteps = module.steps.find { !it.completed }
+            if (notCompletedSteps != null) {
+
+                // Add Not Completed Gloss
+                glossList.addAll(notCompletedSteps.glossary)
+
+                // Add Completed Gloss
+                val completedSteps = module.steps.filter { it.completed }
+                completedSteps.forEach {
+                    glossList.addAll(it.glossary)
+                }
+
+                return glossList.map { it.value.toCharArray()[0] }.toCharArray()
+
+            }
+
+        }
+
+        return null
     }
 
 }
