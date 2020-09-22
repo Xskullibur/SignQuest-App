@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.ImageAnalysis
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
@@ -20,6 +23,7 @@ import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
+import sg.edu.nyp.signquest.modules.MainModuleFragmentDirections
 import sg.edu.nyp.signquest.utils.ResourceManager
 import java.util.concurrent.Executors
 
@@ -100,18 +104,25 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
-                    // TODO: Check Status
-                    val (_, step, gloss) = ResourceManager.findNext(moduleId)
+                    val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
 
-                    if (gloss != null) {
-                        requireView().findNavController().popBackStack()
+                    if (nextGloss != null && nextStep != null) {
+                        // Show Next Gloss
+                        val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
+                        it.findNavController().navigate(action)
                     }
-                    else {
+                    else if (nextModule != null && nextModule.id != moduleId) {
+                        // Navigate to Game
                         val glossary = ResourceManager.getCompletedGlossary(moduleId)
                         if (glossary != null) {
                             val intent = GameActivity.createActivityIntent(requireContext(), glossary)
-                            requireContext().startActivity(intent)
+                            it.findNavController().popBackStack()
+                            it.startActivity(intent)
                         }
+                    }
+                    else {
+                        // Navigate to Menu
+                        it.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
                     }
 
                     it.dismiss()
