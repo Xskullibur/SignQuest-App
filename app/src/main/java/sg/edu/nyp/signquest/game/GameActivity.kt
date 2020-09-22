@@ -20,7 +20,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         /**
          * Create an activity intent to start GameActivity
          * Usage:
-         *      val intent = GameActivity.createActivityIntent(context. glossary)
+         *      val intent = GameActivity.createActivityIntent(<context>, <glossary>)
          *      startActivity(intent)
          * @param context
          * @param glossary - the glossary available to test the user
