@@ -6,22 +6,22 @@
 		"steps": [
 			{
 				"id": "1",
-				"completed": true,
+				"completed": false,
 				"glossary": [
 					{
 						"value": "A",
 						"src":  "a",
-						"completed": false
+						"completed": true
 					},
 					{
 						"value": "B",
 						"src": "b",
-						"completed": false
+						"completed": true
 					},
 					{
 						"value": "C",
 						"src": "c",
-						"completed": false
+						"completed": true
 					},
 					{
 						"value": "D",

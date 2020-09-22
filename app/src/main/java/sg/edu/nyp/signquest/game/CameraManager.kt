@@ -6,6 +6,7 @@ import android.view.Surface
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.CameraX
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -31,6 +32,9 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
     private val TAG = CameraManager::class.java.name
 
     private val context = fragment.requireContext()
+
+    private var cameraProvider: ProcessCameraProvider? = null
+    private var imageAnalysis: ImageAnalysis? = null
 
     //Camera permission
     val requestPermissionLauncher =
@@ -68,7 +72,7 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
 
         cameraProviderFuture.addListener(Runnable {
             // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            cameraProvider = cameraProviderFuture.get()
 
             // Preview
             val preview = Preview.Builder()
@@ -82,15 +86,15 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
 
             try {
                 // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
+                cameraProvider?.unbindAll()
 
-                val imageAnalysis = imageAnalysisBuilder?.invoke()
+                imageAnalysis = imageAnalysisBuilder?.invoke()
 
                 if(imageAnalysis != null){
-                    cameraProvider.bindToLifecycle(
+                    cameraProvider?.bindToLifecycle(
                         fragment, cameraSelector, preview, imageAnalysis)
                 }else{
-                    cameraProvider.bindToLifecycle(
+                    cameraProvider?.bindToLifecycle(
                         fragment, cameraSelector, preview)
                 }
 
@@ -99,6 +103,19 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
             }
 
         }, ContextCompat.getMainExecutor(context))
+    }
+
+    fun stopCamera(){
+        if(cameraProvider==null){
+            throw IllegalStateException("Camera is not initialized!")
+        }
+        cameraProvider?.unbindAll()
+        imageAnalysis = null
+    }
+
+    fun stopImageAnalysis(){
+        cameraProvider?.unbind(imageAnalysis)
+        imageAnalysis = null
     }
 
 }
