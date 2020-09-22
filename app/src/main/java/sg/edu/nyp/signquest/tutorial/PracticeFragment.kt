@@ -111,7 +111,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                         val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
                         it.findNavController().navigate(action)
                     }
-                    else if (nextModule != null && nextModule.id != moduleId) {
+                    else if (nextModule != null && nextModule.id == moduleId) {
                         // Navigate to Game
                         val glossary = ResourceManager.getCompletedGlossary(moduleId)
                         if (glossary != null) {
