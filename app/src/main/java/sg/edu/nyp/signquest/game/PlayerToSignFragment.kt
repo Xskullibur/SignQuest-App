@@ -1,6 +1,7 @@
  package sg.edu.nyp.signquest.game
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,11 +110,13 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
     }
 
     override fun signDetected(predictedValue: Char) {
-        viewModel.gloss.observe(viewLifecycleOwner){
-            if (predictedValue.toString() == it.value) {
-                correct()
-            }else{
-                wrong()
+        context?.mainLooper?.let {
+            Handler(it).post {
+                viewModel.gloss.observe(viewLifecycleOwner){
+                    if (predictedValue.toString() == it.value) {
+                        correct()
+                    }
+                }
             }
         }
     }

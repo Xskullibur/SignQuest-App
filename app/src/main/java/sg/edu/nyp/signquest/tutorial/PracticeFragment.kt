@@ -1,6 +1,7 @@
 package sg.edu.nyp.signquest.tutorial
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,6 +89,10 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
     override fun signDetected(predictedValue: Char) {
         if (predictedValue.toString() == glossary.value) {
 
+            Handler(context?.mainLooper!!).post {
+                cameraManager.stopCamera()
+            }
+
             // TODO: Update MainUtils
             glossary.completed = true
 
@@ -111,7 +116,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                         val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
                         it.findNavController().navigate(action)
                     }
-                    else if (nextModule != null && nextModule.id != moduleId) {
+                    else { //if (nextModule != null && nextModule.id != moduleId)
                         // Navigate to Game
                         val glossary = ResourceManager.getCompletedGlossary(moduleId)
                         if (glossary != null) {
@@ -120,10 +125,10 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                             it.startActivity(intent)
                         }
                     }
-                    else {
-                        // Navigate to Menu
-                        it.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
-                    }
+//                    else {
+//                        // Navigate to Menu
+//                        it.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
+//                    }
 
                     it.dismiss()
                 }
