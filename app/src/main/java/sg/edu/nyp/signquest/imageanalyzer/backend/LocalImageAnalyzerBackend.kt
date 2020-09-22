@@ -19,8 +19,12 @@ class LocalImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend {
     }
 
 
-    override fun translate(imageProxy: ImageProxy): Char {
+    override fun translate(imageProxy: ImageProxy): Char? {
         TODO("Not Implemented")
+    }
+
+    override fun stop() {
+        TODO("Not yet implemented")
     }
 
     fun toGrayscale(bmpOriginal: Bitmap): Bitmap? {

@@ -21,8 +21,13 @@ class SignLanguageImageAnalyzer(val context: Context,
         Log.i(TAG, "Predicted Alphabet: $predictedChar")
         imageProxy.close()
 
-        onSignDetected?.signDetected(predictedChar)
+        if (predictedChar != null) {
+            onSignDetected?.signDetected(predictedChar)
+        }
+    }
 
+    fun stop(){
+        imageAnalyzerBackend.stop()
     }
 
 }

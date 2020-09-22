@@ -4,6 +4,6 @@ import androidx.camera.core.ImageProxy
 
 interface ImageAnalyzerBackend {
 
-    fun translate(imageProxy: ImageProxy): Char
-
+    fun translate(imageProxy: ImageProxy): Char?
+    fun stop()
 }
