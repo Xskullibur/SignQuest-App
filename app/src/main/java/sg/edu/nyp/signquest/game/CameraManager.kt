@@ -34,6 +34,7 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
     private val context = fragment.requireContext()
 
     private var cameraProvider: ProcessCameraProvider? = null
+    private var imageAnalysis: ImageAnalysis? = null
 
     //Camera permission
     val requestPermissionLauncher =
@@ -87,7 +88,7 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
                 // Unbind use cases before rebinding
                 cameraProvider?.unbindAll()
 
-                val imageAnalysis = imageAnalysisBuilder?.invoke()
+                imageAnalysis = imageAnalysisBuilder?.invoke()
 
                 if(imageAnalysis != null){
                     cameraProvider?.bindToLifecycle(
@@ -109,6 +110,12 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
             throw IllegalStateException("Camera is not initialized!")
         }
         cameraProvider?.unbindAll()
+        imageAnalysis = null
+    }
+
+    fun stopImageAnalysis(){
+        cameraProvider?.unbind(imageAnalysis)
+        imageAnalysis = null
     }
 
 }
