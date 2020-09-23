@@ -37,6 +37,8 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
 
     private lateinit var cameraManager: CameraManager
 
+    private var imageAnalyzer: SignLanguageImageAnalyzer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -127,10 +129,14 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     Executors.newSingleThreadExecutor(),
                     SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)).apply {
                         onSignDetected = this@PracticeFragment
+                        imageAnalyzer = this
                     }
                 )
             }
     }
 
-
+    override fun onDetach() {
+        super.onDetach()
+        imageAnalyzer?.stop()
+    }
 }

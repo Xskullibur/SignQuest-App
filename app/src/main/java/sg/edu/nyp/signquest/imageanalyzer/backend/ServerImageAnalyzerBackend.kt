@@ -2,10 +2,12 @@ package sg.edu.nyp.signquest.imageanalyzer.backend
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.camera.core.ImageProxy
 import com.google.protobuf.ByteString
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
+import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.imageanalyzer.ImageAnalyzerBackend
@@ -14,6 +16,7 @@ import sg.edu.nyp.signquest.proto.TranslatedReply
 import sg.edu.nyp.signquest.proto.TranslationServiceGrpc
 import sg.edu.nyp.signquest.utils.toBitmap
 import java.nio.ByteBuffer
+import java.util.concurrent.TimeUnit
 
 class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
@@ -22,7 +25,9 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
         .usePlaintext().build()
     private val stub = TranslationServiceGrpc.newBlockingStub(mChannel)
 
-    override fun translate(imageProxy: ImageProxy): Char {
+    private val TAG = ServerImageAnalyzerBackend::class.java.canonicalName
+
+    override fun translate(imageProxy: ImageProxy): Char? {
         val bitmap = imageProxy.toBitmap()!!
         //Resize image to 28x28
         val resizeBitmap = Bitmap.createScaledBitmap(bitmap, 848, 640, false)
@@ -36,9 +41,19 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
         val imageRequest = ImageRequest.newBuilder()
             .setPixels(ByteString.copyFrom(resizeBuffer)).build()
-        val translatedReply = stub.translate(imageRequest)
-        //Get first char
-        return translatedReply.char[0]
+
+        return try{
+            val translatedReply = stub.translate(imageRequest)
+            //Get first char
+            translatedReply.char[0]
+        }catch(e: StatusRuntimeException){
+            null
+        }
+    }
+
+    override fun stop() {
+        Log.d(TAG, "Shutting down server connection")
+        mChannel.shutdownNow()
     }
 
 }
