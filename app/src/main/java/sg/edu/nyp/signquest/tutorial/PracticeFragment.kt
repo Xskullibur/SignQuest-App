@@ -1,17 +1,22 @@
 package sg.edu.nyp.signquest.tutorial
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.ImageAnalysis
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_practice.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
+import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Step
 import sg.edu.nyp.signquest.game.view.ConfettiType
@@ -19,6 +24,7 @@ import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
+import sg.edu.nyp.signquest.modules.MainModuleFragmentDirections
 import sg.edu.nyp.signquest.utils.ResourceManager
 import java.util.concurrent.Executors
 
@@ -30,6 +36,8 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
     private lateinit var moduleId: String
 
     private lateinit var cameraManager: CameraManager
+
+    private var imageAnalyzer: SignLanguageImageAnalyzer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,8 +91,12 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
     override fun signDetected(predictedValue: Char) {
         if (predictedValue.toString() == glossary.value) {
 
+            Handler(context?.mainLooper!!).post {
+                cameraManager.stopCamera()
+            }
+
             // TODO: Update MainUtils
-//            glossary.completed = true
+            glossary.completed = true
 
             val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
             val fragment = CustomDialogFragment.newInstance(
@@ -99,10 +111,28 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
+                    val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
 
-                    // TODO: Check Status
-                    val (module, step, gloss) = ResourceManager.findNext(moduleId)
-                    requireView().findNavController().popBackStack()
+                    if (nextGloss != null && nextStep != null) {
+                        // Show Next Gloss
+                        val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
+                        it.findNavController().navigate(action)
+                    }
+                    else if (nextModule != null && nextModule.id == moduleId) {
+                        // Navigate to Game
+                        val glossary = ResourceManager.getCompletedGlossary(moduleId)
+                        if (glossary != null) {
+                            val intent = GameActivity.createActivityIntent(requireContext(), glossary)
+                            it.findNavController().popBackStack()
+                            it.findNavController().popBackStack()
+                            it.startActivity(intent)
+                        }
+                    }
+                    else {
+                        // Navigate to Menu
+                        it.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
+                    }
+
                     it.dismiss()
                 }
             )
@@ -120,10 +150,14 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     Executors.newSingleThreadExecutor(),
                     SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)).apply {
                         onSignDetected = this@PracticeFragment
+                        imageAnalyzer = this
                     }
                 )
             }
     }
 
-
+    override fun onDetach() {
+        super.onDetach()
+        imageAnalyzer?.stop()
+    }
 }
