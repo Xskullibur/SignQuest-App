@@ -35,6 +35,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
     }
 
     private val viewModel: GameViewModel by viewModels()
+    private var score = 0
 
 //    private val availableChar = ('A'..'Z').filter {
 //        //The letter 'J' and 'Z' is not included
@@ -52,7 +53,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
 
             //Randomly generate 20 questions
-            val random20Questions = List(20){ randomQuestion(availableChar) }
+            val random20Questions = List(5){ randomQuestion(availableChar) }
+            score = 0
 
             //Create Game Progress for storing game state
             val gameProgress = GameProgress(random20Questions)
@@ -65,7 +67,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             viewModel.isGameCompleted.observe(this){isGameCompleted ->
                 if(isGameCompleted){
                     viewModel.gameProgress.value?.let {gameProgress
-                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}")
+                        //showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}")
+                        showAlert(this,"Score", "${score}/${gameProgress.totalAmountOfQuestion*10}")
                     }
                 }
             }
@@ -138,10 +141,11 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         return MCQQuestion(glossToPredict, otherGlossaryChoice.toSet())
     }
 
-    override fun onComplete(correct: Boolean) {
+    override fun onComplete(correct: Boolean,  timeLeft: Int) {
         if(correct){
             println(correct)
             viewModel.addScore(1)
+            score += timeLeft
         }
 
         //Next question fragment

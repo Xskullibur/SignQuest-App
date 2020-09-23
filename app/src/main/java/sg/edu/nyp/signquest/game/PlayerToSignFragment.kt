@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
+import kotlinx.android.synthetic.main.game_expanded_appbar.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
 import sg.edu.nyp.signquest.game.gameobject.Gloss
@@ -32,6 +33,8 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
     private val viewModel: PlayerToSignViewModel by viewModels()
 
     private lateinit var cameraManager: CameraManager
+
+    private val time : Long = 10000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +78,7 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
 
         //Start game timer
         setGameCountDownTimer(this)
-        startCountDownTimer(10000)
+        startCountDownTimer(time)
     }
 
     private fun buildAnalyzer(): ImageAnalysis {
@@ -114,7 +117,9 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
             Handler(it).post {
                 viewModel.gloss.observe(viewLifecycleOwner){
                     if (predictedValue.toString() == it.value) {
-                        correct()
+                        val timeleft = timerTxtView.text.toString().toLong()
+                        var score = (10 / (time/1000))*timeleft
+                        correct(score.toInt())
                     }
                 }
             }
