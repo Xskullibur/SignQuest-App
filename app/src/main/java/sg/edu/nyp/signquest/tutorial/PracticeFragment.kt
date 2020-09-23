@@ -109,28 +109,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
-                    val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
-
-                    if (nextGloss != null && nextStep != null) {
-                        // Show Next Gloss
-                        val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
-                        it.findNavController().navigate(action)
-                    }
-                    else if (nextModule != null && nextModule.id == moduleId) {
-                        // Navigate to Game
-                        val glossary = ResourceManager.getCompletedGlossary(moduleId)
-                        if (glossary != null) {
-                            val intent = GameActivity.createActivityIntent(requireContext(), glossary)
-                            it.findNavController().popBackStack()
-                            it.findNavController().popBackStack()
-                            it.startActivity(intent)
-                        }
-                    }
-                    else {
-                        // Navigate to Menu
-                        it.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
-                    }
-
+                    ResourceManager.navigateToNext(moduleId, it)
                     it.dismiss()
                 }
             )
