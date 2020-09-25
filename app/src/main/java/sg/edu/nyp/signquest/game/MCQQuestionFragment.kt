@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import kotlinx.android.synthetic.main.fragment_question_main.*
 import kotlinx.android.synthetic.main.fragment_question_main.view.*
 import kotlinx.android.synthetic.main.fragment_question_top.*
 import sg.edu.nyp.signquest.R
@@ -102,6 +104,30 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
                 requireContext().packageName
             )
         )
+    }
+
+    override fun exitFragmentTransition(onFinished: () -> Unit) {
+        //Undo fragment enter transition
+        fragment_question_motion_layout.transitionToStart()
+        fragment_question_motion_layout.setTransitionListener(object :
+            MotionLayout.TransitionListener {
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+
+            }
+
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+
+            }
+
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+
+            }
+
+            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+                onFinished()
+            }
+
+        })
     }
 
     companion object {

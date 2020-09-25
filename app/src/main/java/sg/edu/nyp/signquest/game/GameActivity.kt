@@ -36,6 +36,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
 
     private val viewModel: GameViewModel by viewModels()
 
+    private var currentFragment: GameExpandedAppBarFragment? = null
+
 //    private val availableChar = ('A'..'Z').filter {
 //        //The letter 'J' and 'Z' is not included
 //        it != 'J' || it != 'Z'
@@ -51,11 +53,11 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             //Get chars from bundle
             val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
 
-            //Randomly generate 20 questions
-            val random20Questions = List(20){ randomQuestion(availableChar) }
+            //Randomly generate questions
+            val randomQuestions = List(5){ randomQuestion(availableChar) }
 
             //Create Game Progress for storing game state
-            val gameProgress = GameProgress(random20Questions)
+            val gameProgress = GameProgress(randomQuestions)
             viewModel.createGameProgress(gameProgress)
 
             viewModel.gameProgress.observe(this){
@@ -70,37 +72,45 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                 }
             }
 
-            showQuestion(random20Questions[0])
+            showQuestion(randomQuestions[0])
         }else{
             showQuestion(_gameProgress.currentQuestion)
         }
-
-
     }
 
     fun showQuestion(question: Question){
-        when (question) {
-            is PlayerToSignQuestion -> {
-                showQuestion(question)
+        if(this.currentFragment == null){
+            when (question) {
+                is PlayerToSignQuestion -> {
+                    showQuestion(question)
+                }
+                is MCQQuestion -> {
+                    showQuestion(question)
+                }
+                else -> {
+                    throw IllegalArgumentException("Unknown class for question, question should be either an instance of PLayerToSignQuestion or MCQQuestion")
+                }
             }
-            is MCQQuestion -> {
-                showQuestion(question)
-            }
-            else -> {
-                throw IllegalArgumentException("Unknown class for question, question should be either an instance of PLayerToSignQuestion or MCQQuestion")
+        }else{
+            this.currentFragment?.exitFragmentTransition {
+                this.currentFragment = null
+                this.showQuestion(question)
             }
         }
+
     }
 
     fun showQuestion(question: PlayerToSignQuestion){
         val fragment = PlayerToSignFragment.newInstance(viewModel.gameProgress.value!!, question)
         supportFragmentManager.commit {
+            currentFragment = fragment
             replace(R.id.game_fragment_container, fragment)
         }
     }
     fun showQuestion(question: MCQQuestion){
         val fragment = MCQQuestionFragment.newInstance(viewModel.gameProgress.value!!, question)
         supportFragmentManager.commit {
+            currentFragment = fragment
             replace(R.id.game_fragment_container, fragment)
         }
     }
@@ -144,9 +154,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             viewModel.addScore(1)
         }
 
-        //Next question fragment
+        //Go to the next question fragment
         viewModel.nextQuestion()
-
     }
 
 }
