@@ -11,17 +11,17 @@
 					{
 						"value": "A",
 						"src":  "a",
-						"completed": true
+						"completed": false
 					},
 					{
 						"value": "B",
 						"src": "b",
-						"completed": true
+						"completed": false
 					},
 					{
 						"value": "C",
 						"src": "c",
-						"completed": true
+						"completed": false
 					},
 					{
 						"value": "D",
