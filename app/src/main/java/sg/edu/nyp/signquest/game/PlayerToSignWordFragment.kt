@@ -22,7 +22,7 @@ class PlayerToSignWordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_to_sign_word, container, false)
+        return inflater.inflate(R.layout.fragment_player_to_sign_word_main, container, false)
     }
 
     companion object {

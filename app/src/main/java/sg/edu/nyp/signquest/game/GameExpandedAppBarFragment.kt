@@ -103,6 +103,6 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         viewModel.setGameCountDownTimer(gameCountDownTimer)
     }
 
-    open fun exitFragmentTransition(onFinished: () -> Unit){}
+    open fun exitFragmentTransition(onFinished: () -> Unit){onFinished()}
 
 }
