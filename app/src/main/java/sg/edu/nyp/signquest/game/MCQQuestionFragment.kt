@@ -11,12 +11,7 @@ import kotlinx.android.synthetic.main.fragment_question_main.*
 import kotlinx.android.synthetic.main.fragment_question_main.view.*
 import kotlinx.android.synthetic.main.fragment_question_top.*
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.gameobject.GameProgress
 import sg.edu.nyp.signquest.game.gameobject.Gloss
-import sg.edu.nyp.signquest.game.gameobject.MCQQuestion
-
-const val ARGS_MCQ_GAME_PROGRESS = "args_mcq_fragment_game_progress"
-const val ARGS_MCQ_QUESTION = "args_mcq_fragment_question"
 
 class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
     override val topContainerId: Int
@@ -24,20 +19,7 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
     override val mainContainerId: Int
         get() = R.layout.fragment_question_main
 
-    private val viewModel: MCQQuestionViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            val gameProgress = it.get(ARGS_MCQ_GAME_PROGRESS) as GameProgress
-            val question = it.get(ARGS_MCQ_QUESTION) as MCQQuestion
-
-            viewModel.setGameProgress(gameProgress)
-            this.setGameProgress(gameProgress)
-            viewModel.setMCQQuestion(question)
-        }
-    }
-
+    override val viewModel: MCQQuestionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,9 +29,11 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
         return super.onCreateView(inflater, container, savedInstanceState).apply {
 
             setGameCountDownTimer(this@MCQQuestionFragment)
-            startCountDownTimer(5000)
+            if(!viewModel.timerIsStarted){
+                startCountDownTimer(5000)
+            }
 
-            viewModel.question.observe(viewLifecycleOwner) { question ->
+            viewModel.mcqQuestion.observe(viewLifecycleOwner) { question ->
 
                 setGlossPicture(question.glossToBeAnswered)
 
@@ -76,9 +60,7 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
         }
     }
 
-    override fun onTick(millisUntilFinished: Long) {
-
-    }
+    override fun onTick(millisUntilFinished: Long) {}
 
     override fun onFinish() {
         wrong()
@@ -112,15 +94,12 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
         fragment_question_motion_layout.setTransitionListener(object :
             MotionLayout.TransitionListener {
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-
             }
 
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-
             }
 
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-
             }
 
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
@@ -131,13 +110,8 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
     }
 
     companion object {
-        fun newInstance(gameProgress: GameProgress, question: MCQQuestion): MCQQuestionFragment{
-            return MCQQuestionFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(ARGS_MCQ_GAME_PROGRESS, gameProgress)
-                    putSerializable(ARGS_MCQ_QUESTION, question)
-                }
-            }
+        fun newInstance(): MCQQuestionFragment{
+            return MCQQuestionFragment()
         }
     }
 

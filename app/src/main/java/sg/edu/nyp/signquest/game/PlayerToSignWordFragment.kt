@@ -5,32 +5,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.game.gameobject.PlayerToSignQuestion
+import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 
 
 /**
  * Fragment represent the Screen to let Player do the sign language
  */
-class PlayerToSignWordFragment : Fragment() {
+class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    override val topContainerId: Int = R.layout.fragment_player_to_sign_top
+    override val mainContainerId: Int = R.layout.fragment_player_to_sign_word_main
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_to_sign_word_main, container, false)
-    }
+    override val viewModel: PlayerToSignWordViewModel by viewModels()
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlayerToSignWordFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+        fun newInstance() = PlayerToSignWordFragment()
+    }
+
+    override fun signDetected(predictedValue: Char) {
+        TODO("Not yet implemented")
     }
 }

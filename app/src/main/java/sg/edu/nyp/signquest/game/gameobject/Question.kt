@@ -19,7 +19,7 @@ class PlayerToSignQuestion(glossToBeAnswered: Gloss): Question(glossToBeAnswered
      */
     override fun createFragment(
         gameProgress: GameProgress
-    ) = PlayerToSignFragment.newInstance(gameProgress, this)
+    ) = PlayerToSignFragment.newInstance()
 }
 
 class MCQQuestion(glossToBeAnswered: Gloss, val otherGlossaryChoice: Set<Gloss>): Question(glossToBeAnswered){
@@ -27,7 +27,7 @@ class MCQQuestion(glossToBeAnswered: Gloss, val otherGlossaryChoice: Set<Gloss>)
      * Create a [MCQQuestionFragment] for letting user play [PlayerToSignQuestion]
      */
     override fun createFragment(gameProgress: GameProgress
-    ) = MCQQuestionFragment.newInstance(gameProgress, this)
+    ) = MCQQuestionFragment.newInstance()
 }
 
 enum class QuestionType {

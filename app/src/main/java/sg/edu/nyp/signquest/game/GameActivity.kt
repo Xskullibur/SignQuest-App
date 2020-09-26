@@ -42,9 +42,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_game)
-
-
         //Get chars from bundle
         val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
 
@@ -60,7 +59,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         }
 
         viewModel.gameProgress.observe(this){
-            showQuestion(it, it.currentQuestion)
+            if(savedInstanceState == null) showQuestion(it, it.currentQuestion)
         }
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){

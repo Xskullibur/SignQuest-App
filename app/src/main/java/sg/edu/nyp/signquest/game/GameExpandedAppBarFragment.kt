@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import sg.edu.nyp.signquest.databinding.GameExpandedAppbarBinding
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
-import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 
 interface GameCountDownTimer {
     fun onTick(millisUntilFinished: Long)
@@ -31,7 +30,8 @@ abstract class GameExpandedAppBarFragment : Fragment() {
     protected lateinit var topContainerView: View
     protected lateinit var mainContainerView: View
 
-    private val viewModel: GameExpandedAppBarViewModel by viewModels()
+    protected val gameViewModel: GameViewModel by activityViewModels()
+    abstract val viewModel: GameExpandedAppBarViewModel
 
     private lateinit var questionListener: QuestionListener
 
@@ -40,8 +40,8 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
-        viewModel.gameProgress.observe(viewLifecycleOwner){
+        gameViewModel.gameProgress.observe(viewLifecycleOwner){
+            viewModel.setGameProgress(it)
             view?.questionCountText?.text = "Question ${it.currentlyQuestionIndex+1}/${it.totalAmountOfQuestion}"
         }
 
@@ -71,24 +71,12 @@ abstract class GameExpandedAppBarFragment : Fragment() {
 
     }
 
-    fun setGameProgress(gameProgress: GameProgress){
-        viewModel.createGameProgress(gameProgress)
-    }
-
     fun correct(){
         questionListener.onComplete(true)
     }
 
     fun wrong(){
         questionListener.onComplete(false)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        //Unregister game timer when the fragment is not visible anymore
-        this.resetCountDownTimer()
-
     }
 
     protected fun startCountDownTimer(totalMillisSeconds: Long, countDownInterval: Long = 1000){
