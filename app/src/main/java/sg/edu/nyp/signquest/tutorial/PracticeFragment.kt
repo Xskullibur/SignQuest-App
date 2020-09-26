@@ -95,7 +95,6 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                 cameraManager.stopCamera()
             }
 
-            // TODO: Update MainUtils
             glossary.completed = true
 
             val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
@@ -111,7 +110,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
-                    ResourceManager.navigateToNext(moduleId, it)
+                    ResourceManager.navigateToNext(moduleId, it, requireContext())
                     it.dismiss()
                 }
             )

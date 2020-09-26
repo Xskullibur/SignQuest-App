@@ -62,7 +62,7 @@ class CustomPlayDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_custom_dialog, container, false)
+        val view = inflater.inflate(R.layout.fragment_custom__play__dialog, container, false)
         val button = view.dialogBtn
 
         button.setOnClickListener {

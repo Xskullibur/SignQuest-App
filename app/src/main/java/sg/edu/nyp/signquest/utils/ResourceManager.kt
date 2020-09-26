@@ -3,6 +3,7 @@ package sg.edu.nyp.signquest.utils
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -12,6 +13,10 @@ import sg.edu.nyp.signquest.game.gameobject.Gloss
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Module
 import sg.edu.nyp.signquest.game.gameobject.Step
+import sg.edu.nyp.signquest.game.view.ConfettiType
+import sg.edu.nyp.signquest.game.view.CustomDialogFragment
+import sg.edu.nyp.signquest.game.view.CustomPlayDialogFragment
+import sg.edu.nyp.signquest.modules.MainModuleFragment
 import sg.edu.nyp.signquest.modules.MainModuleFragmentDirections
 import java.io.InputStreamReader
 
@@ -57,24 +62,36 @@ object ResourceManager {
         return null
     }
 
-    fun navigateToNext(moduleId: String, sender: Fragment) {
+    fun navigateToNext(moduleId: String, sender: Fragment, context: Context) {
         val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
 
         if (nextGloss != null && nextStep != null) {
             // Show Next Gloss
             val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
-
             sender.findNavController().navigate(action)
         }
         else if (nextModule != null && nextModule.id == moduleId) {
-            // Navigate to Game
+
             val glossary = ResourceManager.getCompletedGlossary(moduleId)
             if (glossary != null) {
-                val intent = GameActivity.createActivityIntent(sender.requireContext(), glossary)
-                sender.startActivity(intent)
-                sender.findNavController().popBackStack()
-                sender.findNavController().popBackStack()
+                val fragmentManager = sender.requireActivity().supportFragmentManager.beginTransaction()
+                val fragment = CustomPlayDialogFragment.newInstance(
+                    title = "Quiz Time!",
+                    subtitle = "${glossary.first()} - ${glossary.last()}"
+                ){
+
+                    // Navigate to Game
+                    val intent = GameActivity.createActivityIntent(context, glossary)
+                    context.startActivity(intent)
+                    it.dismiss()
+                }
+
+                fragment.show(fragmentManager, CustomPlayDialogFragment.TAG)
             }
+
+            sender.findNavController().popBackStack()
+            sender.findNavController().popBackStack()
+
         }
         else {
             // Navigate to Menu
