@@ -41,6 +41,10 @@ class StartFragment : Fragment() {
             navController.navigate(R.id.action_startFragment_to_mainModuleFragment)
         }
 
+        leaderboardBtn.setOnClickListener{
+            navController.navigate(R.id.action_startFragment_to_leaderboardFragment)
+        }
+
     }
 
     override fun onCreateView(
