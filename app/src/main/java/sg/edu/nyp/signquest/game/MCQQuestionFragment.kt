@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_question_main.view.*
 import kotlinx.android.synthetic.main.fragment_question_top.*
-import kotlinx.android.synthetic.main.game_expanded_appbar.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
 import sg.edu.nyp.signquest.game.gameobject.Gloss
@@ -24,7 +23,6 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
         get() = R.layout.fragment_question_main
 
     private val viewModel: MCQQuestionViewModel by viewModels()
-    private val time : Long = 5000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +45,7 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
         return super.onCreateView(inflater, container, savedInstanceState).apply {
 
             setGameCountDownTimer(this@MCQQuestionFragment)
-            startCountDownTimer(time)
+            startCountDownTimer(5000)
 
             viewModel.question.observe(viewLifecycleOwner) { question ->
 
@@ -89,9 +87,7 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
         viewModel.glossToBeAnswered.observe(viewLifecycleOwner) {
             if (gloss.value == it.value) {
-                val timeleft = timerTxtView.text.toString().toLong()
-                var score = (10 / (time/1000))*timeleft
-                correct(score.toInt())
+                correct()
             } else {
                 wrong()
             }

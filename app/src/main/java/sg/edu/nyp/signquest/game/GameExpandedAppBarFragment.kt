@@ -19,7 +19,7 @@ interface GameCountDownTimer {
 }
 
 interface QuestionListener {
-    fun onComplete(correct: Boolean,  timeLeft: Int)
+    fun onComplete(correct: Boolean)
 }
 
 abstract class GameExpandedAppBarFragment : Fragment() {
@@ -74,15 +74,15 @@ abstract class GameExpandedAppBarFragment : Fragment() {
         viewModel.createGameProgress(gameProgress)
     }
 
-    fun correct(timeLeft: Int){
+    fun correct(){
         this.showAlert("Correct Answer", "You are correct!"){
-            questionListener.onComplete(true, timeLeft)
+            questionListener.onComplete(true)
         }
     }
 
     fun wrong(){
         this.showAlert("Wrong Answer", "Oops! you picked the wrong answer!"){
-            questionListener.onComplete(false, 0)
+            questionListener.onComplete(false)
         }
     }
 
