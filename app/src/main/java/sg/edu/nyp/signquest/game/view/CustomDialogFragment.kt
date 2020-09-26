@@ -75,11 +75,6 @@ class CustomDialogFragment() : DialogFragment() {
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
