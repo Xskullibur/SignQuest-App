@@ -64,8 +64,9 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){
                 viewModel.gameProgress.value?.let {gameProgress ->
-                    showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}")
-                    finish()
+                    showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
+                        finish()
+                    }
                 }
             }
         }
