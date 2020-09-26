@@ -1,13 +1,18 @@
 package sg.edu.nyp.signquest.utils
 
 import android.content.Context
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Gloss
 import sg.edu.nyp.signquest.game.gameobject.Glossary
 import sg.edu.nyp.signquest.game.gameobject.Module
 import sg.edu.nyp.signquest.game.gameobject.Step
+import sg.edu.nyp.signquest.modules.MainModuleFragmentDirections
 import java.io.InputStreamReader
 
 /**
@@ -23,14 +28,6 @@ object ResourceManager {
             val moduleListType = object : TypeToken<ArrayList<Module>>() {}.type
             data = Gson().fromJson(it, moduleListType)
         }
-    }
-
-    fun findNext(moduleId: String): Triple<Module?, Step?, Glossary?> {
-        val module = data.find { it.id == moduleId }
-        val step = module?.steps?.find { !it.completed }
-        val glossary = step?.glossary?.find { !it.completed }
-
-        return Triple(module, step, glossary)
     }
 
     fun getCompletedGlossary(moduleId: String): CharArray? {
@@ -58,6 +55,40 @@ object ResourceManager {
         }
 
         return null
+    }
+
+    fun navigateToNext(moduleId: String, sender: Fragment) {
+        val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
+
+        if (nextGloss != null && nextStep != null) {
+            // Show Next Gloss
+            val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
+
+            sender.findNavController().navigate(action)
+        }
+        else if (nextModule != null && nextModule.id == moduleId) {
+            // Navigate to Game
+            val glossary = ResourceManager.getCompletedGlossary(moduleId)
+            if (glossary != null) {
+                val intent = GameActivity.createActivityIntent(sender.requireContext(), glossary)
+                sender.startActivity(intent)
+                sender.findNavController().popBackStack()
+                sender.findNavController().popBackStack()
+            }
+        }
+        else {
+            // Navigate to Menu
+            sender.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
+        }
+
+    }
+
+    fun findNext(moduleId: String): Triple<Module?, Step?, Glossary?> {
+        val module = data.find { it.id == moduleId }
+        val step = module?.steps?.find { !it.completed }
+        val glossary = step?.glossary?.find { !it.completed }
+
+        return Triple(module, step, glossary)
     }
 
 }

@@ -2,9 +2,17 @@ package sg.edu.nyp.signquest.game.gameobject
 
 import java.io.Serializable
 
-class GameProgress: Serializable {
+class GameProgress(
+    //Returns the total amount of questions available
+    val totalAmountOfQuestion: Int,
+    //List of available Gloss that can be used to test the player
+    private val availableChar: List<Char>
+): Serializable {
+
     //List of questions available
-    lateinit var questions: List<Question>
+    var questions: List<Question> = List(totalAmountOfQuestion){
+        randomQuestion()
+    }
 
     //The index of where the current question is being answered
     var currentlyQuestionIndex: Int = 0
@@ -17,55 +25,31 @@ class GameProgress: Serializable {
     //Returns the next question to be answered, if the current question is the last question, this
     //function will return null
     val nextQuestion: Question?
-        get() = if(questions.size > currentlyQuestionIndex)
-            questions.elementAt(currentlyQuestionIndex+1)
+        get() = if (questions.size > currentlyQuestionIndex)
+            questions.elementAt(currentlyQuestionIndex + 1)
         else null
-
-    //Returns the total amount of questions available
-    val totalAmountOfQuestion get() = questions.count()
 
     var score: Int = 0
 
-    constructor(questions: List<Question>){
-        this.questions = questions
+    /**
+     * Return a random question, either a MCQ question or Player to Sign Question
+     */
+    private fun randomQuestion(): Question{
+        //Random question type, MCQ or Player to Sign
+        val questionType = QuestionType.values().random()
+        //Random question from the list of availableChar
+        return questionType.generateQuestion(availableChar)
     }
-
-//    constructor(parcel: Parcel){
-//        val questions = mutableListOf<Question>()
-//        parcel.readList(questions, Question::class.java.classLoader)
-//        this.questions = questions
-//        currentlyProcessIndex = parcel.readInt()
-//    }
 
     /**
      * Move on to the next question
      */
-    fun nextQuestion(): Boolean{
-        return if(totalAmountOfQuestion-1 > currentlyQuestionIndex){
+    fun nextQuestion(): Boolean {
+        return if (totalAmountOfQuestion - 1 > currentlyQuestionIndex) {
             currentlyQuestionIndex++
             true
-        }else{
+        } else {
             false
         }
     }
-
-//    override fun writeToParcel(parcel: Parcel, flags: Int) {
-//        parcel.writeList(questions)
-//        parcel.writeInt(currentlyProcessIndex)
-//    }
-//
-//    override fun describeContents(): Int {
-//        return 0
-//    }
-//
-//    companion object CREATOR : Parcelable.Creator<GameProgress> {
-//        override fun createFromParcel(parcel: Parcel): GameProgress {
-//            return GameProgress(parcel)
-//        }
-//
-//        override fun newArray(size: Int): Array<GameProgress?> {
-//            return arrayOfNulls(size)
-//        }
-//    }
-
 }
