@@ -34,28 +34,28 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             }
 
             viewModel.mcqQuestion.observe(viewLifecycleOwner) { question ->
+                if(question != null) {
+                    setGlossPicture(question.glossToBeAnswered)
 
-                setGlossPicture(question.glossToBeAnswered)
+                    val availableGlossary = listOf(question.glossToBeAnswered, *question.otherGlossaryChoice.toTypedArray()).shuffled()
 
-                val availableGlossary = listOf(question.glossToBeAnswered, *question.otherGlossaryChoice.toTypedArray()).shuffled()
+                    mainContainerView.optionBtn1.text = availableGlossary[0].value
+                    mainContainerView.optionBtn1.tag = availableGlossary[0]
 
-                mainContainerView.optionBtn1.text = availableGlossary[0].value
-                mainContainerView.optionBtn1.tag = availableGlossary[0]
+                    mainContainerView.optionBtn2.text = availableGlossary[1].value
+                    mainContainerView.optionBtn2.tag = availableGlossary[1]
 
-                mainContainerView.optionBtn2.text = availableGlossary[1].value
-                mainContainerView.optionBtn2.tag = availableGlossary[1]
+                    mainContainerView.optionBtn3.text = availableGlossary[2].value
+                    mainContainerView.optionBtn3.tag = availableGlossary[2]
 
-                mainContainerView.optionBtn3.text = availableGlossary[2].value
-                mainContainerView.optionBtn3.tag = availableGlossary[2]
+                    mainContainerView.optionBtn4.text = availableGlossary[3].value
+                    mainContainerView.optionBtn4.tag = availableGlossary[3]
 
-                mainContainerView.optionBtn4.text = availableGlossary[3].value
-                mainContainerView.optionBtn4.tag = availableGlossary[3]
-
-                mainContainerView.optionBtn1.setOnClickListener(::onOptionClick)
-                mainContainerView.optionBtn2.setOnClickListener(::onOptionClick)
-                mainContainerView.optionBtn3.setOnClickListener(::onOptionClick)
-                mainContainerView.optionBtn4.setOnClickListener(::onOptionClick)
-
+                    mainContainerView.optionBtn1.setOnClickListener(::onOptionClick)
+                    mainContainerView.optionBtn2.setOnClickListener(::onOptionClick)
+                    mainContainerView.optionBtn3.setOnClickListener(::onOptionClick)
+                    mainContainerView.optionBtn4.setOnClickListener(::onOptionClick)
+                }
             }
         }
     }

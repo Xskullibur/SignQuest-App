@@ -39,7 +39,7 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
 
         //Init observable
         viewModel.gloss.observe(viewLifecycleOwner){
-            setGlossOnDisplay(it)
+            if(it != null)setGlossOnDisplay(it)
         }
 
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -83,7 +83,7 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
         context?.mainLooper?.let {
             Handler(it).post {
                 viewModel.gloss.observe(viewLifecycleOwner){
-                    if (predictedValue.toString() == it.value) {
+                    if (it != null && predictedValue.toString() == it.value) {
                         correct()
                     }
                 }
