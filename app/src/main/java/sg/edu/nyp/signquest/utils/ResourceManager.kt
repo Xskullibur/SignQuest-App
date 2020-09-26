@@ -19,6 +19,7 @@ import sg.edu.nyp.signquest.game.view.CustomPlayDialogFragment
 import sg.edu.nyp.signquest.modules.MainModuleFragment
 import sg.edu.nyp.signquest.modules.MainModuleFragmentDirections
 import java.io.InputStreamReader
+import java.lang.IllegalArgumentException
 
 /**
  * Load resources from 'raw' resource folder
@@ -66,9 +67,17 @@ object ResourceManager {
         val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
 
         if (nextGloss != null && nextStep != null) {
-            // Show Next Gloss
+
             val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
-            sender.findNavController().navigate(action)
+            try {
+                // Show Next Gloss
+                sender.findNavController().navigate(action)
+            }
+            catch (_: IllegalArgumentException) {
+                sender.findNavController().popBackStack()
+                sender.findNavController().navigate(action)
+            }
+
         }
         else if (nextModule != null && nextModule.id == moduleId) {
 
