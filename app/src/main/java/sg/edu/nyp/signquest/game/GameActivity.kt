@@ -102,20 +102,20 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     var title = "Please Try Again!"
                     var confettiType = ConfettiType.None
 
-                    if(scoreList.maxOrNull() ?:0 < gameProgress.score){
-                        title = "Well Done!"
-                        confettiType = ConfettiType.Burst
+                    when {
+                        scoreList.maxOrNull() ?:0 <= gameProgress.score -> {
+                            title = "Well Done!"
+                            confettiType = ConfettiType.Burst
+                        }
+                        gameProgress.score >= gameProgress.totalAmountOfQuestion / 2 -> {
+                            title = "Nice Try!"
+                            confettiType = ConfettiType.StreamFromTop
+                        }
+                        else -> {
+                            title = "Good Effort"
+                            confettiType = ConfettiType.None
+                        }
                     }
-                    else if(gameProgress.score >= gameProgress.totalAmountOfQuestion / 2)
-                    {
-                        title = "Nice Try!"
-                        confettiType = ConfettiType.StreamFromTop
-                    }
-                    else{
-                        title = "Good Effort"
-                        confettiType = ConfettiType.None
-                    }
-
 
                     val fragmentManager = supportFragmentManager.beginTransaction()
                     val fragment = CustomDialogFragment.newInstance(

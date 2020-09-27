@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_start.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.ARGS_GAME_AVAILABLE_GLOSSARY
+import sg.edu.nyp.signquest.game.ARGS_GAME_MODULE_ID
 import sg.edu.nyp.signquest.game.GameActivity
 
 class StartFragment : Fragment() {
@@ -32,6 +33,7 @@ class StartFragment : Fragment() {
             val intent = Intent(activity, GameActivity::class.java).apply {
                 putExtras(Bundle().apply {
                     putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, ('A'..'Z').toList().joinToString("").toCharArray())
+                    putString(ARGS_GAME_MODULE_ID, "1")
                 })
             }
             startActivity(intent)

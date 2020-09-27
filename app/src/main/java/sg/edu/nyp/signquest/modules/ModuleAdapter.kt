@@ -54,6 +54,10 @@ class ModuleAdapter(private val context: Context, private val datasource: List<M
             listener?.onSelect(module)
         }
 
+        if (module.id != "1") {
+            view.moduleCard.isEnabled = false
+        }
+
         return view
     }
 
