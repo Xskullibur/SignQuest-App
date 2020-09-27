@@ -36,40 +36,45 @@ class LeaderboardFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        var scoreList: List<ScoreDetail> = viewModel.scoreList
-        scoreList =  scoreList.sortedByDescending { scoreDetail -> scoreDetail.score }
-        var count = 1
-        scoreList.forEach{
-            if(count == 1)
-            {
-                it.animation = "trophy.json"
-            }
-            else if(count == 2)
-            {
-                it.animation = "sliver.json"
-            }
-            else if(count ==3)
-            {
-                it.animation = "bronze.json"
-            }
-            else
-            {
-                it.animation = "dinodance.json"
-            }
-            it.name = count.toString() + ". " + it.name
-            count++
-        }
+        var scoreList = mutableListOf<ScoreDetail>()
 
         val view = inflater.inflate(R.layout.fragment_leaderboard, container, false)
 
         lifecycleScope.launch{
 
             //db.scoreDetailDao().addScoreDetail(ScoreTable(null, 10, "asdasdasd"))
+            val scoreTable = getScores()
 
-            view.scoreList.adapter = LeaderboardAdapter(scoreList)
+            scoreTable.forEach{
+                scoreList.add(ScoreDetail(it.score, "", it.name))
+            }
+
+            var scoreListNew =  scoreList.sortedByDescending { scoreDetail -> scoreDetail.score }
+            var count = 1
+            scoreListNew.forEach{
+                if(count == 1)
+                {
+                    it.animation = "trophy.json"
+                }
+                else if(count == 2)
+                {
+                    it.animation = "sliver.json"
+                }
+                else if(count ==3)
+                {
+                    it.animation = "bronze.json"
+                }
+                else
+                {
+                    it.animation = "dinodance.json"
+                }
+                it.name = count.toString() + ". " + it.name
+                count++
+            }
+
+            view.scoreList.adapter = LeaderboardAdapter(scoreListNew)
             view.scoreList.layoutManager = LinearLayoutManager(this@LeaderboardFragment.requireContext())
         }
-//        val scoreList = db.scoreDetailDao().scoreDetails()
 
         // Inflate the layout for this fragment
         return view
