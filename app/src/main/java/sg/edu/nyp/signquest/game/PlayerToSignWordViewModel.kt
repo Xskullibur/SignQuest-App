@@ -1,7 +1,6 @@
 package sg.edu.nyp.signquest.game
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import sg.edu.nyp.signquest.game.gameobject.Gloss
 import sg.edu.nyp.signquest.game.gameobject.PlayerToSignWordQuestion
@@ -13,11 +12,11 @@ class PlayerToSignWordViewModel : GameExpandedAppBarViewModel() {
         (it as? PlayerToSignWordQuestion)?.glossToBeAnswered
     }
 
-    var currentIndex = 0
+    var currentIndex = -1
 
     fun haveNextIndex(): Boolean{
-        val glossLength = gloss.value?.value?.length
-        return currentIndex > glossLength!!
+        val glossLength = (question.value as PlayerToSignWordQuestion).glossToBeAnswered.value.length
+        return currentIndex < glossLength - 1
     }
 
     fun nextIndex(){

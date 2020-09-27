@@ -77,6 +77,7 @@ public class CircleProgressBar extends View {
         initBackgroundPaint();
         initForegroundPaint();
         initTextPaint();
+        invalidate();
     }
 
     private void initTextPaint() {
@@ -176,14 +177,10 @@ public class CircleProgressBar extends View {
     }
 
     public void setColor(int color) {
-        int currentColor = this.color;
-        if(currentColor != this.color){
-            this.color = currentColor;
+        if(color != this.color){
+            this.color = color;
             init();
-        }else{
-            this.color = currentColor;
         }
-
     }
 
     public int getTextColor() {

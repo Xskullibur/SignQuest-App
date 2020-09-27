@@ -1,11 +1,16 @@
 package sg.edu.nyp.signquest.game
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.addListener
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -20,15 +25,19 @@ const val TOTAL_CHAR_MILLISECONDS = 10000
  */
 class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
 
-    override val topContainerId: Int = R.layout.fragment_player_to_sign_top
-    override val mainContainerId: Int = R.layout.fragment_player_to_sign_word_main
+    override val topContainerId: Int = R.layout.fragment_player_to_sign_word_main
+    override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
 
     override val viewModel: PlayerToSignWordViewModel by viewModels()
+
+    private lateinit var circleProgressBars: List<CircleProgressBar>
 
     companion object {
         @JvmStatic
         fun newInstance() = PlayerToSignWordFragment()
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +47,19 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
         return super.onCreateView(inflater, container, savedInstanceState).also {
             viewModel.gloss.observe(viewLifecycleOwner) {
                 it?.let {
+                    val list = mutableListOf<CircleProgressBar>()
                     for ((i, c) in it.value.withIndex()){
                         val circleProgressBar = createCircleProgressBar(c)
                         val state = viewModel.getCircleProgressBarStateForIndex(i)
-                        circleProgressBar.setCircleProgressBarState(state)
+                        circleProgressBar.setCircleProgressBarState(this.requireContext(), state)
                         addCircleProgressBar(circleProgressBar)
 
-                        //Start circle progress
-                        if(viewModel.currentIndex == i){
-                            state.startCountDown(circleProgressBar)
-                        }
-                    }
+                        list += circleProgressBar
 
+                    }
+                    circleProgressBars = list
+
+                    startNextCountDownCircleProgressBar()
                 }
             }
         }
@@ -58,7 +68,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
     private fun createCircleProgressBar(char: Char) =
         CircleProgressBar(this.requireContext()).also {
             it.text = char.toString()
-            it.color = R.color.colorAccent
+            it.color = getColor(this.requireContext(), R.color.colorAccent)
             it.textSize = 90
             it.progress = 0f
             it.strokeWidth = getDpInPixels(8f).toFloat()
@@ -71,14 +81,14 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
         words_linear_layout.addView(circleProgressBar)
     }
 
-    private fun CircleProgressBar.setCircleProgressBarState(circleProgressBarState: CircleProgressBarState){
-        progress = ((1 - circleProgressBarState.milliSecondsLeft / TOTAL_CHAR_MILLISECONDS.toFloat()) * 100)
-        color = when(circleProgressBarState.type){
+    private fun CircleProgressBar.setCircleProgressBarState(context: Context, circleProgressBarState: CircleProgressBarState){
+        progress = (circleProgressBarState.milliSecondsLeft / TOTAL_CHAR_MILLISECONDS.toFloat() * 100)
+        color = getColor(context, when(circleProgressBarState.type){
             CircleProgressBarStateType.InComplete -> R.color.circle_progress_bar_state_incomplete
             CircleProgressBarStateType.Correct -> R.color.circle_progress_bar_state_correct
             CircleProgressBarStateType.InCorrect -> R.color.circle_progress_bar_state_incorrect
             CircleProgressBarStateType.Current -> R.color.circle_progress_bar_state_current
-        }
+        })
         this.invalidate()
     }
 
@@ -92,16 +102,26 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
             duration = milliSecondsLeft.toLong()
             addUpdateListener {
                 type = CircleProgressBarStateType.Current
-                milliSecondsLeft = it.animatedValue as Int
-                circleProgressBar.setCircleProgressBarState(this@startCountDown)
+                milliSecondsLeft = duration.toInt() - (it.animatedValue as Int)
+                circleProgressBar.setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), this@startCountDown)
             }
-            addListener {
-                type = CircleProgressBarStateType.InCorrect
-                circleProgressBar.setCircleProgressBarState(this@startCountDown)
+            addListener (object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    type = CircleProgressBarStateType.InCorrect
+                    circleProgressBar.setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), this@startCountDown)
 
-
-            }
+                    startNextCountDownCircleProgressBar()
+                }
+            })
             start()
+        }
+    }
+
+    private fun startNextCountDownCircleProgressBar() {
+        if (viewModel.haveNextIndex()) {
+            viewModel.nextIndex()
+            val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
+            state.startCountDown(circleProgressBars[viewModel.currentIndex])
         }
     }
 

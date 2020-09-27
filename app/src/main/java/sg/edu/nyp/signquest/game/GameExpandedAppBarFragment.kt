@@ -51,6 +51,7 @@ abstract class GameExpandedAppBarFragment : Fragment() {
             lifecycleOwner = this@GameExpandedAppBarFragment
 
             backImageButton.setOnClickListener {
+                resetCountDownTimer()
                 activity?.finish()
             }
             root.topContainer.layoutResource = topContainerId
@@ -73,13 +74,13 @@ abstract class GameExpandedAppBarFragment : Fragment() {
     }
 
     fun correct(){
-        Toast.makeText(context, "Correct!", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Correct!", Toast.LENGTH_SHORT).show()
         questionListener.onComplete(true)
         resetCountDownTimer()
     }
 
     fun wrong(){
-        Toast.makeText(context, "Incorrect...", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Incorrect...", Toast.LENGTH_SHORT).show()
         questionListener.onComplete(false)
         resetCountDownTimer()
     }
