@@ -1,5 +1,6 @@
 package sg.edu.nyp.signquest.game
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,14 +10,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
+import sg.edu.nyp.signquest.MainActivity
 import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.*
+import sg.edu.nyp.signquest.game.view.ConfettiType
+import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
+import sg.edu.nyp.signquest.utils.ResourceManager
+import javax.annotation.Resource
 import kotlin.random.Random
 
 const val ARGS_GAME_AVAILABLE_GLOSSARY = "args_game_available_glossary"
 const val ARGS_GAME_TOTAL_QUESTION = "args_game_total_question"
+const val ARGS_GAME_MODULE_ID = "args_game_module_id"
+
+const val NEXT = "next"
 
 private const val DEFAULT_TOTAL_QUESTION = 5
 
@@ -30,11 +40,13 @@ class GameActivity : AppCompatActivity(), QuestionListener {
          *      startActivity(intent)
          * @param context
          * @param glossary - the glossary available to test the user
+         * @param moduleId - module id for the current quiz
          */
-        fun createActivityIntent(context: Context, glossary: CharArray): Intent {
+        fun createActivityIntent(context: Context, glossary: CharArray, moduleId: String): Intent {
             return Intent(context, GameActivity::class.java).apply {
                 putExtras(Bundle().apply {
                     putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, glossary)
+                    putString(ARGS_GAME_MODULE_ID, moduleId)
                 })
             }
         }
@@ -59,6 +71,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         setContentView(R.layout.activity_game)
         //Get chars from bundle
         val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
+        val moduleId = intent.extras?.getString(ARGS_GAME_MODULE_ID)!!
 
         //Get how many question to generate
         val argTotalQuestion = intent.extras?.getInt(ARGS_GAME_TOTAL_QUESTION)
@@ -89,6 +102,51 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                             finish()
                         }
                     }
+
+                    // Update step to completed
+                    val module = ResourceManager.getModule(moduleId)
+                    module.nextIncompleteStep()?.completed = true
+
+                    var title = "Please Try Again!"
+                    var confettiType = ConfettiType.None
+
+                    if (gameProgress.score >= gameProgress.totalAmountOfQuestion / 2) {
+                        title = "Well Done!"
+                        confettiType = ConfettiType.Burst
+                    }
+
+                    val fragmentManager = supportFragmentManager.beginTransaction()
+                    val fragment = CustomDialogFragment.newInstance(
+                        title = title,
+                        subtitle = "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}",
+                        confettiType = confettiType,
+                        onBackBtnClick = {
+                            finish()
+                            it.dismiss()
+                        },
+                        onRestartBtnClick = {
+                            // Get glossary for game
+                            finish()
+
+                            val glossList = ResourceManager.getCompletedGlossary(moduleId)
+                            if (glossList != null) {
+                                val intent = createActivityIntent(this, glossList, moduleId)
+                                startActivity(intent)
+                            }
+                            it.dismiss()
+                        },
+                        onNextBtnClick = {
+                            setResult(Activity.RESULT_OK, Intent().apply {
+                                putExtra(NEXT, true)
+                                putExtra(ARGS_GAME_MODULE_ID, moduleId)
+                            })
+                            finish()
+
+                            it.dismiss()
+                        }
+                    )
+
+                    fragment.show(fragmentManager, CustomDialogFragment.TAG)
                 }
             }
         }

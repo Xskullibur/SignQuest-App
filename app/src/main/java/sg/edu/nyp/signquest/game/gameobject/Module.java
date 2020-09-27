@@ -3,8 +3,12 @@ package sg.edu.nyp.signquest.game.gameobject;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Nullable;
 
 public class Module implements Serializable {
 
@@ -51,6 +55,16 @@ public class Module implements Serializable {
 
     public void setSteps(List<Step> steps) {
         this.steps = steps;
+    }
+
+    public boolean isCompleted() {
+        return steps.stream().allMatch(Step::getCompleted);
+    }
+
+    @Nullable
+    public Step nextIncompleteStep() {
+        Optional<Step> value = steps.stream().filter(x -> !x.getCompleted()).findFirst();
+        return value.orElse(null);
     }
 
 }

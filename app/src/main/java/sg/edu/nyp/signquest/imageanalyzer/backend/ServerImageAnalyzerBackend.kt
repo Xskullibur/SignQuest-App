@@ -14,6 +14,7 @@ import sg.edu.nyp.signquest.proto.ImageRequest
 import sg.edu.nyp.signquest.proto.TranslationServiceGrpc
 import sg.edu.nyp.signquest.utils.toBitmap
 import java.nio.ByteBuffer
+import java.util.concurrent.TimeUnit
 
 class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
@@ -51,6 +52,7 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
     override fun stop() {
         Log.d(TAG, "Shutting down server connection")
         mChannel.shutdownNow()
+        mChannel.awaitTermination(5, TimeUnit.SECONDS)
     }
 
 }

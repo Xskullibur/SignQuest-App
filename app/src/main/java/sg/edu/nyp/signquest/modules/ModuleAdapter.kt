@@ -11,12 +11,15 @@ import kotlinx.android.synthetic.main.module_card.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Module
+import sg.edu.nyp.signquest.tutorial.OnFinished
 import sg.edu.nyp.signquest.utils.ResourceManager
 
 class ModuleAdapter(private val context: Context, private val datasource: List<Module>):
     BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+    var listener: OnSelectedListener? = null
 
     override fun getCount(): Int {
         return datasource.size
@@ -48,30 +51,14 @@ class ModuleAdapter(private val context: Context, private val datasource: List<M
         )
 
         view.moduleCard.setOnClickListener{ view ->
-
-            val (_, step, glossary) = ResourceManager.findNext(module.id)
-
-            if (glossary != null) {
-                if (step != null) {
-                    val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(glossary, step, module.id)
-                    Navigation.findNavController(view).navigate(action)
-                }
-            }
-            else {
-
-                // Get glossary for game
-                val glossList = ResourceManager.getCompletedGlossary(module.id)
-                if (glossList != null) {
-                    val intent = GameActivity.createActivityIntent(context, glossList)
-                    context.startActivity(intent)
-                }
-
-            }
-
+            listener?.onSelect(module)
         }
 
         return view
     }
 
+    interface OnSelectedListener{
+        fun onSelect(module: Module)
+    }
 
 }

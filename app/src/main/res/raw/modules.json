@@ -1,6 +1,6 @@
 [
 	{
-		"id": "0",
+		"id": "1",
 		"title": "Alphabets",
 		"description": "Learn the basics starting with signing alphabets!",
 		"steps": [
@@ -21,7 +21,7 @@
 					{
 						"value": "C",
 						"src": "c",
-						"completed": true
+						"completed": false
 					},
 					{
 						"value": "D",
@@ -173,7 +173,7 @@
 		]
 	},
 	{
-		"id": "1",
+		"id": "2",
 		"title": "Finger Spelling",
 		"description": "Make use of what you have learnt in the previous module to spell words.",
 		"steps":[
@@ -199,37 +199,6 @@
 				"completed": false,
 				"glossary": [
 					{"value": "Ben"}
-				]
-			}
-		]
-	},
-	{
-		"id": "2",
-		"title": "Greetings",
-		"description": "Learn to greet people with your newly found power of Sign Language",
-		"steps":[
-			{
-				"completed": false,
-				"glossary": [
-					{"value": "Hello"}
-				]
-			},
-			{
-				"completed": false,
-				"glossary": [
-					{"value": "Goodbye"}
-				]
-			},
-			{
-				"completed": false,
-				"glossary": [
-					{"value": "See you later"}
-				]
-			},
-			{
-				"completed": false,
-				"glossary": [
-					{"value": "Nice to meet you"}
 				]
 			}
 		]
@@ -267,7 +236,7 @@
 	},
 	{
 		"id": "4",
-		"title": "Propositions",
+		"title": "Descriptive Words",
 		"description": "Learn to greet people with your newly found power of Sign Language",
 		"steps":[
 			{
@@ -298,7 +267,7 @@
 	},
 	{
 		"id": "5",
-		"title": "Descriptive Words",
+		"title": "Propositions",
 		"description": "Learn to greet people with your newly found power of Sign Language",
 		"steps":[
 			{

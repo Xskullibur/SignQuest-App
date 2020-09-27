@@ -23,7 +23,8 @@
         tools:layout="@layout/fragment_tutorial">
         <action
             android:id="@+id/action_tutorialFragment_to_practiceFragment"
-            app:destination="@id/practiceFragment" />
+            app:destination="@id/practiceFragment"
+            app:popUpTo="@id/mainModuleFragment" />
         <argument
             android:name="glossary"
             app:argType="sg.edu.nyp.signquest.game.gameobject.Glossary" />

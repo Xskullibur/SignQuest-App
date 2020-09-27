@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.ImageAnalysis
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -18,6 +20,7 @@ import sg.edu.nyp.signquest.game.CameraListener
 import sg.edu.nyp.signquest.game.CameraManager
 import sg.edu.nyp.signquest.game.GameActivity
 import sg.edu.nyp.signquest.game.gameobject.Glossary
+import sg.edu.nyp.signquest.game.gameobject.Module
 import sg.edu.nyp.signquest.game.gameobject.Step
 import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
@@ -38,6 +41,8 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
     private lateinit var cameraManager: CameraManager
 
     private var imageAnalyzer: SignLanguageImageAnalyzer? = null
+
+    private val viewModel: ModuleViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +93,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
         cameraManager.showCamera(practice_cameraView.createSurfaceProvider(), { buildAnalyzer() })
     }
 
+
     override fun signDetected(predictedValue: Char) {
         if (predictedValue.toString() == glossary.value) {
 
@@ -95,7 +101,6 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                 cameraManager.stopCamera()
             }
 
-            // TODO: Update MainUtils
             glossary.completed = true
 
             val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
@@ -111,7 +116,10 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
                     it.dismiss()
                 },
                 onNextBtnClick = {
-                    ResourceManager.navigateToNext(moduleId, it)
+                    findNavController().popBackStack()
+                    val module = ResourceManager.getModule(moduleId)
+
+                    viewModel.listener?.finish(module)
                     it.dismiss()
                 }
             )
@@ -139,4 +147,7 @@ class PracticeFragment : Fragment(), CameraListener, OnSignDetected {
         super.onDetach()
         imageAnalyzer?.stop()
     }
+}
+interface OnFinished{
+    fun finish(module: Module)
 }
