@@ -45,11 +45,11 @@
         app:layout_constraintTop_toBottomOf="@+id/learnBtn" />
 
     <Button
-        android:id="@+id/quizBtn"
+        android:id="@+id/leaderboardBtn"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Leaderboards"
+        android:text="Leaderboard"
         app:icon="@drawable/ic_baseline_bar_chart_24"
         app:iconGravity="start"
         app:layout_constraintEnd_toEndOf="parent"

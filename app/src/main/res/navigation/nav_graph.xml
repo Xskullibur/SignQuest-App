@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_startFragment_to_mainModuleFragment"
             app:destination="@id/mainModuleFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_leaderboardFragment"
+            app:destination="@id/leaderboardFragment" />
     </fragment>
     <fragment
         android:id="@+id/tutorialFragment"
@@ -58,4 +61,8 @@
             android:id="@+id/action_mainModuleFragment_to_tutorialFragment"
             app:destination="@id/tutorialFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="sg.edu.nyp.signquest.game.LeaderboardFragment"
+        android:label="LeaderboardFragment" />
 </navigation>
