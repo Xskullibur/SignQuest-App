@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.*
 import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
@@ -38,11 +41,20 @@ class GameActivity : AppCompatActivity(), QuestionListener {
     }
     //View models and current fragment
     private val viewModel: GameViewModel by viewModels()
-    private val leaderboardVM: LeaderboardViewModel by viewModels()
     private var currentFragment: GameExpandedAppBarFragment? = null
+    private var scoreTable: List<ScoreTable>? = null
+    private var scoreList = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch{
+            scoreTable = viewModel.getScores()
+
+            scoreTable?.forEach {
+                scoreList.add(it.score)
+            }
+        }
 
         setContentView(R.layout.activity_game)
         //Get chars from bundle
@@ -65,9 +77,17 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){
                 viewModel.gameProgress.value?.let {gameProgress ->
-                    leaderboardVM.addPlayerScore(gameProgress.score, "test")
-                    showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
-                        finish()
+                    lifecycleScope.launch{
+                        viewModel.addPlayerScore(gameProgress.score, "player")
+                    }
+                    if(scoreList.max()!! < gameProgress.score){
+                        showAlert(this,"High Score!!!", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
+                            finish()
+                        }
+                    }else{
+                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
+                            finish()
+                        }
                     }
                 }
             }

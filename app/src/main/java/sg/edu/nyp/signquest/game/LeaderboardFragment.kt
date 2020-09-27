@@ -43,7 +43,7 @@ class LeaderboardFragment : Fragment(){
         lifecycleScope.launch{
 
             //db.scoreDetailDao().addScoreDetail(ScoreTable(null, 10, "asdasdasd"))
-            addScore(2, "test")
+            //addScore(2, "test")
             val scoreTable = getScores()
 
             scoreTable.forEach{
