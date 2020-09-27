@@ -73,10 +73,12 @@ abstract class GameExpandedAppBarFragment : Fragment() {
 
     fun correct(){
         questionListener.onComplete(true)
+        resetCountDownTimer()
     }
 
     fun wrong(){
         questionListener.onComplete(false)
+        resetCountDownTimer()
     }
 
     protected fun startCountDownTimer(totalMillisSeconds: Long, countDownInterval: Long = 1000){

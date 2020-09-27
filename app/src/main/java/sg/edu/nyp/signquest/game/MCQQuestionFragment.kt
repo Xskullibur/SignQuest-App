@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import kotlinx.android.synthetic.main.fragment_question_main.*
 import kotlinx.android.synthetic.main.fragment_question_main.view.*
 import kotlinx.android.synthetic.main.fragment_question_top.*
 import sg.edu.nyp.signquest.R
@@ -19,14 +18,19 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
     override val mainContainerId: Int
         get() = R.layout.fragment_question_main
 
+    private var motionLayoutView: MotionLayout? = null
+
     override val viewModel: MCQQuestionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
+
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState).apply {
+
+            motionLayoutView = this?.findViewById(R.id.fragment_question_motion_layout)
 
             setGameCountDownTimer(this@MCQQuestionFragment)
             if(!viewModel.timerIsStarted){
@@ -75,6 +79,7 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
             } else {
                 wrong()
             }
+            viewModel.glossToBeAnswered.removeObservers(viewLifecycleOwner)
         }
     }
 
@@ -90,8 +95,8 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
     override fun exitFragmentTransition(onFinished: () -> Unit) {
         //Undo fragment enter transition
-        fragment_question_motion_layout.transitionToStart()
-        fragment_question_motion_layout.setTransitionListener(object :
+        motionLayoutView?.transitionToStart()
+        motionLayoutView?.setTransitionListener(object :
             MotionLayout.TransitionListener {
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
             }

@@ -33,8 +33,10 @@ class GameViewModel : ViewModel() {
 
 
     fun addScore(score: Int){
-        _gameProgress.value?.score?.plus(score)
-        _gameProgress.value = _gameProgress.value
+        _gameProgress.value?.let {
+            it.score += score
+            _gameProgress.value = it
+        }
     }
 
 
