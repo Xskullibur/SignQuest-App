@@ -22,6 +22,7 @@
         android:layout_width="180dp"
         android:layout_height="99dp"
         android:gravity="center|center_horizontal|center_vertical"
+        android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/colorPrimary"
         tools:text="TEST" />
@@ -33,6 +34,7 @@
         android:backgroundTint="@color/black_overlay"
         android:fontFamily="@font/audiowide"
         android:gravity="center|start"
+        android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/colorPrimaryDark"
         tools:text="TEST" />

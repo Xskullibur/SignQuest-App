@@ -93,15 +93,15 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     lifecycleScope.launch{
                         viewModel.addPlayerScore(gameProgress.score, "player")
                     }
-                    if(scoreList.max()?:0 < gameProgress.score){
-                        showAlert(this,"High Score!!!", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
-                            finish()
-                        }
-                    }else{
-                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
-                            finish()
-                        }
-                    }
+//                    if(scoreList.max()?:0 < gameProgress.score){
+//                        showAlert(this,"High Score!!!", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
+//                            finish()
+//                        }
+//                    }else{
+//                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
+//                            finish()
+//                        }
+//                    }
 
                     // Update step to completed
                     val module = ResourceManager.getModule(moduleId)
@@ -110,10 +110,20 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     var title = "Please Try Again!"
                     var confettiType = ConfettiType.None
 
-                    if (gameProgress.score >= gameProgress.totalAmountOfQuestion / 2) {
+                    if(scoreList.max()?:0 < gameProgress.score){
                         title = "Well Done!"
                         confettiType = ConfettiType.Burst
                     }
+                    else if(gameProgress.score >= gameProgress.totalAmountOfQuestion / 2)
+                    {
+                        title = "Nice Try!"
+                        confettiType = ConfettiType.StreamFromTop
+                    }
+                    else{
+                        title = "Good Effort"
+                        confettiType = ConfettiType.None
+                    }
+
 
                     val fragmentManager = supportFragmentManager.beginTransaction()
                     val fragment = CustomDialogFragment.newInstance(
