@@ -16,4 +16,10 @@
 
     <color name="gameTextBackground">#73FFFFFF</color>
 
+    <!--  Circle Progress Bar State  -->
+    <color name="circle_progress_bar_state_incorrect">#ff1744</color>
+    <color name="circle_progress_bar_state_correct">#00e676</color>
+    <color name="circle_progress_bar_state_current">#3d5afe</color>
+    <color name="circle_progress_bar_state_incomplete">#9e9e9e</color>
+
 </resources>

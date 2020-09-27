@@ -54,7 +54,8 @@ enum class QuestionType {
             val charToPredict = availableChar.random()
             return PlayerToSignQuestion(Gloss(charToPredict.toString()))
         }
-    };
+    },
+    ;
 
     /**
      * Generate a random question.

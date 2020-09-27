@@ -8,15 +8,12 @@ import com.google.protobuf.ByteString
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import io.grpc.StatusRuntimeException
-import io.grpc.stub.StreamObserver
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.imageanalyzer.ImageAnalyzerBackend
 import sg.edu.nyp.signquest.proto.ImageRequest
-import sg.edu.nyp.signquest.proto.TranslatedReply
 import sg.edu.nyp.signquest.proto.TranslationServiceGrpc
 import sg.edu.nyp.signquest.utils.toBitmap
 import java.nio.ByteBuffer
-import java.util.concurrent.TimeUnit
 
 class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
