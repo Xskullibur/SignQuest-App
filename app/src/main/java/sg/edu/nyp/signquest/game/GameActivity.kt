@@ -80,7 +80,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     lifecycleScope.launch{
                         viewModel.addPlayerScore(gameProgress.score, "player")
                     }
-                    if(scoreList.max()!! < gameProgress.score){
+                    if(scoreList.max()?:0 < gameProgress.score){
                         showAlert(this,"High Score!!!", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
                             finish()
                         }
