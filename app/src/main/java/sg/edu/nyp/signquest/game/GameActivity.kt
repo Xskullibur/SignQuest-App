@@ -59,7 +59,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         }
 
         viewModel.gameProgress.observe(this){
-            if(savedInstanceState == null) showQuestion(it, it.currentQuestion)
+            if(savedInstanceState == null) showQuestion(it.currentQuestion)
         }
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){
@@ -72,8 +72,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         }
     }
 
-    private fun showQuestion(gameProgress: GameProgress, question: Question){
-        val fragment = question.createFragment(gameProgress)
+    private fun showQuestion(question: Question){
+        val fragment = question.createFragment()
         if(this.currentFragment == null){
             replaceCurrentQuestionFragment(fragment)
         }else{

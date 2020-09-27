@@ -3,6 +3,7 @@ package sg.edu.nyp.signquest.game.gameobject
 import sg.edu.nyp.signquest.game.GameExpandedAppBarFragment
 import sg.edu.nyp.signquest.game.MCQQuestionFragment
 import sg.edu.nyp.signquest.game.PlayerToSignFragment
+import sg.edu.nyp.signquest.game.PlayerToSignWordFragment
 import java.io.Serializable
 
 abstract class Question(val glossToBeAnswered: Gloss): Serializable {
@@ -10,24 +11,25 @@ abstract class Question(val glossToBeAnswered: Gloss): Serializable {
      * Create a fragment which contains the screen to let the user answer the answer.
      * @return a fragment which correspond to the question that the user will interact with to answer the question.
      */
-    abstract fun createFragment(gameProgress: GameProgress): GameExpandedAppBarFragment
+    abstract fun createFragment(): GameExpandedAppBarFragment
 }
 
 class PlayerToSignQuestion(glossToBeAnswered: Gloss): Question(glossToBeAnswered) {
     /**
      * Create a [PlayerToSignFragment] for letting user play [PlayerToSignQuestion]
      */
-    override fun createFragment(
-        gameProgress: GameProgress
-    ) = PlayerToSignFragment.newInstance()
+    override fun createFragment() = PlayerToSignFragment.newInstance()
 }
 
 class MCQQuestion(glossToBeAnswered: Gloss, val otherGlossaryChoice: Set<Gloss>): Question(glossToBeAnswered){
     /**
      * Create a [MCQQuestionFragment] for letting user play [PlayerToSignQuestion]
      */
-    override fun createFragment(gameProgress: GameProgress
-    ) = MCQQuestionFragment.newInstance()
+    override fun createFragment() = MCQQuestionFragment.newInstance()
+}
+
+class PlayerToSignWordQuestion(glossToBeAnswered: Gloss): Question(glossToBeAnswered){
+    override fun createFragment() = PlayerToSignWordFragment.newInstance()
 }
 
 enum class QuestionType {
