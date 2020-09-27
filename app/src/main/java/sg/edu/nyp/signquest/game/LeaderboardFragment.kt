@@ -43,6 +43,7 @@ class LeaderboardFragment : Fragment(){
         lifecycleScope.launch{
 
             //db.scoreDetailDao().addScoreDetail(ScoreTable(null, 10, "asdasdasd"))
+            addScore(2, "test")
             val scoreTable = getScores()
 
             scoreTable.forEach{
@@ -82,6 +83,10 @@ class LeaderboardFragment : Fragment(){
 
     suspend fun getScores() = withContext(Dispatchers.IO) {
         db.scoreDetailDao().scoreDetails()
+    }
+
+    suspend fun addScore(score: Int, name: String) = withContext(Dispatchers.IO) {
+        db.scoreDetailDao().addScoreDetail(ScoreTable(null, score, name))
     }
 
     class LeaderboardAdapter(val leaderboards: List<ScoreDetail>): RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>(){
