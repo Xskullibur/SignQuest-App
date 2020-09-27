@@ -93,15 +93,6 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     lifecycleScope.launch{
                         viewModel.addPlayerScore(gameProgress.score, "player")
                     }
-//                    if(scoreList.max()?:0 < gameProgress.score){
-//                        showAlert(this,"High Score!!!", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
-//                            finish()
-//                        }
-//                    }else{
-//                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
-//                            finish()
-//                        }
-//                    }
 
                     // Update step to completed
                     val module = ResourceManager.getModule(moduleId)
@@ -110,7 +101,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     var title = "Please Try Again!"
                     var confettiType = ConfettiType.None
 
-                    if(scoreList.max()?:0 < gameProgress.score){
+                    if(scoreList.maxOrNull() ?:0 < gameProgress.score){
                         title = "Well Done!"
                         confettiType = ConfettiType.Burst
                     }
