@@ -13,14 +13,19 @@ import androidx.room.*
 import kotlinx.android.synthetic.main.fragment_leaderboard.view.*
 import kotlinx.android.synthetic.main.leaderboard_card.view.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import sg.edu.nyp.signquest.R
 
 class LeaderboardFragment : Fragment(){
 
+    private lateinit var db: AppDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        db = Room.databaseBuilder(this@LeaderboardFragment.requireContext(),
+            AppDatabase::class.java, "signquest.db").fallbackToDestructiveMigration().build()
     }
 
     override fun onCreateView(
@@ -28,28 +33,47 @@ class LeaderboardFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        var scoreList: List<ScoreDetail> = mutableListOf(ScoreDetail(1000, "dinodance.json"))
+        var scoreList: List<ScoreDetail> = mutableListOf(ScoreDetail(3, "trophy.json", "Ben"),ScoreDetail(4, "trophy.json", "Mary"),ScoreDetail(2, "trophy.json", "May"),ScoreDetail(5, "trophy.json", "John"), ScoreDetail(2, "trophy.json", "Raven"))
+        scoreList =  scoreList.sortedByDescending { scoreDetail -> scoreDetail.score }
+        var count = 1
+        scoreList.forEach{
+            if(count == 1)
+            {
+                it.animation = "trophy.json"
+            }
+            else if(count == 2)
+            {
+                it.animation = "sliver.json"
+            }
+            else if(count ==3)
+            {
+                it.animation = "bronze.json"
+            }
+            else
+            {
+                it.animation = "dinodance.json"
+            }
+            it.name = count.toString() + ". " + it.name
+            count++
+        }
 
         val view = inflater.inflate(R.layout.fragment_leaderboard, container, false)
 
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val db = Room.databaseBuilder(this@LeaderboardFragment.requireContext(),
-                AppDatabase::class.java, "signquest.db").fallbackToDestructiveMigration().build()
-            db.scoreDetailDao().addScoreDetail(ScoreTable(null, 10, "asdasdasd"))
+        lifecycleScope.launch{
 
+            //db.scoreDetailDao().addScoreDetail(ScoreTable(null, 10, "asdasdasd"))
 
-            withContext(Dispatchers.Main){
-                view.scoreList.adapter = LeaderboardAdapter(scoreList)
-                view.scoreList.layoutManager = LinearLayoutManager(this@LeaderboardFragment.requireContext())
-            }
-
+            view.scoreList.adapter = LeaderboardAdapter(scoreList)
+            view.scoreList.layoutManager = LinearLayoutManager(this@LeaderboardFragment.requireContext())
         }
 //        val scoreList = db.scoreDetailDao().scoreDetails()
 
         // Inflate the layout for this fragment
-
-
         return view
+    }
+
+    suspend fun getScores() = withContext(Dispatchers.IO) {
+        db.scoreDetailDao().scoreDetails()
     }
 
     class LeaderboardAdapter(val leaderboards: List<ScoreDetail>): RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>(){
@@ -67,7 +91,8 @@ class LeaderboardFragment : Fragment(){
         override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
             val leaderboard = leaderboards[position]
             holder.view.animationView.setAnimation(leaderboard.animation)
-            holder.view.scoreAmount.text = leaderboard.score.toString()
+            holder.view.scoreAmount.text = leaderboard.score.toString() + " pt"
+            holder.view.playerName.text = leaderboard.name.toString()
         }
 
 
@@ -88,7 +113,8 @@ data class ScoreTable(
 
 class ScoreDetail(
     val score: Int,
-    val animation: String
+    var animation: String,
+    var name: String
 )
 
 @Dao
