@@ -11,22 +11,22 @@
 					{
 						"value": "A",
 						"src":  "a",
-						"completed": false
+						"completed": true
 					},
 					{
 						"value": "B",
 						"src": "b",
-						"completed": false
+						"completed": true
 					},
 					{
 						"value": "C",
 						"src": "c",
-						"completed": true
+						"completed": false
 					},
 					{
 						"value": "D",
 						"src": "d",
-						"completed": true
+						"completed": false
 					}
 				]
 			},

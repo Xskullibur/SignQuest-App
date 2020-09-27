@@ -13,8 +13,8 @@ import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 import sg.edu.nyp.signquest.R
 
-public enum class ConfettiType {
-    Burst, StreamFromTop
+enum class ConfettiType {
+    Burst, StreamFromTop, None
 }
 
 class CustomDialogFragment : DialogFragment() {
@@ -112,6 +112,7 @@ class CustomDialogFragment : DialogFragment() {
         when (confettiType) {
             ConfettiType.Burst -> burstFromCenter()
             ConfettiType.StreamFromTop -> streamFromTop()
+            else -> return
         }
 
     }

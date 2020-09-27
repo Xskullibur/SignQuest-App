@@ -1,7 +1,13 @@
 package sg.edu.nyp.signquest.utils
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -63,58 +69,70 @@ object ResourceManager {
         return null
     }
 
-    fun navigateToNext(moduleId: String, sender: Fragment, context: Context) {
-        val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
+//    fun navigateToNext(moduleId: String, sender: Fragment, context: Context) {
+//        val (nextModule, nextStep, nextGloss) = ResourceManager.findNext(moduleId)
+//
+//                if (nextGloss != null && nextStep != null) {
+//
+//
+//                    // TODO: Navigate from MainModule to Tutorial
+//
+//                    // TODO: Navigate from Practice to Tutorial
+//
+//                    // Show Next Gloss
+//                    val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
+//                    try {
+//                // From MainModule
+//                sender.findNavController().navigate(action)
+//            }
+//            catch (_: IllegalArgumentException) {
+//                // From Practice
+//                sender.findNavController().popBackStack()
+//                sender.findNavController().navigate(action)
+//            }
+//
+//        }
+//        else if (nextModule != null && nextModule.id == moduleId) {
+//
+//            // TODO: Navigate from anywhere to Quiz
+//
+//            val glossary = ResourceManager.getCompletedGlossary(moduleId)
+//            if (glossary != null) {
+//                val fragmentManager = sender.requireActivity().supportFragmentManager.beginTransaction()
+//                val fragment = CustomPlayDialogFragment.newInstance(
+//                    title = "Quiz Time!",
+//                    subtitle = "${glossary.first()} - ${glossary.last()}"
+//                ){ dialog ->
+//
+//                    sender.requireActivity().registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//                        if (it.resultCode == Activity.RESULT_OK) {
+////                            val intent = it.
+//                        }
+//                    }
+//
+//                    // Navigate to Game
+//                    val intent = GameActivity.createActivityIntent(context, glossary, moduleId)
+//                    startActivityForResult.launch(intent)
+//                    dialog.dismiss()
+//                }
+//
+//                fragment.show(fragmentManager, CustomPlayDialogFragment.TAG)
+//            }
+//
+//            sender.findNavController().popBackStack()
+//            sender.findNavController().popBackStack()
+//
+//        }
+//        else {
+//            // Navigate to Menu
+//            sender.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
+//        }
+//
+//    }
 
-        if (nextGloss != null && nextStep != null) {
 
-            val action = MainModuleFragmentDirections.actionMainModuleFragmentToTutorialFragment(nextGloss, nextStep, moduleId)
-            try {
-                // Show Next Gloss
-                sender.findNavController().navigate(action)
-            }
-            catch (_: IllegalArgumentException) {
-                sender.findNavController().popBackStack()
-                sender.findNavController().navigate(action)
-            }
-
-        }
-        else if (nextModule != null && nextModule.id == moduleId) {
-
-            val glossary = ResourceManager.getCompletedGlossary(moduleId)
-            if (glossary != null) {
-                val fragmentManager = sender.requireActivity().supportFragmentManager.beginTransaction()
-                val fragment = CustomPlayDialogFragment.newInstance(
-                    title = "Quiz Time!",
-                    subtitle = "${glossary.first()} - ${glossary.last()}"
-                ){
-
-                    // Navigate to Game
-                    val intent = GameActivity.createActivityIntent(context, glossary)
-                    context.startActivity(intent)
-                    it.dismiss()
-                }
-
-                fragment.show(fragmentManager, CustomPlayDialogFragment.TAG)
-            }
-
-            sender.findNavController().popBackStack()
-            sender.findNavController().popBackStack()
-
-        }
-        else {
-            // Navigate to Menu
-            sender.findNavController().popBackStack(R.id.action_startFragment_to_mainModuleFragment, false)
-        }
-
-    }
-
-    fun findNext(moduleId: String): Triple<Module?, Step?, Glossary?> {
-        val module = data.find { it.id == moduleId }
-        val step = module?.steps?.find { !it.completed }
-        val glossary = step?.glossary?.find { !it.completed }
-
-        return Triple(module, step, glossary)
+    fun getModule(moduleId: String): Module {
+        return data.first { x -> x.id == moduleId }
     }
 
 }

@@ -3,8 +3,12 @@ package sg.edu.nyp.signquest.game.gameobject;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Nullable;
 
 public class Step implements Serializable {
 
@@ -40,6 +44,12 @@ public class Step implements Serializable {
 
     public void setGlossary(List<Glossary> glossary) {
         this.glossary = glossary;
+    }
+
+    @Nullable
+    public Glossary nextIncompleteGloss() {
+        Optional<Glossary> value = glossary.stream().filter(x -> !x.getCompleted()).findFirst();
+        return value.orElse(null);
     }
 
 }
