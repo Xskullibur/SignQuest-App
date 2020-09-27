@@ -38,6 +38,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
     }
     //View models and current fragment
     private val viewModel: GameViewModel by viewModels()
+    private val leaderboardVM: LeaderboardViewModel by viewModels()
     private var currentFragment: GameExpandedAppBarFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){
                 viewModel.gameProgress.value?.let {gameProgress ->
+                    leaderboardVM.addPlayerScore(gameProgress.score, "test")
                     showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
                         finish()
                     }

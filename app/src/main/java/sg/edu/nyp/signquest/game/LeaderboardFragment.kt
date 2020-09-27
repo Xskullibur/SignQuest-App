@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,7 @@ import sg.edu.nyp.signquest.R
 class LeaderboardFragment : Fragment(){
 
     private lateinit var db: AppDatabase
+    private val viewModel: LeaderboardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +36,7 @@ class LeaderboardFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        var scoreList: List<ScoreDetail> = mutableListOf(ScoreDetail(3, "trophy.json", "Ben"),ScoreDetail(4, "trophy.json", "Mary"),ScoreDetail(2, "trophy.json", "May"),ScoreDetail(5, "trophy.json", "John"), ScoreDetail(2, "trophy.json", "Raven"))
+        var scoreList: List<ScoreDetail> = viewModel.scoreList
         scoreList =  scoreList.sortedByDescending { scoreDetail -> scoreDetail.score }
         var count = 1
         scoreList.forEach{
