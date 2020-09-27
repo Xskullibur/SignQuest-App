@@ -21,12 +21,12 @@
 					{
 						"value": "C",
 						"src": "c",
-						"completed": false
+						"completed": true
 					},
 					{
 						"value": "D",
 						"src": "d",
-						"completed": false
+						"completed": true
 					}
 				]
 			},
