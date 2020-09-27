@@ -85,7 +85,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         }
 
         viewModel.gameProgress.observe(this){
-            if(savedInstanceState == null) showQuestion(it.currentQuestion)
+            val isGameCompleted = viewModel.isGameCompleted.value
+            if(savedInstanceState == null && isGameCompleted != null && !isGameCompleted) showQuestion(it.currentQuestion)
         }
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){
