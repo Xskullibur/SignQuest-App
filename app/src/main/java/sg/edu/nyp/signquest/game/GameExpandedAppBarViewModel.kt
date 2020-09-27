@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.game.gameobject.Question
 import java.lang.IllegalStateException
 
-class GameExpandedAppBarViewModel: ViewModel()  {
+open class GameExpandedAppBarViewModel: ViewModel()  {
 
     private val _currentMilliseconds: MutableLiveData<Long> = MutableLiveData(6000)
     private val currentMilliseconds: LiveData<Long> get() = _currentMilliseconds
@@ -23,7 +24,12 @@ class GameExpandedAppBarViewModel: ViewModel()  {
     private val _gameProgress: MutableLiveData<GameProgress> = MutableLiveData()
     val gameProgress: LiveData<GameProgress>  get() = _gameProgress
 
-    fun createGameProgress(gameProgress: GameProgress){
+    //Current question
+    val question: LiveData<Question> = Transformations.map(_gameProgress) {
+        it.currentQuestion
+    }
+
+    fun setGameProgress(gameProgress: GameProgress){
         _gameProgress.value = gameProgress
     }
 

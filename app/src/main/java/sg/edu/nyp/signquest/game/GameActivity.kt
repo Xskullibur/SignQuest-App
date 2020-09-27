@@ -13,6 +13,9 @@ import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 import kotlin.random.Random
 
 const val ARGS_GAME_AVAILABLE_GLOSSARY = "args_game_available_glossary"
+const val ARGS_GAME_TOTAL_QUESTION = "args_game_total_question"
+
+private const val DEFAULT_TOTAL_QUESTION = 5
 
 class GameActivity : AppCompatActivity(), QuestionListener {
 
@@ -20,7 +23,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         /**
          * Create an activity intent to start GameActivity
          * Usage:
-         *      val intent = GameActivity.createActivityIntent(context. glossary)
+         *      val intent = GameActivity.createActivityIntent(<context>, <glossary>)
          *      startActivity(intent)
          * @param context
          * @param glossary - the glossary available to test the user
@@ -33,109 +36,60 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             }
         }
     }
-
+    //View models and current fragment
     private val viewModel: GameViewModel by viewModels()
-
-//    private val availableChar = ('A'..'Z').filter {
-//        //The letter 'J' and 'Z' is not included
-//        it != 'J' || it != 'Z'
-//    }
+    private var currentFragment: GameExpandedAppBarFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_game)
+        //Get chars from bundle
+        val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
 
-        val _gameProgress = viewModel.gameProgress.value
-        if(_gameProgress == null){
+        //Get how many question to generate
+        val argTotalQuestion = intent.extras?.getInt(ARGS_GAME_TOTAL_QUESTION)
+        val totalQuestion = if(argTotalQuestion != null && argTotalQuestion != 0) argTotalQuestion else DEFAULT_TOTAL_QUESTION
 
-            //Get chars from bundle
-            val availableChar = intent.extras?.getCharArray(ARGS_GAME_AVAILABLE_GLOSSARY)!!.toList()
-
-            //Randomly generate 20 questions
-            val random20Questions = List(20){ randomQuestion(availableChar) }
-
+        //Create Game Progress only if there is no Game Progress already created, example screen rotation
+        if(viewModel.gameProgress.value == null){
             //Create Game Progress for storing game state
-            val gameProgress = GameProgress(random20Questions)
+            val gameProgress = GameProgress(totalQuestion, availableChar)
             viewModel.createGameProgress(gameProgress)
+        }
 
-            viewModel.gameProgress.observe(this){
-
-                showQuestion(it.currentQuestion)
-            }
-            viewModel.isGameCompleted.observe(this){isGameCompleted ->
-                if(isGameCompleted){
-                    viewModel.gameProgress.value?.let {gameProgress
-                        showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}")
+        viewModel.gameProgress.observe(this){
+            if(savedInstanceState == null) showQuestion(it.currentQuestion)
+        }
+        viewModel.isGameCompleted.observe(this){isGameCompleted ->
+            if(isGameCompleted){
+                viewModel.gameProgress.value?.let {gameProgress ->
+                    showAlert(this,"Score", "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}"){
+                        finish()
                     }
                 }
             }
+        }
+    }
 
-            showQuestion(random20Questions[0])
+    private fun showQuestion(question: Question){
+        val fragment = question.createFragment()
+        if(this.currentFragment == null){
+            replaceCurrentQuestionFragment(fragment)
         }else{
-            showQuestion(_gameProgress.currentQuestion)
+            this.currentFragment?.exitFragmentTransition {
+                this.currentFragment = null
+                replaceCurrentQuestionFragment(fragment)
+            }
         }
-
 
     }
 
-    fun showQuestion(question: Question){
-        when (question) {
-            is PlayerToSignQuestion -> {
-                showQuestion(question)
-            }
-            is MCQQuestion -> {
-                showQuestion(question)
-            }
-            else -> {
-                throw IllegalArgumentException("Unknown class for question, question should be either an instance of PLayerToSignQuestion or MCQQuestion")
-            }
-        }
-    }
-
-    fun showQuestion(question: PlayerToSignQuestion){
-        val fragment = PlayerToSignFragment.newInstance(viewModel.gameProgress.value!!, question)
+    private fun replaceCurrentQuestionFragment(questionFragment: GameExpandedAppBarFragment){
         supportFragmentManager.commit {
-            replace(R.id.game_fragment_container, fragment)
+            currentFragment = questionFragment
+            replace(R.id.game_fragment_container, questionFragment)
         }
-    }
-    fun showQuestion(question: MCQQuestion){
-        val fragment = MCQQuestionFragment.newInstance(viewModel.gameProgress.value!!, question)
-        supportFragmentManager.commit {
-            replace(R.id.game_fragment_container, fragment)
-        }
-    }
-
-    /**
-     * Return a random question, either a MCQ question or Player to Sign Question
-     */
-    fun randomQuestion(availableChar: List<Char>): Question{
-        return if(Random.nextBoolean()){
-            //Player to Sign Question
-            randomPlayerToSignQuestion(availableChar)
-        }else{
-            //MCQ Question
-            randomMCQQuestion(availableChar)
-        }
-    }
-
-    /**
-     * Returns a random Player to Sign Question
-     */
-    fun randomPlayerToSignQuestion(availableChar: List<Char>): PlayerToSignQuestion {
-        val charToPredict = availableChar.random()
-        return PlayerToSignQuestion(Gloss(charToPredict.toString()))
-    }
-
-    /**
-     * Returns a random MCQ Question
-     */
-    fun randomMCQQuestion(availableChar: List<Char>): MCQQuestion {
-        val selectedGlossary = availableChar.shuffled().take(4).map { Gloss(it.toString()) }
-
-        val glossToPredict = selectedGlossary[0]
-        val otherGlossaryChoice = selectedGlossary.drop(1)
-
-        return MCQQuestion(glossToPredict, otherGlossaryChoice.toSet())
     }
 
     override fun onComplete(correct: Boolean) {
@@ -144,9 +98,8 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             viewModel.addScore(1)
         }
 
-        //Next question fragment
+        //Go to the next question fragment
         viewModel.nextQuestion()
-
     }
 
 }

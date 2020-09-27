@@ -17,7 +17,7 @@ public enum class ConfettiType {
     Burst, StreamFromTop
 }
 
-class CustomDialogFragment() : DialogFragment() {
+class CustomDialogFragment : DialogFragment() {
 
     private var title: String? = null
     private var subtitle: String? = null
