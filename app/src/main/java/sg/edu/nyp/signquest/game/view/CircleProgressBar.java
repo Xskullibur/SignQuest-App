@@ -45,9 +45,11 @@ public class CircleProgressBar extends View {
 
     public CircleProgressBar(Context context){
         super(context);
+        rectF = new RectF();
     }
 
     private void init(Context context, AttributeSet attrs) {
+        rectF = new RectF();
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.CircleProgressBar,
@@ -73,7 +75,6 @@ public class CircleProgressBar extends View {
     }
 
     public void init() {
-        rectF = new RectF();
         initBackgroundPaint();
         initForegroundPaint();
         initTextPaint();
