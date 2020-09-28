@@ -8,22 +8,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.animation.addListener
-import androidx.core.content.ContextCompat
+import androidx.camera.core.ImageAnalysis
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_word_main.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.view.CircleProgressBar
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
+import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
+import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
+import java.util.concurrent.Executors
 
 const val TOTAL_CHAR_MILLISECONDS = 10000
 /**
  * Fragment represent the Screen to let Player do the sign language
  */
-class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
+class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, OnSignDetected {
 
     override val topContainerId: Int = R.layout.fragment_player_to_sign_word_main
     override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
@@ -32,12 +35,15 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
 
     private lateinit var circleProgressBars: List<CircleProgressBar>
 
+    private lateinit var cameraManager: CameraManager
+    private lateinit var imageAnalyzer: SignLanguageImageAnalyzer
+
+    private var currentValueAnimator: ValueAnimator? = null
+
     companion object {
         @JvmStatic
         fun newInstance() = PlayerToSignWordFragment()
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +51,11 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState).also {
+
+            //Init camera
+            cameraManager = CameraManager(this, this)
+            cameraManager.requestPermission()
+
             viewModel.gloss.observe(viewLifecycleOwner) {
                 it?.let {
                     val list = mutableListOf<CircleProgressBar>()
@@ -98,7 +109,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
     }
 
     private fun CircleProgressBarState.startCountDown(circleProgressBar: CircleProgressBar){
-        ValueAnimator.ofInt(milliSecondsLeft).apply {
+        currentValueAnimator = ValueAnimator.ofInt(milliSecondsLeft).apply {
             duration = milliSecondsLeft.toLong()
             addUpdateListener {
                 type = CircleProgressBarStateType.Current
@@ -115,6 +126,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
             })
             start()
         }
+
     }
 
     private fun startNextCountDownCircleProgressBar() {
@@ -126,8 +138,40 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), OnSignDetected {
     }
 
     override fun signDetected(predictedValue: Char) {
-        TODO("Not yet implemented")
+        viewModel.gloss.observe(viewLifecycleOwner){
+            it?.let {
+                if(predictedValue == it.value[viewModel.currentIndex]){
+                    val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
+                    state.type = CircleProgressBarStateType.Correct
+                    circleProgressBars[viewModel.currentIndex].setCircleProgressBarState(this.requireContext(), state)
+                    currentValueAnimator?.pause()
+                    startNextCountDownCircleProgressBar()
+                }
+            }
+        }
+
     }
+
+    override fun onCameraIsAccessible() {
+        //Show camera on preview
+        cameraManager.showCamera(cameraView.createSurfaceProvider()) {
+            buildAnalyzer(this.requireContext())
+        }
+    }
+
+    private fun buildAnalyzer(context: Context): ImageAnalysis {
+        return ImageAnalysis.Builder()
+            .build()
+            .also {
+                it.setAnalyzer(
+                    Executors.newSingleThreadExecutor(),
+                    SignLanguageImageAnalyzer(context, ServerImageAnalyzerBackend(context)).apply {
+                        this.onSignDetected = this@PlayerToSignWordFragment
+                        this@PlayerToSignWordFragment.imageAnalyzer = this
+                    })
+            }
+    }
+
 }
 
 class CircleProgressBarState(

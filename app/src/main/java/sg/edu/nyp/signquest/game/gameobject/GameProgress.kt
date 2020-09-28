@@ -10,9 +10,16 @@ class GameProgress(
 ): Serializable {
 
     //List of questions available
-    var questions: List<Question> = List(totalAmountOfQuestion){
-        randomQuestion()
-    }
+//    var questions: List<Question> = List(totalAmountOfQuestion){
+//        randomQuestion()
+//    }
+    var questions: List<Question> = listOf(
+        QuestionType.MCQ.generateQuestion(availableChar),
+        QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
+        QuestionType.MCQ.generateQuestion(availableChar),
+        QuestionType.MCQ.generateQuestion(availableChar),
+        QuestionType.MCQ.generateQuestion(availableChar)
+    )
 
     //The index of where the current question is being answered
     var currentlyQuestionIndex: Int = 0
