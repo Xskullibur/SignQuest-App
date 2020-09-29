@@ -13,9 +13,12 @@ import androidx.camera.core.ImageAnalysis
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_word_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.view.CircleProgressBar
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
@@ -140,18 +143,19 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
     }
 
     override fun signDetected(predictedValue: Char) {
-        viewModel.gloss.observe(viewLifecycleOwner){
-            it?.let {
-                if(predictedValue == it.value[viewModel.currentIndex]){
-                    val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
-                    state.type = CircleProgressBarStateType.Correct
-                    circleProgressBars[viewModel.currentIndex].setCircleProgressBarState(this.requireContext(), state)
-                    currentValueAnimator?.pause()
-                    startNextCountDownCircleProgressBar()
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.gloss.observe(viewLifecycleOwner){
+                it?.let {
+                    if(predictedValue == it.value[viewModel.currentIndex]){
+                        val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
+                        state.type = CircleProgressBarStateType.Correct
+                        circleProgressBars[viewModel.currentIndex].setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), state)
+                        currentValueAnimator?.pause()
+                        startNextCountDownCircleProgressBar()
+                    }
                 }
             }
         }
-
     }
 
     override fun onCameraIsAccessible() {

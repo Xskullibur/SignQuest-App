@@ -16,6 +16,7 @@ import sg.edu.nyp.signquest.utils.toBitmap
 import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit
 
+const val SERVER_DELAY = 1000
 class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
     private val TRANSLATE_SERVER_ENDPOINT = context.getString(R.string.translate_server_endpoint)
@@ -25,28 +26,38 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
     private val TAG = ServerImageAnalyzerBackend::class.java.canonicalName
 
+    private var time = System.currentTimeMillis()
+
+
     override fun translate(imageProxy: ImageProxy): Char? {
-        val bitmap = imageProxy.toBitmap()!!
-        //Resize image to 28x28
-        val resizeBitmap = Bitmap.createScaledBitmap(bitmap, 848, 640, false)
+        //Delay
+        val now = System.currentTimeMillis()
+        if(time + SERVER_DELAY < now) {
+            time = now
 
-        //Get resize buffer
-        val resizeBuffer = ByteBuffer.allocate(resizeBitmap.byteCount)
+            val bitmap = imageProxy.toBitmap()!!
+            //Resize image to 28x28
+            val resizeBitmap = Bitmap.createScaledBitmap(bitmap, 848, 640, false)
 
-        resizeBitmap.copyPixelsToBuffer(resizeBuffer)
+            //Get resize buffer
+            val resizeBuffer = ByteBuffer.allocate(resizeBitmap.byteCount)
 
-        resizeBuffer.flip()
+            resizeBitmap.copyPixelsToBuffer(resizeBuffer)
 
-        val imageRequest = ImageRequest.newBuilder()
-            .setPixels(ByteString.copyFrom(resizeBuffer)).build()
+            resizeBuffer.flip()
 
-        return try{
-            val translatedReply = stub.translate(imageRequest)
-            //Get first char
-            translatedReply.char[0]
-        }catch(e: StatusRuntimeException){
-            null
+            val imageRequest = ImageRequest.newBuilder()
+                .setPixels(ByteString.copyFrom(resizeBuffer)).build()
+
+            return try {
+                val translatedReply = stub.translate(imageRequest)
+                //Get first char
+                translatedReply.char[0]
+            } catch (e: StatusRuntimeException) {
+                null
+            }
         }
+        return null
     }
 
     override fun stop() {
