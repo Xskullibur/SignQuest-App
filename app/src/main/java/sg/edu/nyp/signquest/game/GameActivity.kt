@@ -92,7 +92,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             if(isGameCompleted){
                 viewModel.gameProgress.value?.let {gameProgress ->
                     lifecycleScope.launch{
-                        viewModel.addPlayerScore(gameProgress.score, "player")
+                        viewModel.addPlayerScore(gameProgress.score, "Alson")
                     }
 
                     // Update step to completed
