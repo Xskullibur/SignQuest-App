@@ -140,6 +140,10 @@ interface ScoreDetailDao{
 
     @Delete
     fun removeScoreDetail(scoreTable: ScoreTable)
+
+    @Query("SELECT * FROM ScoreTable ORDER BY score DESC LIMIT 1")
+    fun getTopScore():ScoreTable
+
 }
 
 @Database(entities = arrayOf(ScoreTable::class), version = 2)

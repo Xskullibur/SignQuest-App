@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,13 +79,14 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
 
     private fun createCircleProgressBar(char: Char) =
         CircleProgressBar(this.requireContext()).also {
+            it.textColor = Color.WHITE
             it.text = char.toString()
             it.color = getColor(this.requireContext(), R.color.colorAccent)
             it.textSize = 90
             it.progress = 0f
             it.strokeWidth = getDpInPixels(8f).toFloat()
-            val layoutSize = getDpInPixels(100f)
-            it.layoutParams = ViewGroup.MarginLayoutParams(layoutSize, layoutSize).apply { setMargins(5) }
+            val layoutSize = getDpInPixels(80f)
+            it.layoutParams = ViewGroup.MarginLayoutParams(layoutSize, layoutSize).apply { setMargins(15) }
             it.init()
         }
 

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:layout_marginHorizontal="5dp"
         android:gravity="center">
 <!--            <sg.edu.nyp.signquest.game.view.CircleProgressBar-->
 <!--                android:id="@+id/progressBar"-->
