@@ -13,6 +13,13 @@ class GameProgress(
     var questions: List<Question> = List(totalAmountOfQuestion){
         randomQuestion()
     }
+//    var questions: List<Question> = listOf(
+//        QuestionType.MCQ.generateQuestion(availableChar),
+//        QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
+//        QuestionType.MCQ.generateQuestion(availableChar),
+//        QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
+//        QuestionType.MCQ.generateQuestion(availableChar)
+//    )
 
     //The index of where the current question is being answered
     var currentlyQuestionIndex: Int = 0
@@ -36,9 +43,9 @@ class GameProgress(
      */
     private fun randomQuestion(): Question{
         //Random question type, MCQ or Player to Sign
-        val questionType = QuestionType.values().random()
+//        val questionType = QuestionType.values().random()
         //DEBUG
-//        val questionType = QuestionType.MCQ
+        val questionType = QuestionType.SIGN_WORD
 
         //Random question from the list of availableChar
         return questionType.generateQuestion(availableChar)
