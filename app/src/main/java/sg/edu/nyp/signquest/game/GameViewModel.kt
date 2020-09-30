@@ -19,6 +19,9 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
     private val _isGameCompleted = MutableLiveData(false)
     val isGameCompleted: LiveData<Boolean> = _isGameCompleted
 
+    private val _newQuestion = MutableLiveData(false)
+    val newQuestion: LiveData<Boolean> = _newQuestion
+
     val db = Room.databaseBuilder(getApplication(),
         AppDatabase::class.java, "signquest.db").fallbackToDestructiveMigration().build()
 
@@ -32,7 +35,7 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
         if(haveNextQuestion != null){
             if(haveNextQuestion){
                 //Update observable
-                _gameProgress.value = _gameProgress.value
+                _newQuestion.value = true
             }else{
                 _isGameCompleted.value = true
             }

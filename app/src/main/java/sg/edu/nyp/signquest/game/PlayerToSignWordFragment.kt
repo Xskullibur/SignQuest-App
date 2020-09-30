@@ -13,6 +13,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
@@ -24,6 +25,8 @@ import sg.edu.nyp.signquest.game.view.CircleProgressBar
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
+import sg.edu.nyp.signquest.utils.observeOnce
+import java.util.*
 import java.util.concurrent.Executors
 
 const val TOTAL_CHAR_MILLISECONDS = 10000
@@ -60,7 +63,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
             cameraManager = CameraManager(this, this)
             cameraManager.requestPermission()
 
-            viewModel.gloss.observe(viewLifecycleOwner) {
+            viewModel.gloss.observeOnce(viewLifecycleOwner, Observer {
                 it?.let {
                     val list = mutableListOf<CircleProgressBar>()
                     for ((i, c) in it.value.withIndex()){
@@ -76,7 +79,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
 
                     startNextCountDownCircleProgressBar()
                 }
-            }
+            })
         }
     }
 
@@ -139,12 +142,14 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
             viewModel.nextIndex()
             val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
             state.startCountDown(circleProgressBars[viewModel.currentIndex])
+        }else{
+            correct(4)
         }
     }
 
     override fun signDetected(predictedValue: Char) {
         lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.gloss.observe(viewLifecycleOwner){
+            viewModel.gloss.observeOnce(viewLifecycleOwner, Observer {
                 it?.let {
                     if(predictedValue == it.value[viewModel.currentIndex]){
                         val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
@@ -154,7 +159,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
                         startNextCountDownCircleProgressBar()
                     }
                 }
-            }
+            })
         }
     }
 

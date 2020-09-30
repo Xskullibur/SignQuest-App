@@ -84,12 +84,14 @@ class GameActivity : AppCompatActivity(), QuestionListener {
             viewModel.createGameProgress(gameProgress)
         }
 
-        viewModel.gameProgress.observe(this){
+        viewModel.newQuestion.observe(this){
             val isGameCompleted = viewModel.isGameCompleted.value
-            if(savedInstanceState == null && isGameCompleted != null && !isGameCompleted) showQuestion(it.currentQuestion)
+            if(savedInstanceState == null && isGameCompleted != null && !isGameCompleted)
+                showQuestion(viewModel.gameProgress.value!!.currentQuestion)
         }
         viewModel.isGameCompleted.observe(this){isGameCompleted ->
             if(isGameCompleted){
+
                 viewModel.gameProgress.value?.let {gameProgress ->
                     lifecycleScope.launch{
                         viewModel.addPlayerScore(gameProgress.score, "player")
@@ -174,10 +176,10 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         }
     }
 
-    override fun onComplete(correct: Boolean) {
+    override fun onComplete(correct: Boolean, score: Int) {
         if(correct){
             println(correct)
-            viewModel.addScore(1)
+            viewModel.addScore(score)
         }
 
         //Go to the next question fragment
