@@ -43,9 +43,9 @@ class GameProgress(
      */
     private fun randomQuestion(): Question{
         //Random question type, MCQ or Player to Sign
-//        val questionType = QuestionType.values().random()
+        val questionType = QuestionType.values().random()
         //DEBUG
-        val questionType = QuestionType.SIGN_WORD
+//        val questionType = QuestionType.SIGN_WORD
 
         //Random question from the list of availableChar
         return questionType.generateQuestion(availableChar)

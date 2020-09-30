@@ -15,9 +15,9 @@ import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_word_main.*
+import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
@@ -26,7 +26,6 @@ import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
 import sg.edu.nyp.signquest.utils.observeOnce
-import java.util.*
 import java.util.concurrent.Executors
 
 const val TOTAL_CHAR_MILLISECONDS = 10000
@@ -59,6 +58,9 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState).also {
 
+            //Hide appbar timer
+            it?.timerContainer?.visibility = View.INVISIBLE
+
             //Init camera
             cameraManager = CameraManager(this, this)
             cameraManager.requestPermission()
@@ -73,11 +75,10 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
                         addCircleProgressBar(circleProgressBar)
 
                         list += circleProgressBar
-
                     }
                     circleProgressBars = list
 
-                    startNextCountDownCircleProgressBar()
+                    startNextCharacterCircleProgressBar()
                 }
             })
         }
@@ -122,14 +123,17 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
             addUpdateListener {
                 type = CircleProgressBarStateType.Current
                 milliSecondsLeft = duration.toInt() - (it.animatedValue as Int)
+                if(view != null)
                 circleProgressBar.setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), this@startCountDown)
             }
             addListener (object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     type = CircleProgressBarStateType.InCorrect
+
+                    if(view != null)
                     circleProgressBar.setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), this@startCountDown)
 
-                    startNextCountDownCircleProgressBar()
+                    startNextCharacterCircleProgressBar()
                 }
             })
             start()
@@ -137,13 +141,14 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
 
     }
 
-    private fun startNextCountDownCircleProgressBar() {
+    private fun startNextCharacterCircleProgressBar() {
         if (viewModel.haveNextIndex()) {
             viewModel.nextIndex()
             val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
             state.startCountDown(circleProgressBars[viewModel.currentIndex])
         }else{
-            correct(4)
+            if(cameraManager.cameraStarted)cameraManager.stopCamera()
+            correct(viewModel.numberOfCorrect)
         }
     }
 
@@ -152,11 +157,15 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
             viewModel.gloss.observeOnce(viewLifecycleOwner, Observer {
                 it?.let {
                     if(predictedValue == it.value[viewModel.currentIndex]){
+
+                        //Add score
+                        viewModel.numberOfCorrect++
+
                         val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
                         state.type = CircleProgressBarStateType.Correct
                         circleProgressBars[viewModel.currentIndex].setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), state)
                         currentValueAnimator?.pause()
-                        startNextCountDownCircleProgressBar()
+                        startNextCharacterCircleProgressBar()
                     }
                 }
             })

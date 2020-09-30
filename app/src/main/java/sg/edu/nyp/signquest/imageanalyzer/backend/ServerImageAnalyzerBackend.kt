@@ -30,41 +30,40 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
 
     override fun translate(imageProxy: ImageProxy): Char? {
-        return 'A'
-//        //Delay
-//        val now = System.currentTimeMillis()
-//        if(time + SERVER_DELAY < now) {
-//            time = now
-//
-//            val bitmap = imageProxy.toBitmap()!!
-//            //Resize image to 28x28
-//            val resizeBitmap = Bitmap.createScaledBitmap(bitmap, 848, 640, false)
-//
-//            //Get resize buffer
-//            val resizeBuffer = ByteBuffer.allocate(resizeBitmap.byteCount)
-//
-//            resizeBitmap.copyPixelsToBuffer(resizeBuffer)
-//
-//            resizeBuffer.flip()
-//
-//            val imageRequest = ImageRequest.newBuilder()
-//                .setPixels(ByteString.copyFrom(resizeBuffer)).build()
-//
-//            return try {
-//                val translatedReply = stub.translate(imageRequest)
-//                //Get first char
-//                translatedReply.char[0]
-//            } catch (e: StatusRuntimeException) {
-//                null
-//            }
-//        }
-//        return null
+        //Delay
+        val now = System.currentTimeMillis()
+        if(time + SERVER_DELAY < now) {
+            time = now
+
+            val bitmap = imageProxy.toBitmap()!!
+            //Resize image to 28x28
+            val resizeBitmap = Bitmap.createScaledBitmap(bitmap, 848, 640, false)
+
+            //Get resize buffer
+            val resizeBuffer = ByteBuffer.allocate(resizeBitmap.byteCount)
+
+            resizeBitmap.copyPixelsToBuffer(resizeBuffer)
+
+            resizeBuffer.flip()
+
+            val imageRequest = ImageRequest.newBuilder()
+                .setPixels(ByteString.copyFrom(resizeBuffer)).build()
+
+            return try {
+                val translatedReply = stub.translate(imageRequest)
+                //Get first char
+                translatedReply.char[0]
+            } catch (e: StatusRuntimeException) {
+                null
+            }
+        }
+        return null
     }
 
     override fun stop() {
         Log.d(TAG, "Shutting down server connection")
         mChannel.shutdownNow()
-        mChannel.awaitTermination(5, TimeUnit.SECONDS)
+        mChannel.awaitTermination(1, TimeUnit.SECONDS)
     }
 
 }
