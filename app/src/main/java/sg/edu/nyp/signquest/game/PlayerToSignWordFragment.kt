@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,15 +15,27 @@ import androidx.camera.core.ImageAnalysis
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
+import kotlinx.android.synthetic.main.fragment_player_to_sign_main.cameraView
 import kotlinx.android.synthetic.main.fragment_player_to_sign_word_main.*
+import kotlinx.android.synthetic.main.fragment_player_to_sign_word_top.*
+import kotlinx.android.synthetic.main.fragment_player_to_sign_word_top.view.*
 import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.view.CircleProgressBar
+import sg.edu.nyp.signquest.game.view.CustomPlayDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
@@ -34,8 +48,8 @@ const val TOTAL_CHAR_MILLISECONDS = 10000
  */
 class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, OnSignDetected {
 
-    override val topContainerId: Int = R.layout.fragment_player_to_sign_word_main
-    override val mainContainerId: Int = R.layout.fragment_player_to_sign_main
+    override val topContainerId: Int = R.layout.fragment_player_to_sign_word_top
+    override val mainContainerId: Int = R.layout.fragment_player_to_sign_word_main
 
     override val viewModel: PlayerToSignWordViewModel by viewModels()
 
@@ -45,6 +59,8 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
     private lateinit var imageAnalyzer: SignLanguageImageAnalyzer
 
     private var currentValueAnimator: ValueAnimator? = null
+
+    private var isComplete = false
 
     companion object {
         @JvmStatic
@@ -60,6 +76,9 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
 
             //Hide appbar timer
             it?.timerContainer?.visibility = View.INVISIBLE
+
+            // Show Monster
+            showMonsterGif()
 
             //Init camera
             cameraManager = CameraManager(this, this)
@@ -86,7 +105,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
 
     private fun createCircleProgressBar(char: Char) =
         CircleProgressBar(this.requireContext()).also {
-            it.textColor = Color.WHITE
+            it.textColor = R.color.colorPrimaryDark
             it.text = char.toString()
             it.color = getColor(this.requireContext(), R.color.colorAccent)
             it.textSize = 90
@@ -128,10 +147,13 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
             }
             addListener (object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
+                    // Update Progress
                     type = CircleProgressBarStateType.InCorrect
 
                     if(view != null)
                     circleProgressBar.setCircleProgressBarState(this@PlayerToSignWordFragment.requireContext(), this@startCountDown)
+                    circleProgressBar.progress = 100F
+                    circleProgressBar.invalidate()
 
                     startNextCharacterCircleProgressBar()
                 }
@@ -142,21 +164,73 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
     }
 
     private fun startNextCharacterCircleProgressBar() {
+        if (isComplete) return
         if (viewModel.haveNextIndex()) {
             viewModel.nextIndex()
             val state = viewModel.getCircleProgressBarStateForIndex(viewModel.currentIndex)
             state.startCountDown(circleProgressBars[viewModel.currentIndex])
         }else{
             if(cameraManager.cameraStarted)cameraManager.stopCamera()
-            correct(viewModel.numberOfCorrect)
+            isComplete = true
+
+            viewModel.gloss.observeOnce(viewLifecycleOwner, Observer {
+                it?.let {
+
+                    if (viewModel.numberOfCorrect == it.value.length) {
+                        Glide.with(this@PlayerToSignWordFragment)
+                                .asGif()
+                                .load(R.drawable.yellow_monster_hit)
+                                .into(topContainerView.monsterGif)
+                    }
+
+                    val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
+                    val fragment = CustomPlayDialogFragment.newInstance(
+                        title = "Well Done!",
+                        subtitle = "${viewModel.numberOfCorrect} - ${it.value.length}"
+                    ){ dialog ->
+                        correct(viewModel.numberOfCorrect)
+                        dialog.dismiss()
+                    }
+
+                    fragment.show(fragmentManager, CustomPlayDialogFragment.TAG)
+
+                }
+            })
+
+
         }
     }
 
     override fun signDetected(predictedValue: Char) {
         lifecycleScope.launch(Dispatchers.Main) {
+
+            if (view != null)
             viewModel.gloss.observeOnce(viewLifecycleOwner, Observer {
                 it?.let {
                     if(predictedValue == it.value[viewModel.currentIndex]){
+                        // Update GIF
+                        val listener = Glide.with(this@PlayerToSignWordFragment)
+                                .asGif()
+                                .load(R.drawable.yellow_monster_hit)
+                                .listener(object : RequestListener<GifDrawable> {
+
+                                    override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                        resource?.setLoopCount(1)
+                                        resource?.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+                                            override fun onAnimationEnd(drawable: Drawable?) {
+                                                super.onAnimationEnd(drawable)
+
+                                                showMonsterGif()
+
+                                            }
+                                        })
+                                        return false
+                                    }
+
+                                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean) = false
+
+                                })
+                                .into(topContainerView.monsterGif)
 
                         //Add score
                         viewModel.numberOfCorrect++
@@ -170,6 +244,13 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
                 }
             })
         }
+    }
+
+    private fun showMonsterGif() {
+        Glide.with(this@PlayerToSignWordFragment)
+                .asGif()
+                .load(R.drawable.yellow_monster_idle)
+                .into(topContainerView.monsterGif)
     }
 
     override fun onCameraIsAccessible() {

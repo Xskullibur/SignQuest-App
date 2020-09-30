@@ -60,7 +60,8 @@ enum class QuestionType {
          * Generate a random Sign Word question
          */
         override fun generateQuestion(availableChar: List<Char>): Question {
-            val wordToPredict = String(availableChar.shuffled().take(4).toCharArray())
+//            val wordToPredict = String(availableChar.shuffled().take(4).toCharArray())
+            val wordToPredict = "CARL"
             return PlayerToSignWordQuestion(Gloss(wordToPredict))
         }
     };

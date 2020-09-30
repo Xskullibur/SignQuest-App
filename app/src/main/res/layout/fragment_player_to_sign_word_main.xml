@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".game.PlayerToSignWordFragment">
+    android:orientation="vertical"
+    android:weightSum="5"
+    tools:context=".game.PlayerToSignFragment">
 
     <LinearLayout
         android:id="@+id/words_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginHorizontal="5dp"
         android:gravity="center">
-<!--            <sg.edu.nyp.signquest.game.view.CircleProgressBar-->
-<!--                android:id="@+id/progressBar"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                app:progressbarColor="@color/colorAccent"-->
-<!--                app:progress="0"-->
-<!--                app:textSize="90"-->
-<!--                app:progressBarThickness="8dp"-->
-<!--                android:layout_margin="5dp"/>-->
+        <!--            <sg.edu.nyp.signquest.game.view.CircleProgressBar-->
+        <!--                android:id="@+id/progressBar"-->
+        <!--                android:layout_width="100dp"-->
+        <!--                android:layout_height="100dp"-->
+        <!--                app:progressbarColor="@color/colorAccent"-->
+        <!--                app:progress="0"-->
+        <!--                app:textSize="90"-->
+        <!--                app:progressBarThickness="8dp"-->
+        <!--                android:layout_margin="5dp"/>-->
     </LinearLayout>
-</FrameLayout>
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
