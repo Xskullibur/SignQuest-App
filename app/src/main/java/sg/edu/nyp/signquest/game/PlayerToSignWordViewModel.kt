@@ -13,6 +13,7 @@ class PlayerToSignWordViewModel : GameExpandedAppBarViewModel() {
     }
 
     var currentIndex = -1
+    var numberOfCorrect = 0
 
     fun haveNextIndex(): Boolean{
         val glossLength = (question.value as PlayerToSignWordQuestion).glossToBeAnswered.value.length

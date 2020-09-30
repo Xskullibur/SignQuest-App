@@ -20,7 +20,7 @@ interface GameCountDownTimer {
 }
 
 interface QuestionListener {
-    fun onComplete(correct: Boolean)
+    fun onComplete(correct: Boolean, score: Int)
 }
 
 abstract class GameExpandedAppBarFragment : Fragment() {
@@ -73,15 +73,15 @@ abstract class GameExpandedAppBarFragment : Fragment() {
 
     }
 
-    fun correct(){
-//        Toast.makeText(context, "Correct!", Toast.LENGTH_SHORT).show()
-        questionListener.onComplete(true)
+    fun correct(score: Int = 1){
+        Toast.makeText(activity?.applicationContext, "Correct!", Toast.LENGTH_SHORT).show()
+        questionListener.onComplete(true, score)
         resetCountDownTimer()
     }
 
     fun wrong(){
-//        Toast.makeText(context, "Incorrect...", Toast.LENGTH_SHORT).show()
-        questionListener.onComplete(false)
+        Toast.makeText(activity?.applicationContext, "Incorrect...", Toast.LENGTH_SHORT).show()
+        questionListener.onComplete(false, 0)
         resetCountDownTimer()
     }
 

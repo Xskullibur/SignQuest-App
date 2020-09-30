@@ -36,6 +36,8 @@ class CameraManager(val fragment: Fragment, private val cameraListener: CameraLi
     private var cameraProvider: ProcessCameraProvider? = null
     private var imageAnalysis: ImageAnalysis? = null
 
+    val cameraStarted get() = cameraProvider==null
+
     //Camera permission
     val requestPermissionLauncher =
         fragment.registerForActivityResult(

@@ -63,7 +63,7 @@ class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
     override fun stop() {
         Log.d(TAG, "Shutting down server connection")
         mChannel.shutdownNow()
-        mChannel.awaitTermination(5, TimeUnit.SECONDS)
+        mChannel.awaitTermination(1, TimeUnit.SECONDS)
     }
 
 }
