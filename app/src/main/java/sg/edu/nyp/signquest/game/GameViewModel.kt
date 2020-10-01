@@ -9,6 +9,7 @@ import androidx.room.Room
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.game.gameobject.Score
 
 class GameViewModel(application: Application): AndroidViewModel(application) {
 
@@ -43,9 +44,9 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
     }
 
 
-    fun addScore(score: Int){
+    fun addScore(score: Score){
         _gameProgress.value?.let {
-            it.score += score
+            it.addScore(score)
             _gameProgress.value = it
         }
     }

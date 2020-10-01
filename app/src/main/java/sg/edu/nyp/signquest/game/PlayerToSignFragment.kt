@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_top.view.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.Gloss
+import sg.edu.nyp.signquest.game.gameobject.Score
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
 import sg.edu.nyp.signquest.imageanalyzer.SignLanguageImageAnalyzer
 import sg.edu.nyp.signquest.imageanalyzer.backend.ServerImageAnalyzerBackend
@@ -102,7 +103,7 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
                 viewModel.gloss.observe(viewLifecycleOwner){
                     if (!viewModel.completed && it != null && predictedValue.toString() == it.value) {
                         viewModel.completed = true
-                        correct()
+                        correct(Score(1))
 
                         //Shutdown server
                         stop()

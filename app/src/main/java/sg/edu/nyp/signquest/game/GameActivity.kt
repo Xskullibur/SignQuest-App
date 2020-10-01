@@ -14,6 +14,7 @@ import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
 import sg.edu.nyp.signquest.game.gameobject.Question
 import sg.edu.nyp.signquest.game.gameobject.QuestionType
+import sg.edu.nyp.signquest.game.gameobject.Score
 import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
 import sg.edu.nyp.signquest.utils.ResourceManager
@@ -138,7 +139,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
                     val fragmentManager = supportFragmentManager.beginTransaction()
                     val fragment = CustomDialogFragment.newInstance(
                         title = title,
-                        subtitle = "${gameProgress.score}/${gameProgress.totalAmountOfQuestion}",
+                        subtitle = "${gameProgress.score}/${gameProgress.maxScore}",
                         confettiType = confettiType,
                         onBackBtnClick = {
                             finish()
@@ -192,7 +193,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         }
     }
 
-    override fun onComplete(correct: Boolean, score: Int) {
+    override fun onComplete(correct: Boolean, score: Score) {
         if(correct){
             println(correct)
             viewModel.addScore(score)

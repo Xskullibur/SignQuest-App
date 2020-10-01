@@ -13,6 +13,7 @@ import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import sg.edu.nyp.signquest.databinding.GameExpandedAppbarBinding
 import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.game.gameobject.Score
 
 interface GameCountDownTimer {
     fun onTick(millisUntilFinished: Long)
@@ -20,7 +21,7 @@ interface GameCountDownTimer {
 }
 
 interface QuestionListener {
-    fun onComplete(correct: Boolean, score: Int)
+    fun onComplete(correct: Boolean, score: Score)
 }
 
 abstract class GameExpandedAppBarFragment : Fragment() {
@@ -73,7 +74,7 @@ abstract class GameExpandedAppBarFragment : Fragment() {
 
     }
 
-    fun correct(score: Int = 1){
+    fun correct(score: Score){
         Toast.makeText(activity?.applicationContext, "Correct!", Toast.LENGTH_SHORT).show()
         questionListener.onComplete(true, score)
         resetCountDownTimer()
@@ -81,7 +82,7 @@ abstract class GameExpandedAppBarFragment : Fragment() {
 
     fun wrong(){
         Toast.makeText(activity?.applicationContext, "Incorrect...", Toast.LENGTH_SHORT).show()
-        questionListener.onComplete(false, 0)
+        questionListener.onComplete(false, Score(0))
         resetCountDownTimer()
     }
 

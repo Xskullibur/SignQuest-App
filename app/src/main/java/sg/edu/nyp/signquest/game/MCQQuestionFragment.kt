@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_question_main.view.*
 import kotlinx.android.synthetic.main.fragment_question_top.*
 import sg.edu.nyp.signquest.R
 import sg.edu.nyp.signquest.game.gameobject.Gloss
+import sg.edu.nyp.signquest.game.gameobject.Score
 
 class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
     override val topContainerId: Int
@@ -75,7 +76,7 @@ class MCQQuestionFragment : GameExpandedAppBarFragment(), GameCountDownTimer {
 
         viewModel.glossToBeAnswered.observe(viewLifecycleOwner) {
             if (gloss.value == it.value) {
-                correct()
+                correct(Score(1))
             } else {
                 wrong()
             }

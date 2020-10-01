@@ -13,6 +13,14 @@ class GameProgress(
     val totalAmountOfQuestion
         get() = questions.size
 
+    val scoreObtained: MutableList<Score> = mutableListOf()
+    val score get() = scoreObtained.sumBy { it.earnedScore }
+    val maxScore get() = scoreObtained.sumBy { it.maxScore }
+
+    fun addScore(score: Score){
+        scoreObtained += score
+    }
+
 
 //    var questions: List<Question> = List(totalAmountOfQuestion){
 //        randomQuestion()
@@ -40,8 +48,6 @@ class GameProgress(
         get() = if (questions.size > currentlyQuestionIndex)
             questions.elementAt(currentlyQuestionIndex + 1)
         else null
-
-    var score: Int = 0
 
     /**
      * Return a random question, either a MCQ question or Player to Sign Question

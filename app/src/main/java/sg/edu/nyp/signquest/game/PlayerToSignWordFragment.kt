@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
+import sg.edu.nyp.signquest.game.gameobject.Score
 import sg.edu.nyp.signquest.game.view.CircleProgressBar
 import sg.edu.nyp.signquest.game.view.CustomPlayDialogFragment
 import sg.edu.nyp.signquest.imageanalyzer.OnSignDetected
@@ -184,7 +185,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
                         title = "Well Done!",
                         subtitle = "${viewModel.numberOfCorrect} - ${it.value.length}"
                     ){ dialog ->
-                        correct(viewModel.numberOfCorrect)
+                        correct(Score(viewModel.numberOfCorrect, it.value.length))
                         dialog.dismiss()
                     }
 
