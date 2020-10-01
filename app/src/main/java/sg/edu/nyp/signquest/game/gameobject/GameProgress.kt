@@ -3,16 +3,20 @@ package sg.edu.nyp.signquest.game.gameobject
 import java.io.Serializable
 
 class GameProgress(
-    //Returns the total amount of questions available
-    val totalAmountOfQuestion: Int,
+    //List of questions available
+    private val questions: List<Question>,
     //List of available Gloss that can be used to test the player
     private val availableChar: List<Char>
 ): Serializable {
+    
+    //Returns the total amount of questions available
+    val totalAmountOfQuestion
+        get() = questions.size
 
-    //List of questions available
-    var questions: List<Question> = List(totalAmountOfQuestion){
-        randomQuestion()
-    }
+
+//    var questions: List<Question> = List(totalAmountOfQuestion){
+//        randomQuestion()
+//    }
 //    var questions: List<Question> = listOf(
 //        QuestionType.MCQ.generateQuestion(availableChar),
 //        QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
@@ -20,6 +24,7 @@ class GameProgress(
 //        QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
 //        QuestionType.MCQ.generateQuestion(availableChar)
 //    )
+
 
     //The index of where the current question is being answered
     var currentlyQuestionIndex: Int = 0

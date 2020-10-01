@@ -9,4 +9,5 @@ class PlayerToSignViewModel : GameExpandedAppBarViewModel() {
     val gloss: LiveData<Gloss?> get() = Transformations.map(question){
         (it as? PlayerToSignQuestion)?.glossToBeAnswered
     }
+    var completed = false
 }

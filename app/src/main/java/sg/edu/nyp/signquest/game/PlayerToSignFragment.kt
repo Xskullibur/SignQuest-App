@@ -100,7 +100,8 @@ class PlayerToSignFragment : GameExpandedAppBarFragment(), CameraListener, GameC
             Handler(it).post {
                 if(view != null)
                 viewModel.gloss.observe(viewLifecycleOwner){
-                    if (it != null && predictedValue.toString() == it.value) {
+                    if (!viewModel.completed && it != null && predictedValue.toString() == it.value) {
+                        viewModel.completed = true
                         correct()
 
                         //Shutdown server

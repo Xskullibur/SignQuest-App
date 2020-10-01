@@ -106,7 +106,7 @@ class MainModuleFragment : Fragment(), ModuleAdapter.OnSelectedListener, OnFinis
                     ){ dialog ->
 
                         val intent =
-                            GameActivity.createActivityIntent(this.requireContext(), glossList, module.id)
+                            GameActivity.createActivityIntent(this.requireContext(), glossList, module.id, true)
                         startActivityForResult.launch(intent)
                         dialog.dismiss()
                     }

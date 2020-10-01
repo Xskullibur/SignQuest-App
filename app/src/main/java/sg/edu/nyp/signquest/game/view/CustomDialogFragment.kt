@@ -75,6 +75,8 @@ class CustomDialogFragment : DialogFragment() {
 
     }
 
+    private var complete = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,15 +89,24 @@ class CustomDialogFragment : DialogFragment() {
         val nextBtn = view.nextBtn
 
         bckBtn.setOnClickListener {
-            backBtnCallback.invoke(this)
+            if(!complete) {
+                backBtnCallback.invoke(this)
+                complete = true
+            }
         }
 
         restartBtn.setOnClickListener {
-            restartBtnCallback.invoke(this)
+            if(!complete) {
+                restartBtnCallback.invoke(this)
+                complete = true
+            }
         }
 
         nextBtn.setOnClickListener {
-            nextBtnCallback.invoke(this)
+            if(!complete) {
+                nextBtnCallback.invoke(this)
+                complete = true
+            }
         }
 
         // Title

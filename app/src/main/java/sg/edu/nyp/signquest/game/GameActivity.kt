@@ -5,26 +5,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
-import androidx.navigation.findNavController
-import sg.edu.nyp.signquest.MainActivity
 import kotlinx.coroutines.launch
 import sg.edu.nyp.signquest.R
-import sg.edu.nyp.signquest.game.gameobject.*
+import sg.edu.nyp.signquest.game.gameobject.GameProgress
+import sg.edu.nyp.signquest.game.gameobject.Question
+import sg.edu.nyp.signquest.game.gameobject.QuestionType
 import sg.edu.nyp.signquest.game.view.ConfettiType
 import sg.edu.nyp.signquest.game.view.CustomDialogFragment
-import sg.edu.nyp.signquest.utils.AlertUtils.showAlert
 import sg.edu.nyp.signquest.utils.ResourceManager
-import javax.annotation.Resource
-import kotlin.random.Random
 
 const val ARGS_GAME_AVAILABLE_GLOSSARY = "args_game_available_glossary"
 const val ARGS_GAME_TOTAL_QUESTION = "args_game_total_question"
 const val ARGS_GAME_MODULE_ID = "args_game_module_id"
+
+const val ARGS_GAME_QUIZ_MODE = "args_game_quiz_mode"
 
 const val NEXT = "next"
 
@@ -41,12 +39,14 @@ class GameActivity : AppCompatActivity(), QuestionListener {
          * @param context
          * @param glossary - the glossary available to test the user
          * @param moduleId - module id for the current quiz
+         * @param quizMode - Put the GameActivity into Quiz mode with only [QuestionType.SIGN_ALPHABET] and [QuestionType.MCQ] questions
          */
-        fun createActivityIntent(context: Context, glossary: CharArray, moduleId: String): Intent {
+        fun createActivityIntent(context: Context, glossary: CharArray, moduleId: String, quizMode: Boolean = false): Intent {
             return Intent(context, GameActivity::class.java).apply {
                 putExtras(Bundle().apply {
                     putCharArray(ARGS_GAME_AVAILABLE_GLOSSARY, glossary)
                     putString(ARGS_GAME_MODULE_ID, moduleId)
+                    putBoolean(ARGS_GAME_QUIZ_MODE, quizMode)
                 })
             }
         }
@@ -77,10 +77,26 @@ class GameActivity : AppCompatActivity(), QuestionListener {
         val argTotalQuestion = intent.extras?.getInt(ARGS_GAME_TOTAL_QUESTION)
         val totalQuestion = if(argTotalQuestion != null && argTotalQuestion != 0) argTotalQuestion else DEFAULT_TOTAL_QUESTION
 
+        val quizMode = intent.extras?.getBoolean(ARGS_GAME_QUIZ_MODE, false)!!
+        //Generate questions
+        val questions: List<Question> = if(quizMode){
+            listOf(
+                QuestionType.MCQ.generateQuestion(availableChar),
+                QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
+                QuestionType.MCQ.generateQuestion(availableChar),
+                QuestionType.SIGN_ALPHABET.generateQuestion(availableChar),
+                QuestionType.MCQ.generateQuestion(availableChar)
+            )
+        }else{
+            listOf(
+                QuestionType.SIGN_WORD.generateQuestion(availableChar)
+            )
+        }
+
         //Create Game Progress only if there is no Game Progress already created, example screen rotation
         if(viewModel.gameProgress.value == null){
             //Create Game Progress for storing game state
-            val gameProgress = GameProgress(totalQuestion, availableChar)
+            val gameProgress = GameProgress(questions, availableChar)
             viewModel.createGameProgress(gameProgress)
         }
 
@@ -134,7 +150,7 @@ class GameActivity : AppCompatActivity(), QuestionListener {
 
                             val glossList = ResourceManager.getCompletedGlossary(moduleId)
                             if (glossList != null) {
-                                val intent = createActivityIntent(this, glossList, moduleId)
+                                val intent = createActivityIntent(this, glossList, moduleId, quizMode)
                                 startActivity(intent)
                             }
                             it.dismiss()

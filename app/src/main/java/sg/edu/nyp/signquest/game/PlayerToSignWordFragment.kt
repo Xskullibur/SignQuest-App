@@ -4,8 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +13,6 @@ import androidx.camera.core.ImageAnalysis
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.setMargins
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
@@ -25,10 +22,8 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import kotlinx.android.synthetic.main.fragment_player_to_sign_main.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_main.cameraView
 import kotlinx.android.synthetic.main.fragment_player_to_sign_word_main.*
-import kotlinx.android.synthetic.main.fragment_player_to_sign_word_top.*
 import kotlinx.android.synthetic.main.fragment_player_to_sign_word_top.view.*
 import kotlinx.android.synthetic.main.game_expanded_appbar.view.*
 import kotlinx.coroutines.Dispatchers
@@ -248,10 +243,12 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
     }
 
     private fun showMonsterGif() {
-        Glide.with(this@PlayerToSignWordFragment)
-                .asGif()
-                .load(R.drawable.yellow_monster_idle)
-                .into(topContainerView.monsterGif)
+       lifecycleScope.launch(Dispatchers.Main) {
+           Glide.with(this@PlayerToSignWordFragment)
+               .asGif()
+               .load(R.drawable.yellow_monster_idle)
+               .into(topContainerView.monsterGif)
+       }
     }
 
     override fun onCameraIsAccessible() {
