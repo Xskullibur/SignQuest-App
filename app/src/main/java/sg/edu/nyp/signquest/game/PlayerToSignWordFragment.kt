@@ -179,17 +179,17 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
                                 .load(R.drawable.yellow_monster_hit)
                                 .into(topContainerView.monsterGif)
                     }
-
-                    val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
-                    val fragment = CustomPlayDialogFragment.newInstance(
-                        title = "Well Done!",
-                        subtitle = "${viewModel.numberOfCorrect} - ${it.value.length}"
-                    ){ dialog ->
-                        correct(Score(viewModel.numberOfCorrect, it.value.length))
-                        dialog.dismiss()
-                    }
-
-                    fragment.show(fragmentManager, CustomPlayDialogFragment.TAG)
+                    correct(Score(viewModel.numberOfCorrect, it.value.length))
+//                    val fragmentManager = requireActivity().supportFragmentManager.beginTransaction()
+//                    val fragment = CustomPlayDialogFragment.newInstance(
+//                        title = "Well Done!",
+//                        subtitle = "${viewModel.numberOfCorrect} - ${it.value.length}"
+//                    ){ dialog ->
+//
+//                        dialog.dismiss()
+//                    }
+//
+//                    fragment.show(fragmentManager, CustomPlayDialogFragment.TAG)
 
                 }
             })

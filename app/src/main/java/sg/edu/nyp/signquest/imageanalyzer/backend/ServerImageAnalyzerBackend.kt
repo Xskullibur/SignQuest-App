@@ -16,7 +16,7 @@ import sg.edu.nyp.signquest.utils.toBitmap
 import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit
 
-const val SERVER_DELAY = 1000
+const val SERVER_DELAY = 10
 class ServerImageAnalyzerBackend(val context: Context) : ImageAnalyzerBackend{
 
     private val TRANSLATE_SERVER_ENDPOINT = context.getString(R.string.translate_server_endpoint)
