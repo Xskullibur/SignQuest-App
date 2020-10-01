@@ -173,6 +173,7 @@ class PlayerToSignWordFragment : GameExpandedAppBarFragment(), CameraListener, O
             if(cameraManager.cameraStarted)cameraManager.stopCamera()
             isComplete = true
 
+            if (view != null)
             viewModel.gloss.observeOnce(viewLifecycleOwner, Observer {
                 it?.let {
 
